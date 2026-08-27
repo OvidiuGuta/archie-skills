@@ -6,16 +6,16 @@
 
 **Status:** ready-for-agent
 
-- [ ] User-callable only (`disable-model-invocation: true`)
-- [ ] Explores the repo, presents what it found, and confirms with the user before writing anything
-- [ ] Discovers the lint, typecheck, test and build commands as actually written in the project
-- [ ] Discovers how to start the real app, including port, seed data and test credentials where discoverable, because `/qa` cannot run without them
-- [ ] Discovers test prior art locations, the package manager, and branch and commit conventions
-- [ ] Records any fact it cannot determine as `unknown`, explicitly, and never fabricates a plausible command
-- [ ] Writes the facts into a delimited section of `AGENTS.md`, leaving hand-written content untouched
-- [ ] Re-running updates that section in place rather than appending a second copy
-- [ ] Ensures `.scratch/` is not gitignored, amending the ignore file if it would be caught
-- [ ] Removes stale `docs/agents/issue-tracker.md`, `triage-labels.md` and `domain.md` from a prior mattpocock install if present
-- [ ] Writes no `## Agent skills` section, since the entry skills are user-callable only
-- [ ] One code path for greenfield, boilerplate and mature repos, with no mode switch
-- [ ] Ships `agents/openai.yaml`, and `README.md` documents the skill
+- [x] User-callable only (`disable-model-invocation: true`)
+- [x] Explores the repo, presents what it found, and confirms with the user before writing anything
+- [x] Discovers the lint, typecheck, test and build commands as actually written in the project
+- [x] Discovers how to start the real app, including port, seed data and test credentials where discoverable, because `/qa` cannot run without them
+- [x] Discovers test prior art locations, the package manager, and branch and commit conventions
+- [x] Records any fact it cannot determine as `unknown`, explicitly, and never fabricates a plausible command
+- [x] Writes the facts into a delimited section of `AGENTS.md`, leaving hand-written content untouched
+- [x] Re-running updates that section in place rather than appending a second copy
+- [x] Ensures `.scratch/` is not gitignored, amending the ignore file if it would be caught
+- ~~Removes stale `docs/agents/issue-tracker.md`, `triage-labels.md` and `domain.md` from a prior mattpocock install if present~~ — dropped by the user as unnecessary
+- [x] Writes no `## Agent skills` section, since the entry skills are user-callable only
+- [x] One code path for greenfield, boilerplate and mature repos, with no mode switch
+- [x] Ships `agents/openai.yaml`, and `README.md` documents the skill

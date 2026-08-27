@@ -1,0 +1,3 @@
+interface:
+  display_name: "Set up Archie"
+  short_description: "Record this repo's project facts"
