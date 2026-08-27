@@ -63,3 +63,15 @@ User-callable. Records this repo's [facts](skills/reference/agents-facts.md) in 
 ### `/interview`
 
 Reached by `/architect`. The one-question-at-a-time discipline a planning session runs on: each question numbered, laying its plausible answers out as lettered choices with the agent's recommendation and reasoning underneath, and gated by the [altitude test](skills/reference/altitude.md) before it is asked. Questions below altitude are deferred in one announced line each, so the child list assembles in front of the user, and any deferral can be pulled back up to the current resolution. A check-in every eighth question states what is settled, what is deferred and the current split-or-specify lean without stopping for approval. The session ends when the at-altitude frontier is empty, reporting either that or the clusters the deferrals formed.
+
+### `/domain-modeling`
+
+Reached by `/architect`. Writes a settled thing down the moment it resolves, because the Effort tree is disposable and this is all that survives it: a term to the `CONTEXT.md` glossary, a decision clearing the [ADR bar](skills/reference/decisions.md) to `docs/adr/`, and the residue to the Effort's own `effort.md`, one line each, where the children inherit it. Whether a decision fits in one line is the test that separates the last two. A term conflicting with the glossary, or language too fuzzy or overloaded to enter it, interrupts the session rather than being quietly recorded. A sharpening amends its ADR in place; a reversal supersedes it. `CONTEXT.md` and `docs/adr/` are created lazily, by the first thing that needs them.
+
+### `/research`
+
+Reached by `/architect`. The exit for a question with an answer that holds whether or not the project likes it: a sub-agent reads primary sources, writes what it found to `research/<slug>.md` inside the Effort, and returns the path plus the answer in two lines. It never returns the findings themselves, because the pages it read are exactly what the sub-agent exists to keep out of the session's context. A question that turns out to be a decision goes back to the user with its options rather than being answered, and a question the sources do not settle comes back marked unsettled.
+
+### `/prototype`
+
+Reached by `/architect`. The exit for a question the user answers by looking: a sub-agent builds the cheapest artifact that provokes a real reaction into `prototypes/<slug>/` inside the Effort and returns the path plus how to open it. The artifact is evidence rather than a head start — hardcoded, never imported by the real code, and gone with the tree, while the answer travels on into `spec.md`. A revision goes back to the same sub-agent, which still holds the artifact's shape, so "narrower sidebar" is one edit instead of another read of the world. The reaction itself happens at the top level, in the user's words; the sub-agent never stands in for it.

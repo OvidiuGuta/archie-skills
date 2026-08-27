@@ -18,7 +18,9 @@ One directory per Effort, nested under `.scratch/`. The filesystem is the tree, 
 │           ├── 01-request-a-reset.md
 │           └── 01-request-a-reset.design.md
 └── 02-billing/                  thin Effort
-    └── effort.md
+    ├── effort.md
+    ├── research/                 findings from `/research`, one file per question
+    └── prototypes/               throwaway artifacts from `/prototype`
 ```
 
 Everything about a leaf sits inside the leaf, so a Task, its Spec and its Effort are reachable from one path with no pointer to resolve.
@@ -32,10 +34,12 @@ Read an Effort's state off its directory rather than off a line in a file:
 | Files present | State | Meaning |
 | --- | --- | --- |
 | `effort.md` alone | **thin** | a title and a line of intent, awaiting its own Architect session |
-| child directories | **Split** | build its children in the order its `effort.md` lists |
+| child Effort directories | **Split** | build its children in the order its `effort.md` lists |
 | `spec.md` and `tasks/` | **Specified** | a leaf, where all buildable work lives |
 
 **Split and Specified are mutually exclusive.** An Effort carries child Efforts or exactly one Spec, never both, so every Specified Effort is a leaf and listing leaves answers "what is left to build". Glue work therefore cannot hide at a parent: it becomes an explicit final child, which makes it schedulable and reviewable.
+
+Only `NN-<slug>` directories are children. `research/` and `prototypes/` are session artifacts written by `/research` and `/prototype`, and an Effort carrying them is still thin.
 
 A directory holding both children and a `spec.md` was hand-edited into an invalid state. Stop and surface it to the user.
 
