@@ -31,6 +31,27 @@ What genuinely varies per repo is **facts**, not conventions: the lint, typechec
 
 The design decisions behind the framework are in [`CONTEXT.md`](CONTEXT.md) and [`docs/adr/`](docs/adr/). A skill contradicting one of those ADRs is wrong.
 
+## Validating the bundle
+
+```
+node scripts/validate-skills.mjs
+```
+
+Run from the repo root. It exits non-zero on any failure and prints one line per failure naming the file and the problem. Thirteen skills cross-referencing each other and a shared reference set is exactly the structure where links rot silently, and the failure only shows up later as a skill quietly skipping a step. This is the bundle's only automated gate: see [`docs/adr/0006-three-test-layers-split-by-altitude.md`](docs/adr/0006-three-test-layers-split-by-altitude.md) for why there are no agent-driven tests.
+
+It asserts that:
+
+- every `SKILL.md` has frontmatter with a `name` and a `description`, and the name matches its directory
+- exactly the five entry skills carry `disable-model-invocation: true`, and none of the eight sub-skills do
+- every skill directory is one of the thirteen the spec names
+- every skill reference in a skill body resolves to a skill in the bundle
+- every relative link resolves to a file that exists, across the skills, the reference set and this README
+- every shared reference file is pointed at by at least one skill
+- every skill ships an `agents/openai.yaml` carrying a `display_name` and a `short_description`
+- every skill is documented in this README
+
+Two of those are warnings rather than failures while the bundle is still being assembled, because a half-built bundle would otherwise fail on work that has not happened yet: a reference to a skill the spec names but no ticket has built, and a reference file nothing points at. Both become failures once all thirteen skills are present. A reference to a name outside the thirteen is a failure either way, so a typo or a stale skill name is caught immediately.
+
 ## Skills
 
 Each skill is documented here by the ticket that builds it, while the knowledge is fresh.
