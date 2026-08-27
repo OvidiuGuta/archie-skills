@@ -59,3 +59,7 @@ Each skill is documented here by the ticket that builds it, while the knowledge 
 ### `/setup-archie`
 
 User-callable. Records this repo's [facts](skills/reference/agents-facts.md) in `AGENTS.md` and keeps `.scratch/` out of the ignore file so planning is committed. It explores, shows the draft, and writes only once the user has confirmed it; anything it cannot read out of the repo is recorded as `unknown` and asked about rather than guessed at. Re-running rewrites the delimited facts block and leaves the rest of `AGENTS.md` untouched.
+
+### `/interview`
+
+Reached by `/architect`. The one-question-at-a-time discipline a planning session runs on: each question numbered, laying its plausible answers out as lettered choices with the agent's recommendation and reasoning underneath, and gated by the [altitude test](skills/reference/altitude.md) before it is asked. Questions below altitude are deferred in one announced line each, so the child list assembles in front of the user, and any deferral can be pulled back up to the current resolution. A check-in every eighth question states what is settled, what is deferred and the current split-or-specify lean without stopping for approval. The session ends when the at-altitude frontier is empty, reporting either that or the clusters the deferrals formed.
