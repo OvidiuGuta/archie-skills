@@ -1,3 +1,0 @@
-interface:
-  display_name: "To tasks"
-  short_description: "Slice an Effort's spec.md into vertical tracer-bullet Tasks for /implement"

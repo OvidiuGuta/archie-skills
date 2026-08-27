@@ -1,0 +1,3 @@
+interface:
+  display_name: "Archie: Code Review"
+  short_description: "Review one Task's diff against its spec, acceptance criteria and design"

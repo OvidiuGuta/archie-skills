@@ -1,0 +1,3 @@
+interface:
+  display_name: "Archie: Research"
+  short_description: "Settles a factual question in a sub-agent and returns a path"

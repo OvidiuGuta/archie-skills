@@ -18,7 +18,7 @@ An Effort that has exactly one Spec and no children. All buildable work lives he
 The description of what to build for one Specified Effort. Its own file inside the leaf, never embedded in `effort.md`, and carrying an explicit reference back to its Effort.
 
 **Task**:
-One unit of buildable work derived from a Spec, and the unit `/implement` consumes. Referenced as `3.2#1`.
+One unit of buildable work derived from a Spec, and the unit `/archie-implement` consumes. Referenced as `3.2#1`.
 
 **Altitude**:
 Whether a question or a decision has blast radius beyond one part of the Effort at hand. At altitude means it is asked and settled now; below altitude means it is deferred, and the deferrals cluster into child Efforts.

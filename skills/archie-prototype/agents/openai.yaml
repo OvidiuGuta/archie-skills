@@ -1,0 +1,3 @@
+interface:
+  display_name: "Archie: Prototype"
+  short_description: "Builds a throwaway artifact in a sub-agent for the user to react to"

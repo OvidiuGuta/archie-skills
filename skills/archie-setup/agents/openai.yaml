@@ -1,0 +1,3 @@
+interface:
+  display_name: "Archie: Setup"
+  short_description: "Record this repo's project facts"

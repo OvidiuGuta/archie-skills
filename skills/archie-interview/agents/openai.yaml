@@ -1,0 +1,3 @@
+interface:
+  display_name: "Archie: Interview"
+  short_description: "One question a turn, bounded by the altitude test"

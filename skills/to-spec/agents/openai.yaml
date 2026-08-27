@@ -1,3 +1,0 @@
-interface:
-  display_name: "To spec"
-  short_description: "Synthesise an architect session into the Effort's spec.md and fix the seams"

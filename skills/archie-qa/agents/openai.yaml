@@ -1,0 +1,3 @@
+interface:
+  display_name: "Archie: QA"
+  short_description: "Prove one Task's demoable outcome against the running app"

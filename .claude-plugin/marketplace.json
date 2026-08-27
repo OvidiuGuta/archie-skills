@@ -1,0 +1,39 @@
+{
+  "name": "archie",
+  "owner": {
+    "name": "Ovidiu Guta",
+    "url": "https://github.com/OvidiuGuta"
+  },
+  "description": "Archie's engineering skill bundle, grouped by the two phases it runs in.",
+  "plugins": [
+    {
+      "name": "archie-planning",
+      "source": "./",
+      "description": "Setup and Planning: prepare a repo, then architect one Effort at a time down to specs and tasks.",
+      "category": "engineering",
+      "skills": [
+        "./skills/archie-setup",
+        "./skills/archie-architect",
+        "./skills/archie-interview",
+        "./skills/archie-domain-modeling",
+        "./skills/archie-research",
+        "./skills/archie-prototype",
+        "./skills/archie-to-spec",
+        "./skills/archie-to-tasks"
+      ]
+    },
+    {
+      "name": "archie-implementing",
+      "source": "./",
+      "description": "Implementing: take one Task through design, TDD, review and QA to ready-for-review. Requires Archie Planning.",
+      "category": "engineering",
+      "skills": [
+        "./skills/archie-implement",
+        "./skills/archie-software-architecture",
+        "./skills/archie-tdd",
+        "./skills/archie-code-review",
+        "./skills/archie-qa"
+      ]
+    }
+  ]
+}

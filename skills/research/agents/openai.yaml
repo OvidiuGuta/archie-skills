@@ -1,3 +1,0 @@
-interface:
-  display_name: "Research"
-  short_description: "Settles a factual question in a sub-agent and returns a path"

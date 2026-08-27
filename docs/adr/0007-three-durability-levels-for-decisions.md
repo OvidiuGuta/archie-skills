@@ -14,5 +14,5 @@ ADRs are **living** documents. A lower resolution sharpening a decision amends t
 
 - A self-regulating rule keeps `effort.md` from bloating into a spec: if a decision needs more than a line, it needed the reasoning, which means it clears the ADR bar and belongs in `docs/adr/`.
 - Sub-bar decisions die with the tree when the user deletes it. That is correct: by then the code encodes them, and nothing durable depended on them.
-- `/domain-modeling`'s "offer ADRs sparingly" guidance survives unchanged, because the residue now has somewhere to go.
+- `/archie-domain-modeling`'s "offer ADRs sparingly" guidance survives unchanged, because the residue now has somewhere to go.
 - `effort.md` holds a title, an intent, the decisions settled at this resolution, and, for a Split Effort, the ordered child list. Everything in it is written at the moment it is known.

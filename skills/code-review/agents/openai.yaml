@@ -1,3 +1,0 @@
-interface:
-  display_name: "Code Review"
-  short_description: "Review one Task's diff against its spec, acceptance criteria and design"

@@ -1,0 +1,3 @@
+interface:
+  display_name: "Archie: TDD"
+  short_description: "Build one Task test-first in a double loop and run the repo's gates"

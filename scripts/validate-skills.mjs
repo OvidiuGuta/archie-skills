@@ -8,24 +8,33 @@
 // warnings while the bundle is still being built.
 
 import { readFileSync, readdirSync, existsSync, statSync } from 'node:fs'
+import { execFileSync } from 'node:child_process'
 import { join, dirname, relative, resolve, posix } from 'node:path'
 
 const ROOT = process.cwd()
 const SKILLS_DIR = join(ROOT, 'skills')
-const REFERENCE_DIR = join(SKILLS_DIR, 'reference')
+const REFERENCE_DIR = join(ROOT, 'reference')
+const COPY_DIR_NAME = 'references'
 const README = join(ROOT, 'README.md')
+const MARKETPLACE = join(ROOT, '.claude-plugin', 'marketplace.json')
 
 /** The thirteen skills of the spec, split by who may invoke them. */
-const ENTRY_SKILLS = ['setup-archie', 'architect', 'to-spec', 'to-tasks', 'implement']
+const ENTRY_SKILLS = [
+  'archie-setup',
+  'archie-architect',
+  'archie-to-spec',
+  'archie-to-tasks',
+  'archie-implement',
+]
 const SUB_SKILLS = [
-  'interview',
-  'domain-modeling',
-  'research',
-  'prototype',
-  'software-architecture',
-  'tdd',
-  'code-review',
-  'qa',
+  'archie-interview',
+  'archie-domain-modeling',
+  'archie-research',
+  'archie-prototype',
+  'archie-software-architecture',
+  'archie-tdd',
+  'archie-code-review',
+  'archie-qa',
 ]
 const ROSTER = new Set([...ENTRY_SKILLS, ...SUB_SKILLS])
 
@@ -104,9 +113,7 @@ if (!existsSync(SKILLS_DIR)) {
   process.exit(1)
 }
 
-const skillDirs = listDirs(SKILLS_DIR)
-  .filter((e) => e.name !== 'reference')
-  .map((e) => join(SKILLS_DIR, e.name))
+const skillDirs = listDirs(SKILLS_DIR).map((e) => join(SKILLS_DIR, e.name))
 
 const presentSkills = new Set(skillDirs.map((dir) => dir.split('/').pop()))
 const referenceFiles = walkFiles(REFERENCE_DIR, (p) => p.endsWith('.md'))
@@ -177,12 +184,36 @@ for (const dir of skillDirs) {
     else fail(skillFile, `references \`/${ref}\`, which is not a skill in the bundle`)
   }
 
+  // Independence: skills.sh installs one skill directory at a time, so a link
+  // leaving the skill's own directory is dead the moment the bundle lands.
   for (const target of relativeLinksIn(body)) {
-    referencedReferenceFiles.add(resolve(dirname(skillFile), target))
+    if (target.startsWith('../')) {
+      fail(skillFile, `link \`${target}\` leaves the skill's own directory`)
+      continue
+    }
+    // `./references/<key>` is a generated copy; the authored source is what
+    // has to be pointed at for the reference set to count as used.
+    const copyPrefix = `./${COPY_DIR_NAME}/`
+    if (target.startsWith(copyPrefix)) {
+      referencedReferenceFiles.add(join(REFERENCE_DIR, target.slice(copyPrefix.length)))
+    }
   }
+}
+
+// A reference file reached only from another reference file is still in use:
+// the fan-out copies the transitive closure, not just the direct links.
+for (let changed = true; changed; ) {
+  changed = false
   for (const file of referenceFiles) {
-    const fromSkills = posix.join('reference', relative(REFERENCE_DIR, file))
-    if (body.includes(fromSkills)) referencedReferenceFiles.add(file)
+    if (!referencedReferenceFiles.has(file)) continue
+    const { body } = splitFrontmatter(readFileSync(file, 'utf8'))
+    for (const target of relativeLinksIn(body)) {
+      const resolved = resolve(dirname(file), target)
+      if (referenceFiles.includes(resolved) && !referencedReferenceFiles.has(resolved)) {
+        referencedReferenceFiles.add(resolved)
+        changed = true
+      }
+    }
   }
 }
 
@@ -217,6 +248,59 @@ for (const file of referenceFiles) {
   if (referencedReferenceFiles.has(file)) continue
   const problem = 'no skill points at this reference file'
   bundleComplete ? fail(file, problem) : warn(file, problem)
+}
+
+// --- the phase manifest -----------------------------------------------------
+// `.claude-plugin/marketplace.json` groups the skills into Archie's two phases
+// in the skills.sh picker. Two lists of skills drift, so they are compared.
+
+if (!existsSync(MARKETPLACE)) {
+  fail(MARKETPLACE, 'missing — the phase groups in the installer come from here')
+} else {
+  let manifest = null
+  try {
+    manifest = JSON.parse(readFileSync(MARKETPLACE, 'utf8'))
+  } catch (error) {
+    fail(MARKETPLACE, `invalid JSON: ${error.message}`)
+  }
+
+  if (manifest) {
+    const grouped = new Map()
+    for (const plugin of manifest.plugins ?? []) {
+      if (!plugin.name) fail(MARKETPLACE, 'a plugin entry has no `name`, so its skills land ungrouped')
+      for (const path of plugin.skills ?? []) {
+        // The CLI silently drops any path not starting with `./`.
+        if (!path.startsWith('./')) {
+          fail(MARKETPLACE, `skill path \`${path}\` does not start with \`./\` and is ignored`)
+          continue
+        }
+        const name = path.replace(/^\.\/skills\//, '')
+        if (grouped.has(name)) fail(MARKETPLACE, `\`${name}\` is listed in two phases`)
+        grouped.set(name, plugin.name)
+        if (!presentSkills.has(name)) fail(MARKETPLACE, `lists \`${name}\`, which is not a skill in the bundle`)
+      }
+    }
+    for (const name of presentSkills) {
+      if (!grouped.has(name)) fail(MARKETPLACE, `\`${name}\` is in no phase, so it lands under "Other"`)
+    }
+  }
+}
+
+// --- generated reference copies ---------------------------------------------
+// One authored source, one copy per skill that needs it. This is the whole
+// reason the copies are safe, so it gates alongside everything else.
+
+try {
+  execFileSync(process.execPath, [join(ROOT, 'scripts', 'sync-references.mjs'), '--check'], {
+    cwd: ROOT,
+    stdio: 'pipe',
+  })
+} catch (error) {
+  const detail = String(error.stdout ?? '') + String(error.stderr ?? '')
+  // The child prints its own tally; this run has one report, so drop it.
+  for (const line of detail.split('\n').filter(Boolean)) {
+    if (!/^\d+ problem\(s\)\.$/.test(line)) failures.push(line)
+  }
 }
 
 // --- report -----------------------------------------------------------------
