@@ -4,15 +4,15 @@
 
 **Blocked by:** 01 — Conventions and templates, 07 — `/architect`.
 
-**Status:** ready-for-agent
+**Status:** ready-for-review
 
-- [ ] User-callable only (`disable-model-invocation: true`)
-- [ ] Synthesises the conversation already in context and does not re-interview the user
-- [ ] Proposes the integration seams, preferring existing seams, sitting as high as possible, and using as few as possible
-- [ ] Confirms the seams with the user before writing the spec
-- [ ] Writes `spec.md` inside the Specified Effort's own directory
-- [ ] The spec carries an explicit reference to its Effort, so a sub-agent handed it as bare text knows what it belongs to
-- [ ] Uses the glossary's vocabulary throughout, respects the ADRs in the area, and surfaces any contradiction rather than silently overriding
-- [ ] Refuses to run against a Split Effort, since Split and Specified are mutually exclusive
-- [ ] Avoids file paths and code, except a snippet from a prototype that encodes a decision more precisely than prose
-- [ ] Ships `agents/openai.yaml`, and `README.md` documents the skill
+- [x] User-callable only (`disable-model-invocation: true`)
+- [x] Synthesises the conversation already in context and does not re-interview the user
+- [x] Proposes the integration seams, preferring existing seams, sitting as high as possible, and using as few as possible
+- [x] Confirms the seams with the user before writing the spec
+- [x] Writes `spec.md` inside the Specified Effort's own directory
+- [x] The spec carries an explicit reference to its Effort, so a sub-agent handed it as bare text knows what it belongs to
+- [x] Uses the glossary's vocabulary throughout, respects the ADRs in the area, and surfaces any contradiction rather than silently overriding
+- [x] Refuses to run against a Split Effort, since Split and Specified are mutually exclusive
+- [x] Avoids file paths and code, except a snippet from a prototype that encodes a decision more precisely than prose
+- [x] Ships `agents/openai.yaml`, and `README.md` documents the skill
