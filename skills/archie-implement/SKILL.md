@@ -16,6 +16,20 @@ The reference set carries what the files mean: the Task and Epic [reference synt
 
 **Requires** `/archie-software-architecture`, `/archie-tdd`, `/archie-code-review` and `/archie-qa`, and a Task that `/archie-to-tasks` wrote. A missing sub-skill halts the run and is named: you are the orchestrator, so absorbing a step yourself would put the reviewer's context and the engineer's diff in the same head, which is the one thing this pipeline exists to keep apart.
 
+## Readouts
+
+Every dispatch ends in a **readout** — one lead line in your words, then the sub-agent's report verbatim beneath it:
+
+```md
+**{step} — {the verdict, where each finding lands, and what you dispatch next}**
+
+{the sub-agent's report, unaltered}
+```
+
+The lead line is the only part you write, and the triage is the part only you hold: name the verdict, name every finding's destination — fix round, halt or the report — and name what you dispatch next. Leave the body exactly as it arrived, because a `file:line`, a criterion's wording and a gate's command are what the user acts on and a tidied paraphrase is where they go missing. A fix round is its own readout, numbered, so two rounds read as two.
+
+A readout is what makes an AFK run legible while it is still running. The summary of step 8 is written for the user coming back to a finished run; these are written for the user watching one.
+
 ## 1. Resolve the Task and clear both gates
 
 You are handed **one** reference — `3.2#1` or a path. Everything else resolves from it: the Task's file inside the leaf's `tasks/`, the leaf's `spec.md` beside it, and the Epic path the numbered directories spell out. Read the task file: its demoable outcome, its acceptance criteria, its `Blocked by` line and its `Label`.
@@ -33,11 +47,11 @@ Done when the Task, its Spec and its Epic path are in hand, both gates have pass
 
 ## 2. Design, in a read-only sub-agent
 
-Dispatch `/archie-software-architecture` with the Task reference. It writes `tasks/NN-<slug>.design.md` beside the task file and returns that path plus two lines.
+Dispatch `/archie-software-architecture` with the Task reference. It writes `tasks/NN-<slug>.design.md` beside the task file and returns that path, the approach and a contents list — one line per module the design names.
 
-Hold the path and hand it onward. Reading the design yourself buys nothing the engineer and the reviewer do not already read from disk.
+Hold the path, relay the contents list in the readout, and hand the path onward. The design file stays closed to you for the whole run: the engineer and the reviewer read it from disk, and the context you would spend opening it is the context the remaining steps run on. A readout that looks thin is answered by `/archie-software-architecture` returning a fuller contents list, never by you reading the file.
 
-Done when you hold a design path that exists, or the sub-agent reported a planning defect and you are at step 7.
+Done when you hold a design path that exists and its readout is out, or the sub-agent reported a planning defect and you are at step 7.
 
 ## 3. Build, test-first
 
@@ -48,7 +62,7 @@ Read the gate results before anything else:
 - **A red gate halts the run.** Review, QA and three fix rounds spent on a diff that does not build is the whole pipeline spent on nothing. Report the failing command and its output.
 - **A gate recorded as `unknown`** stays unrun and travels into the final report as a gap, so the user knows which of the four actually vouched for this diff.
 
-Done when the engineer reports green on every known gate.
+Done when the engineer reports green on every known gate and the readout is out.
 
 ## 4. Review, then up to two fix rounds
 
@@ -62,7 +76,7 @@ Dispatch `/archie-code-review` with the Task reference. It holds the diff agains
 
 **Two rounds is the bound.** Code defects still standing after the second round travel into the report as unresolved, named with their file and line. A third round on a diff two reviews could not settle is a loop, and the user's read is the faster path out.
 
-Done when the review passes clean, or two fix rounds have been spent and every remaining finding is written down.
+Done when the review passes clean, or two fix rounds have been spent and every remaining finding is written down — with the review's readout out before each fix round is dispatched, and the round's own readout out when it returns.
 
 ## 5. Guide the user, one step at a time
 
@@ -84,7 +98,7 @@ Triage its findings exactly as in step 4: a code defect earns the run's **one** 
 
 After an engineer's fix round, **you judge the fix diff yourself**. Read it against the finding it answers and the design it lands in. Code review does not re-run here: the diff is small, and you did not write it, so the reason a reviewer exists does not apply. What the fix did and did not resolve goes in the report in your own words.
 
-Done when every criterion carries a grade, and the one fix round is either spent and judged or was not needed.
+Done when every criterion carries a grade, the one fix round is either spent and judged or was not needed, and both readouts are out — QA's, and the fix round's, whose lead line is your own read of the diff.
 
 ## 7. Halt on a planning defect
 
