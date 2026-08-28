@@ -9,7 +9,7 @@
     {
       "name": "archie-planning",
       "source": "./",
-      "description": "Setup and Planning: prepare a repo, then architect one Effort at a time down to specs and tasks.",
+      "description": "Setup and Planning: prepare a repo, then architect one Epic at a time down to specs and tasks.",
       "category": "engineering",
       "skills": [
         "./skills/archie-setup",

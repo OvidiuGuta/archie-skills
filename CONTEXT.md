@@ -4,30 +4,30 @@
 
 ## Language
 
-**Effort**:
-A unit of scoped work in the planning tree. The single recursive node type: an Effort may contain child Efforts, and those children are themselves Efforts at any depth.
-_Avoid_: Roadmap, roadmap item, initiative, epic, theme, milestone, track
+**Epic**:
+A unit of scoped work in the planning tree. The single recursive node type: an Epic may contain child Epics, and those children are themselves Epics at any depth. An Epic here is a level of **Resolution**, not a size class, so unlike an Epic in a tracker it has no fixed rung and nests without limit.
+_Avoid_: Effort, Roadmap, roadmap item, initiative, theme, milestone, track, Story, Sub-task
 
-**Split Effort**:
-An Effort that has child Efforts and no Spec. Its children are built in order.
+**Split Epic**:
+An Epic that has child Epics and no Spec. Its children are built in order.
 
-**Specified Effort**:
-An Effort that has exactly one Spec and no children. All buildable work lives here, so every Specified Effort is a leaf of the tree.
+**Specified Epic**:
+An Epic that has exactly one Spec and no children. All buildable work lives here, so every Specified Epic is a leaf of the tree.
 
 **Spec**:
-The description of what to build for one Specified Effort. Its own file inside the leaf, never embedded in `effort.md`, and carrying an explicit reference back to its Effort.
+The description of what to build for one Specified Epic. Its own file inside the leaf, never embedded in `epic.md`, and carrying an explicit reference back to its Epic.
 
 **Task**:
 One unit of buildable work derived from a Spec, and the unit `/archie-implement` consumes. Referenced as `3.2#1`.
 
 **Altitude**:
-Whether a question or a decision has blast radius beyond one part of the Effort at hand. At altitude means it is asked and settled now; below altitude means it is deferred, and the deferrals cluster into child Efforts.
+Whether a question or a decision has blast radius beyond one part of the Epic at hand. At altitude means it is asked and settled now; below altitude means it is deferred, and the deferrals cluster into child Epics.
 
 **Architect**:
-The verb for a working session in which the user and the agent scope an Effort together, reaching shared understanding rather than producing a plan document up front.
+The verb for a working session in which the user and the agent scope an Epic together, reaching shared understanding rather than producing a plan document up front.
 
 **Resolution**:
-The level of detail at which an Effort is understood. Splitting an Effort lowers resolution: children describe the same subject in sharper detail, not different subjects. An Effort is specified once its resolution is high enough to build from.
+The level of detail at which an Epic is understood. Splitting an Epic lowers resolution: children describe the same subject in sharper detail, not different subjects. An Epic is specified once its resolution is high enough to build from.
 
 **Interviewing**:
 The one-question-at-a-time discipline used inside an Architect session to reach shared understanding.

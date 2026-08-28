@@ -1,6 +1,6 @@
 # /archie-implement takes one task and runs one of two pipelines
 
-`/archie-implement` is invoked by the user on a **single task** (`3.2#1` or its path), not on an Effort or a subtree. Running a whole leaf's task list is deferred to a future `/archie-implement-effort` skill that loops this one; the single-task flow is already AFK enough because it designs, implements, reviews and QAs by itself.
+`/archie-implement` is invoked by the user on a **single task** (`3.2#1` or its path), not on an Epic or a subtree. Running a whole leaf's task list is deferred to a future `/archie-implement-epic` skill that loops this one; the single-task flow is already AFK enough because it designs, implements, reviews and QAs by itself.
 
 The orchestrator never writes feature code. It reads the task and its spec, then runs the pipeline its label selects.
 

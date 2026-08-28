@@ -1,3 +1,3 @@
 interface:
   display_name: "Archie: To tasks"
-  short_description: "Slice an Effort's spec.md into vertical tracer-bullet Tasks for /archie-implement"
+  short_description: "Slice an Epic's spec.md into vertical tracer-bullet Tasks for /archie-implement"

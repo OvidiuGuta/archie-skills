@@ -1,3 +1,3 @@
 interface:
   display_name: "Archie: To spec"
-  short_description: "Synthesise an architect session into the Effort's spec.md and fix the seams"
+  short_description: "Synthesise an architect session into the Epic's spec.md and fix the seams"

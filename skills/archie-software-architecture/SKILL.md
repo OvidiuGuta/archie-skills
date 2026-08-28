@@ -46,7 +46,7 @@ Done when the approach, the modules, the seam, the units to pin, the sequence an
 
 ## 4. Write the design
 
-Write `tasks/NN-<slug>.design.md` beside the task file, following the template, with its `Effort:` and `Task:` references. Same `NN-<slug>` as the task file — the number is identity, so it matches the Task's, and re-running this skill overwrites its own design rather than adding a second one.
+Write `tasks/NN-<slug>.design.md` beside the task file, following the template, with its `Epic:` and `Task:` references. Same `NN-<slug>` as the task file — the number is identity, so it matches the Task's, and re-running this skill overwrites its own design rather than adding a second one.
 
 Naming files and symbols is right here, unlike in a Spec: a design is consumed inside the run that produced it.
 
@@ -63,11 +63,14 @@ Some things only the user can settle. A **planning defect** halts the run:
 
 Name the defect, name what you read that establishes it, and stop. Never pick the reading that lets the run continue: an invented answer to a planning question is spent unattended, and it surfaces as a built feature nobody asked for.
 
-## 6. Return a pointer
+## 6. Return a pointer and a contents list
 
 ```md
-_Designed:_ {Task reference} — {Task title} → `.archie/{effort path}/tasks/{NN}-{slug}.design.md`
+_Designed:_ {Task reference} — {Task title} → `.archie/{epic path}/tasks/{NN}-{slug}.design.md`
 {The approach in one or two lines, and the seam it attaches at.}
+- `{module}` — {new, or what changes in it}
 ```
 
-Never the design inline. The orchestrator hands the path to `/archie-tdd` and never needs to read the file itself.
+One line per entry in the design's **Modules** section, however many that is — a **contents list**, so the orchestrator's readout names the surface this Task touches and every later step reads against the same set.
+
+The path and the contents list are the whole of what leaves this run. The approach, the interfaces, the sequence, the per-unit test plans and the risks stay in the file: the orchestrator hands the path to `/archie-tdd` and never opens the design itself, so every line lifted out of it is spent on the orchestrator's context for the length of the pipeline.

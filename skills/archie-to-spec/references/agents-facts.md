@@ -53,4 +53,4 @@ A fact exploration cannot settle is recorded as the word `unknown`, rather than 
 - `/archie-tdd` reading an unknown gate command asks for it, then writes the answer back into the section.
 - A skill that creates a gate the repo lacked replaces the `unknown` with the command it added, in the same run.
 
-On a greenfield repo the stack is not chosen yet, and choosing it is cross-cutting and hard to reverse. It belongs to the root Effort's Architect session and lands as an ADR, not as a setup output.
+On a greenfield repo the stack is not chosen yet, and choosing it is cross-cutting and hard to reverse. It belongs to the root Epic's Architect session and lands as an ADR, not as a setup output.

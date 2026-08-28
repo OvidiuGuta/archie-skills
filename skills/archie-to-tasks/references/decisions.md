@@ -6,11 +6,11 @@ An Architect session settles decisions at its resolution. Three destinations, di
 | --- | --- | --- |
 | A domain term | `CONTEXT.md` at the repo root | a glossary entry |
 | A decision clearing the ADR bar | `docs/adr/NNNN-<slug>.md` | a title and one to three sentences |
-| Every other at-altitude decision | the Effort's own `effort.md` | one line, no reasoning |
+| Every other at-altitude decision | the Epic's own `epic.md` | one line, no reasoning |
 
-Write each one **during** the session that settles it. The Effort tree is disposable and has no close step, so a decision still sitting in the conversation goes when the tree goes.
+Write each one **during** the session that settles it. The Epic tree is disposable and has no close step, so a decision still sitting in the conversation goes when the tree goes.
 
-A decision that will not fit in one line needed its reasoning, which means it clears the ADR bar. That rule is what keeps `effort.md` from growing into a spec. Sub-bar decisions die with the tree, which is correct: by then the code encodes them, and nothing durable depended on them.
+A decision that will not fit in one line needed its reasoning, which means it clears the ADR bar. That rule is what keeps `epic.md` from growing into a spec. Sub-bar decisions die with the tree, which is correct: by then the code encodes them, and nothing durable depended on them.
 
 ## `CONTEXT.md`
 
@@ -75,7 +75,7 @@ ADRs are living documents.
 
 ## Inheritance
 
-Architecting a child reads `effort.md` at every ancestor on its path, alongside `CONTEXT.md` and the ADRs touching the area. Inherited decisions stay where they were written: copying them onto children would contradict thin children and would need backfilling every time an ancestor settles something after the split.
+Architecting a child reads `epic.md` at every ancestor on its path, alongside `CONTEXT.md` and the ADRs touching the area. Inherited decisions stay where they were written: copying them onto children would contradict thin children and would need backfilling every time an ancestor settles something after the split.
 
 A decision that spans siblings is settled at the parent, so no sibling inherits a decision it never weighed in on.
 

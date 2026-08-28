@@ -1,6 +1,6 @@
 ---
 name: archie-to-tasks
-description: Slicing one Effort's spec.md into the Tasks /archie-implement consumes — vertical tracer bullets, one demoable outcome each, sequenced by their blocking edges. Run it once the Spec is written.
+description: Slicing one Epic's spec.md into the Tasks /archie-implement consumes — vertical tracer bullets, one demoable outcome each, sequenced by their blocking edges. Run it once the Spec is written.
 disable-model-invocation: true
 ---
 
@@ -8,17 +8,17 @@ disable-model-invocation: true
 
 The Spec says what the leaf is. This cuts it into the Tasks `/archie-implement` runs one at a time, unattended. The cut is the last thing a human shapes: from here the pipeline builds whatever these files say, so a Task that hides two outcomes is two half-built features nobody demoed.
 
-Read [`references/templates/task.md`](./references/templates/task.md) first. It fixes the file's shape and the rules governing it. [`references/effort-tree.md`](./references/effort-tree.md) carries the numbering, the statuses and the two labels.
+Read [`references/templates/task.md`](./references/templates/task.md) first. It fixes the file's shape and the rules governing it. [`references/epic-tree.md`](./references/epic-tree.md) carries the numbering, the statuses and the two labels.
 
 You write task files and nothing else. Their designs are `/archie-implement`'s to produce.
 
-## 1. Open the Effort
+## 1. Open the Epic
 
-The Effort is the one whose Spec the session just wrote, or the reference the user passed (`3.2`, or a root's slug), resolved down the numbered directories.
+The Epic is the one whose Spec the session just wrote, or the reference the user passed (`3.2`, or a root's slug), resolved down the numbered directories.
 
-Read its `spec.md` in full, plus any reference the user passed alongside — a prototype, a research finding, a sibling's code. A **Specified** Effort is the only thing this skill slices: an Effort with children is Split, and its Spec belongs to one of the leaves, so name the children and ask which one. An Effort that already holds a `tasks/` directory is being re-sliced — say what the existing Tasks cover and get the overwrite agreed first. Numbers are identity: a surviving Task keeps the number it has, and a new one takes the next unused number in the leaf.
+Read its `spec.md` in full, plus any reference the user passed alongside — a prototype, a research finding, a sibling's code. A **Specified** Epic is the only thing this skill slices: an Epic with children is Split, and its Spec belongs to one of the leaves, so name the children and ask which one. An Epic that already holds a `tasks/` directory is being re-sliced — say what the existing Tasks cover and get the overwrite agreed first. Numbers are identity: a surviving Task keeps the number it has, and a new one takes the next unused number in the leaf.
 
-Done when you hold one Specified Effort, its Spec read end to end, and the user's call to slice it.
+Done when you hold one Specified Epic, its Spec read end to end, and the user's call to slice it.
 
 ## 2. Cut tracer bullets
 
@@ -57,7 +57,7 @@ Done when the user has approved the numbered list in their words.
 
 ## 4. Write the Tasks
 
-One file per Task at `tasks/NN-<slug>.md` inside the leaf, following the template exactly, `Effort:` reference and `Status: todo` included. The file numbering is the approved list's order at first slice, and thereafter identity — a re-slice never renumbers.
+One file per Task at `tasks/NN-<slug>.md` inside the leaf, following the template exactly, `Epic:` reference and `Status: todo` included. The file numbering is the approved list's order at first slice, and thereafter identity — a re-slice never renumbers.
 
 Keep file paths and code out of them, so a Task still reads true weeks later when the code around it has moved. The single exception is a snippet a prototype produced that encodes a decision more precisely than prose can — a state machine, a schema, a type shape — inlined with the prototype it came from named.
 
@@ -67,4 +67,4 @@ Done when every approved Task has a file, each with a `Status`, a `Label`, its `
 
 ## 5. Hand off
 
-Report the leaf's path, the Task count, and the first Task by reference (`3.2#1`). Name `/archie-implement` as the next move and stop. The Effort is now sliced, and everything after this runs AFK.
+Report the leaf's path, the Task count, and the first Task by reference (`3.2#1`). Name `/archie-implement` as the next move and stop. The Epic is now sliced, and everything after this runs AFK.
