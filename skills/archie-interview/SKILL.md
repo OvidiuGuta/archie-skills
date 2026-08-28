@@ -1,6 +1,6 @@
 ---
 name: archie-interview
-description: Interviewing — one question a turn, gated by the altitude test, with deferrals clustering into child Efforts. Reached by /archie-architect while scoping an Effort.
+description: Interviewing — one question a turn, gated by the altitude test, with deferrals clustering into child Epics. Reached by /archie-architect while scoping an Epic.
 ---
 
 # Interview
@@ -11,15 +11,15 @@ Read [`references/altitude.md`](./references/altitude.md) first. It fixes the ga
 
 ## The frontier
 
-The **frontier** is the set of at-altitude questions still open on this Effort. It is the session's whole state, and the session ends when it is empty.
+The **frontier** is the set of at-altitude questions still open on this Epic. It is the session's whole state, and the session ends when it is empty.
 
-Fill it before asking anything: name every question this Effort raises — from the intent in `effort.md`, the inherited decisions, and the code the earlier siblings produced — and put each one through the gate. Answers open new questions, so the frontier keeps refilling; every newcomer takes the gate before it joins.
+Fill it before asking anything: name every question this Epic raises — from the intent in `epic.md`, the inherited decisions, and the code the earlier siblings produced — and put each one through the gate. Answers open new questions, so the frontier keeps refilling; every newcomer takes the gate before it joins.
 
 Done when no question you can currently name is unsorted: each is on the frontier or has been announced as deferred.
 
 ## The gate
 
-> **Does this answer's blast radius reach beyond one part of this Effort?**
+> **Does this answer's blast radius reach beyond one part of this Epic?**
 
 **The gate is enforced, not advisory.** A question that fails it is deferred the moment it occurs to you, never asked because the conversation happened to be nearby. Asking below altitude is how a session about a whole application ends up specifying one screen's layout, which is the waterfall Archie exists to replace.
 
@@ -57,7 +57,7 @@ _Recommend:_ {the answer you would pick} — {why, in one line.}
 
 **End the turn on the question mark.** A recommendation is a proposal awaiting the user's word — decisions are theirs, and an unanswered question is still open. Batching a second question into the turn costs the user the thing this skill exists for: room to think about one thing.
 
-When the answer lands, record it before asking the next question — [`references/decisions.md`](./references/decisions.md) settles where it goes. The Effort tree is disposable, so a decision left in the conversation goes when the tree goes.
+When the answer lands, record it before asking the next question — [`references/decisions.md`](./references/decisions.md) settles where it goes. The Epic tree is disposable, so a decision left in the conversation goes when the tree goes.
 
 ## A hard question is not a low one
 
@@ -79,7 +79,7 @@ The lean is either **split** or **specify**, read off the deferrals as they stan
 
 The session ends when the frontier is empty. Report to `/archie-architect` in one message:
 
-- **An empty frontier and no deferrals** — this Effort is understood at its own resolution. `/archie-architect` weighs specifying it.
+- **An empty frontier and no deferrals** — this Epic is understood at its own resolution. `/archie-architect` weighs specifying it.
 - **The clusters the deferrals formed** — each cluster named, with the deferred questions under it. These are the candidate children, in the build order you would suggest.
 
 The recommendation on splitting or specifying is `/archie-architect`'s, and the call is the user's.

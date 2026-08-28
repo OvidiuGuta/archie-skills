@@ -7,7 +7,7 @@ It lives on disk rather than being relayed through the orchestrator, so the orch
 ```md
 # Design: {NN} — {Task title}
 
-**Effort:** {3.2}
+**Epic:** {3.2}
 **Task:** {3.2#1}
 
 ## Approach

@@ -12,13 +12,13 @@ The Task's label picks one of two pipelines. A `ready-for-agent` Task is built b
 
 Sub-agents hand off **by path**. The design goes to disk and comes back as a pointer, so your context stays small enough to run the whole pipeline and every reader downstream reads the same file. Passing a design or a research finding onward inline is how a nine-run pipeline runs out of room at run four.
 
-The reference set carries what the files mean: the Task and Effort [reference syntax, the statuses and the labels](./references/effort-tree.md), the [task file](./references/templates/task.md), the [design](./references/templates/design.md).
+The reference set carries what the files mean: the Task and Epic [reference syntax, the statuses and the labels](./references/epic-tree.md), the [task file](./references/templates/task.md), the [design](./references/templates/design.md).
 
 **Requires** `/archie-software-architecture`, `/archie-tdd`, `/archie-code-review` and `/archie-qa`, and a Task that `/archie-to-tasks` wrote. A missing sub-skill halts the run and is named: you are the orchestrator, so absorbing a step yourself would put the reviewer's context and the engineer's diff in the same head, which is the one thing this pipeline exists to keep apart.
 
 ## 1. Resolve the Task and clear both gates
 
-You are handed **one** reference — `3.2#1` or a path. Everything else resolves from it: the Task's file inside the leaf's `tasks/`, the leaf's `spec.md` beside it, and the Effort path the numbered directories spell out. Read the task file: its demoable outcome, its acceptance criteria, its `Blocked by` line and its `Label`.
+You are handed **one** reference — `3.2#1` or a path. Everything else resolves from it: the Task's file inside the leaf's `tasks/`, the leaf's `spec.md` beside it, and the Epic path the numbered directories spell out. Read the task file: its demoable outcome, its acceptance criteria, its `Blocked by` line and its `Label`.
 
 No `.archie/` in the repo at all is not an unresolvable reference, it is a repo that has never been planned: say so and name `/archie-architect`, then `/archie-to-spec` and `/archie-to-tasks`, rather than inventing a Task from the reference you were given. Implementing installs without Planning, so this is a state you will meet.
 
@@ -29,7 +29,7 @@ Two gates decide whether this run happens at all:
 
 Then set the Task's `Status:` to `in-progress`, so a reader of the tree can see a pipeline holds it.
 
-Done when the Task, its Spec and its Effort path are in hand, both gates have passed, and the status line reads `in-progress`.
+Done when the Task, its Spec and its Epic path are in hand, both gates have passed, and the status line reads `in-progress`.
 
 ## 2. Design, in a read-only sub-agent
 

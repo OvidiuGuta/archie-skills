@@ -46,7 +46,7 @@ Done when the approach, the modules, the seam, the units to pin, the sequence an
 
 ## 4. Write the design
 
-Write `tasks/NN-<slug>.design.md` beside the task file, following the template, with its `Effort:` and `Task:` references. Same `NN-<slug>` as the task file — the number is identity, so it matches the Task's, and re-running this skill overwrites its own design rather than adding a second one.
+Write `tasks/NN-<slug>.design.md` beside the task file, following the template, with its `Epic:` and `Task:` references. Same `NN-<slug>` as the task file — the number is identity, so it matches the Task's, and re-running this skill overwrites its own design rather than adding a second one.
 
 Naming files and symbols is right here, unlike in a Spec: a design is consumed inside the run that produced it.
 
@@ -66,7 +66,7 @@ Name the defect, name what you read that establishes it, and stop. Never pick th
 ## 6. Return a pointer
 
 ```md
-_Designed:_ {Task reference} — {Task title} → `.archie/{effort path}/tasks/{NN}-{slug}.design.md`
+_Designed:_ {Task reference} — {Task title} → `.archie/{epic path}/tasks/{NN}-{slug}.design.md`
 {The approach in one or two lines, and the seam it attaches at.}
 ```
 

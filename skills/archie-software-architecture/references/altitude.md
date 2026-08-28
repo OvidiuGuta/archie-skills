@@ -17,7 +17,7 @@ A question at altitude that conversation resolves badly stays in the session and
 
 ## Where it applies
 
-- **`/archie-interview`** — asks the at-altitude questions one at a time and defers the rest, announcing each deferral as it happens. The deferrals cluster, and the clusters become the Effort's children.
+- **`/archie-interview`** — asks the at-altitude questions one at a time and defers the rest, announcing each deferral as it happens. The deferrals cluster, and the clusters become the Epic's children.
 - **`/archie-to-spec`** — puts integration **seams** in the Spec, because a seam spans a leaf's Tasks, and leaves a module's internals to the per-Task design.
-- **`/archie-domain-modeling`** — sends a durable decision to `docs/adr/` and a local one to the Effort's `effort.md`. See [`decisions.md`](decisions.md).
+- **`/archie-domain-modeling`** — sends a durable decision to `docs/adr/` and a local one to the Epic's `epic.md`. See [`decisions.md`](decisions.md).
 - **`/archie-implement`** — has the engineer fix a code defect in place, and halts on a planning defect. A wrong or ambiguous acceptance criterion reaches past the Task, and only the user settles it.

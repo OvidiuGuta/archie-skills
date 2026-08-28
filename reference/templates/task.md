@@ -1,11 +1,11 @@
 # Template: a task file
 
-One per Task, at `tasks/{NN}-{slug}.md` inside a Specified Effort. `/archie-to-tasks` writes them; `/archie-implement` consumes one.
+One per Task, at `tasks/{NN}-{slug}.md` inside a Specified Epic. `/archie-to-tasks` writes them; `/archie-implement` consumes one.
 
 ```md
 # {NN} — {Task title}
 
-**Effort:** {3.2}
+**Epic:** {3.2}
 **Status:** todo
 **Label:** ready-for-agent
 **Blocked by:** {#2, or "None — can start immediately"}
@@ -20,4 +20,4 @@ One per Task, at `tasks/{NN}-{slug}.md` inside a Specified Effort. `/archie-to-t
 - Vertical: a narrow but complete path through every layer, never one layer at a time. Prefactoring comes first, as its own Task.
 - `Blocked by` carries the Tasks that genuinely gate this one, referenced by number within the leaf.
 - Criteria are **outcomes, not instructions**, and name no file paths or code, so they still read true weeks later. A `ready-for-human` Task's steps are derived at guide time, when the third-party UI is whatever it is that day.
-- Statuses, labels and numbering: [`../effort-tree.md`](../effort-tree.md).
+- Statuses, labels and numbering: [`../epic-tree.md`](../epic-tree.md).

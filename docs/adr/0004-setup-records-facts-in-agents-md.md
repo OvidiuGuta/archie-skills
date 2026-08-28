@@ -10,6 +10,6 @@ The section is **living**, not a one-time output. Facts it cannot determine are 
 
 - There is no greenfield/brownfield mode switch. Setup looks, records what it finds, and writes `unknown` for the rest, so a fresh repo, a boilerplate, and a mature codebase all take one code path.
 - `unknown` is a signal skills must act on. `/archie-qa` seeing an unknown run command asks the user rather than guessing.
-- On greenfield the stack is not yet chosen, and choosing it is a cross-cutting, hard-to-reverse decision. It belongs to the root Effort's architect session and lands as an ADR, not as a setup output.
+- On greenfield the stack is not yet chosen, and choosing it is a cross-cutting, hard-to-reverse decision. It belongs to the root Epic's architect session and lands as an ADR, not as a setup output.
 - Setup's remaining universal job is small: seed the facts section and ensure `.archie/` is not gitignored. Removing a prior mattpocock install's `docs/agents/*` files is not setup's business — uninstalling that bundle is the user's own housekeeping, and doing it for them would delete files they may still be planning with.
 - No `## Agent skills` section is written. The five entry skills are user-callable only, and the eight sub-skills are reached by explicit naming, so neither needs ambient discovery.

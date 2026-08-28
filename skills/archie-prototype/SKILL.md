@@ -11,7 +11,7 @@ The exit for a question the user answers by looking rather than by thinking. It 
 
 The artifact is **evidence**, not a head start. Build the cheapest thing that provokes a real reaction: hardcoded data, one screen, no persistence, no auth, no tests, no error states beyond the one being asked about.
 
-It lives in `prototypes/<slug>/` inside the Effort's own directory under `.archie/`, is never imported by the real code, and goes when the tree goes. What survives is the answer, carried into `spec.md` and into whatever `/archie-domain-modeling` records — never the code. Say this to the sub-agent in the brief, because an agent handed a UI question will otherwise reach for the project's real stack, its real data layer and its real conventions, and spend an hour earning a reaction it could have had in ten minutes.
+It lives in `prototypes/<slug>/` inside the Epic's own directory under `.archie/`, is never imported by the real code, and goes when the tree goes. What survives is the answer, carried into `spec.md` and into whatever `/archie-domain-modeling` records — never the code. Say this to the sub-agent in the brief, because an agent handed a UI question will otherwise reach for the project's real stack, its real data layer and its real conventions, and spend an hour earning a reaction it could have had in ten minutes.
 
 ## Dispatch
 
@@ -34,7 +34,7 @@ The sub-agent builds and stops. It does not judge its own artifact, predict what
 Return the pointer:
 
 ```md
-_Prototype:_ {the question it answers} → `.archie/{effort path}/prototypes/{slug}/`
+_Prototype:_ {the question it answers} → `.archie/{epic path}/prototypes/{slug}/`
 {How to look at it, in one line.}
 ```
 
