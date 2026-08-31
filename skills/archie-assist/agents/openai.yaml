@@ -1,0 +1,3 @@
+interface:
+  display_name: "Archie: Assist"
+  short_description: "Guide you through one hands-on Task, then verify what you produced"

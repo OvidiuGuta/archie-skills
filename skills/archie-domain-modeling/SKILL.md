@@ -7,11 +7,11 @@ description: Writing a settled decision down — a term to CONTEXT.md, a decisio
 
 The Epic tree is disposable and has no close ritual. What this skill writes is all that survives the session, so it runs the moment something resolves rather than at the end.
 
-Read [`references/decisions.md`](./references/decisions.md) first. It fixes the three destinations, the `CONTEXT.md` and ADR formats, the ADR bar, and amend-versus-supersede. This skill is how a decision gets through them.
+Read [`references/formats.md`](./references/formats.md) first. It fixes the three destinations and the `CONTEXT.md` and ADR formats. This skill is how a decision gets through them.
 
 ## Route it
 
-One settled thing, one destination — the table in `decisions.md` is the whole routing. The only call it leaves you is between an ADR and the residue, and one test decides it:
+One settled thing, one destination — the table in `formats.md` is the whole routing. The only call it leaves you is between an ADR and the residue, and one test decides it:
 
 > **Does it fit in one line, with no reasoning?**
 
@@ -32,14 +32,20 @@ Two things earn an interruption of the session:
 
 ## Decisions
 
-Apply the three-part bar as it stands in `decisions.md` — hard to reverse, surprising without context, the result of a real trade-off. All three, or it is not an ADR.
+Apply the three-part bar, and all three parts hold or it is not an ADR:
+
+1. **Hard to reverse** — changing your mind later costs something real.
+2. **Surprising without context** — a future reader will read the code and wonder why.
+3. **The result of a real trade-off** — there were genuine alternatives and one was picked for reasons.
+
+Offer ADRs sparingly: an easy-to-reverse decision gets reversed, an unsurprising one raises no questions, and one with no alternative records only that the obvious thing was done. What qualifies is architectural shape, technology choices carrying lock-in, boundary and scope decisions including the explicit no-s, deliberate deviations from the obvious path, constraints invisible in the code, and rejected alternatives whose rejection was subtle.
 
 When the decision touches ground an ADR already covers, which way it moves decides the shape:
 
 - **It sharpens** — a lower resolution makes the decision more precise and the earlier statement still holds. **Amend that ADR in place.**
 - **It reverses** — the earlier statement is no longer true. **Write a new ADR superseding the old one.**
 
-Everything else at altitude is **residue**: one line in this Epic's [`epic.md`](./references/templates/epic.md), under `Decisions`, no reasoning. It goes there so the children inherit it — architecting a child reads every ancestor's `epic.md` on its path.
+Everything else at altitude is **residue**: one line under `## Decisions` in this Epic's own `epic.md`, no reasoning. It goes there so the children inherit it — architecting a child reads every ancestor's `epic.md` on its path. Sub-bar decisions die with the tree, which is correct: by then the code encodes them, and nothing durable depended on them.
 
 ## Report
 

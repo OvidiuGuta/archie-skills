@@ -7,7 +7,7 @@ description: Interviewing — one question a turn, gated by the altitude test, w
 
 The discipline an Architect session reaches understanding through. One question a turn, each carrying your recommended answer, and each one gated by the altitude test before it is asked.
 
-Read [`references/altitude.md`](./references/altitude.md) first. It fixes the gate this skill enforces and names the exit a hard question takes.
+The gate is the framework's **altitude test**, and this skill is where it is enforced question by question.
 
 ## The frontier
 
@@ -21,7 +21,9 @@ Done when no question you can currently name is unsorted: each is on the frontie
 
 > **Does this answer's blast radius reach beyond one part of this Epic?**
 
-**The gate is enforced, not advisory.** A question that fails it is deferred the moment it occurs to you, never asked because the conversation happened to be nearby. Asking below altitude is how a session about a whole application ends up specifying one screen's layout, which is the waterfall Archie exists to replace.
+**At altitude** means the blast radius does reach past one part: settle it here, now. **Below altitude** means it lives inside one part, so it is deferred to the moment that part is worked on — a bet on strictly greater knowledge later, since by then that part's earlier siblings are built and their code is there to read.
+
+**The gate is enforced, not advisory.** A question that fails it is deferred the moment it occurs to you, never asked because the conversation happened to be nearby. Asking below altitude is how a session about a whole application ends up specifying one screen's layout, which is the waterfall Archie exists to replace. Sessions terminate on their own because cross-cutting decisions at any resolution are few, while local ones are many.
 
 Announce each deferral in one line, in the turn it happens, so the user watches the child list assemble:
 
@@ -57,7 +59,7 @@ _Recommend:_ {the answer you would pick} — {why, in one line.}
 
 **End the turn on the question mark.** A recommendation is a proposal awaiting the user's word — decisions are theirs, and an unanswered question is still open. Batching a second question into the turn costs the user the thing this skill exists for: room to think about one thing.
 
-When the answer lands, record it before asking the next question — [`references/decisions.md`](./references/decisions.md) settles where it goes. The Epic tree is disposable, so a decision left in the conversation goes when the tree goes.
+When the answer lands, record it before asking the next question: hand it to `/archie-domain-modeling`, which routes it. The Epic tree is disposable, so a decision left in the conversation goes when the tree goes.
 
 ## A hard question is not a low one
 

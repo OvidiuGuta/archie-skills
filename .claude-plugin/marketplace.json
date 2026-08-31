@@ -25,14 +25,13 @@
     {
       "name": "archie-implementing",
       "source": "./",
-      "description": "Implementing: take one Task through design, TDD, review and QA to ready-for-review. Requires Archie Planning.",
+      "description": "Implementing: take one Task test-first through review to ready-for-review, or get guided through the hands-on ones. Requires Archie Planning.",
       "category": "engineering",
       "skills": [
         "./skills/archie-implement",
-        "./skills/archie-software-architecture",
+        "./skills/archie-assist",
         "./skills/archie-tdd",
-        "./skills/archie-code-review",
-        "./skills/archie-qa"
+        "./skills/archie-code-review"
       ]
     }
   ]

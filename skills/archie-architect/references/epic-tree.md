@@ -15,8 +15,7 @@ One directory per Epic, nested under `.archie/`. The filesystem is the tree, so 
 │       ├── epic.md
 │       ├── spec.md
 │       └── tasks/
-│           ├── 01-request-a-reset.md
-│           └── 01-request-a-reset.design.md
+│           └── 01-request-a-reset.md
 └── 02-billing/                  thin Epic
     ├── epic.md
     ├── research/                 findings from `/archie-research`, one file per question
@@ -25,7 +24,7 @@ One directory per Epic, nested under `.archie/`. The filesystem is the tree, so 
 
 Everything about a leaf sits inside the leaf, so a Task, its Spec and its Epic are reachable from one path with no pointer to resolve.
 
-`.archie/` is **committed**, so work resumes on another machine, and **disposable**: the user removes a root Epic's tree whenever they pivot, mid-Epic included. Nothing is archived and there is no close ritual — `git log` keeps every version, so removal costs findability rather than content. Anything meant to outlive the tree reaches `CONTEXT.md` or `docs/adr/` during the session that decided it: see [`decisions.md`](decisions.md).
+`.archie/` is **committed**, so work resumes on another machine, and **disposable**: the user removes a root Epic's tree whenever they pivot, mid-Epic included. Nothing is archived and there is no close ritual — `git log` keeps every version, so removal costs findability rather than content. Anything meant to outlive the tree reaches `CONTEXT.md` or `docs/adr/` during the session that decided it.
 
 ## Structural state is derived from the files
 
@@ -39,13 +38,13 @@ Read an Epic's state off its directory rather than off a line in a file:
 
 **Split and Specified are mutually exclusive.** An Epic carries child Epics or exactly one Spec, never both, so every Specified Epic is a leaf and listing leaves answers "what is left to build". Glue work therefore cannot hide at a parent: it becomes an explicit final child, which makes it schedulable and reviewable.
 
-Only `NN-<slug>` directories are children. `research/` and `prototypes/` are session artifacts written by `/archie-research` and `/archie-prototype`, and an Epic carrying them is still thin.
+Only `NN-<slug>` directories are children. `research/` and `prototypes/` are session artifacts, and an Epic carrying them is still thin.
 
 A directory holding both children and a `spec.md` was hand-edited into an invalid state. Stop and surface it to the user.
 
 ## Progress is derived too
 
-An Epic's progress is the state of the Tasks in its subtree, counted when it is asked for. An Epic is complete when every Task beneath it is `done`. No status line lives in `epic.md`, so no status line can be stale.
+An Epic's progress is the state of the Tasks in its subtree, counted when it is asked for, and an Epic is complete when every Task beneath it is `done`. No status line lives in `epic.md`, so no status line can be stale.
 
 ## Identity numbering
 
@@ -64,25 +63,3 @@ Tasks are numbered the same way inside a leaf's `tasks/` directory: `01-<slug>.m
 - **A Task** is its Epic, then `#`, then the Task's number: `3.2#1` is `tasks/01-<slug>.md` inside Epic `3.2`.
 
 The separators differ so the two can never be read for each other: `3.2.1` is an Epic three levels down, while `3.2#1` is a Task inside a leaf two levels down. One separator would make every reference ambiguous about which kind of thing it names.
-
-## Task statuses
-
-Four statuses, on a task file's `**Status:**` line, and stored **on Tasks only**:
-
-| Status | Meaning | Written by |
-| --- | --- | --- |
-| `todo` | sliced from the Spec, not started | `/archie-to-tasks` |
-| `in-progress` | a pipeline is running on it | `/archie-implement` |
-| `ready-for-review` | the pipeline finished, the user's move is next | `/archie-implement` |
-| `done` | the user accepted the work | the user, only |
-
-`/archie-implement` stops at `ready-for-review`, so the AFK phase never declares its own work finished.
-
-## Task labels
-
-Two labels, on a task file's `**Label:**` line, assigned by `/archie-to-tasks`, selecting the pipeline `/archie-implement` runs:
-
-- `ready-for-agent` — an agent builds it end to end
-- `ready-for-human` — it needs the user: a third-party UI, a secret, an account
-
-Every `ready-for-agent` Task cuts a complete path to observable behaviour, because QA against the running app is what proves it.

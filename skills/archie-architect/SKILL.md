@@ -8,7 +8,7 @@ disable-model-invocation: true
 
 One Epic per session. Reach shared understanding by interviewing, write down what settles as it settles, and end on a recommendation: **split** this Epic into children, or **specify** it. The call is the user's.
 
-Read [`references/epic-tree.md`](./references/epic-tree.md) and [`references/altitude.md`](./references/altitude.md) first. They fix the tree on disk, identity numbering, the reference syntax, and the gate the session runs on.
+Read [`references/epic-tree.md`](./references/epic-tree.md) first. It fixes the tree on disk, how an Epic's state is read off its own directory, identity numbering and the reference syntax.
 
 **Requires** `/archie-interview`, `/archie-domain-modeling`, `/archie-research` and `/archie-prototype`. A session dispatches all four. If one is not installed, say which and stop rather than improvising it: an interview that skips the altitude gate, or a decision nobody writes down, produces a tree that reads finished and is not.
 
@@ -16,7 +16,24 @@ You never write `spec.md` or a task file. Those are `/archie-to-spec` and `/arch
 
 ## 1. Open the Epic
 
-**A loose idea** — no reference, just a subject. Agree a title and a slug, create `.archie/<slug>/`, and write `epic.md` from [`references/templates/epic.md`](./references/templates/epic.md): title and intent, nothing else. This is the root Epic and carries no number.
+**A loose idea** — no reference, just a subject. Agree a title and a slug, create `.archie/<slug>/`, and write `epic.md`: title and intent, nothing else. This is the root Epic and carries no number.
+
+```md
+# {Title}
+
+{One or two sentences of intent: what this Epic covers, in the project's language.}
+
+## Decisions
+
+- {One at-altitude decision settled at this resolution, in one line.}
+
+## Children
+
+1. `01-{slug}` — {one line of intent}
+2. `02-{slug}` — {one line of intent}
+```
+
+Each part is written the moment it is known rather than batched at the end. A **thin** Epic is the title and the intent alone; `Decisions` and `Children` appear once it has some. `Decisions` is `/archie-domain-modeling`'s to fill, and `Children` is the **build order** authority — reorder by moving lines, and the directory names stay as they are. A Specified Epic has no `Children`, and its `spec.md` and `tasks/` sit beside this file.
 
 **An Epic reference** (`3.2`, or a root's slug) — resolve it down the numbered directories and open that Epic. A reference that does not resolve, or an Epic holding both children and a `spec.md`, stops the session and goes to the user.
 
@@ -30,7 +47,7 @@ An Epic deep in a tree has most of its constraints already settled. Read them fi
 
 - **`CONTEXT.md`** — the project's language. Ask in it.
 - **The ADRs touching this area** — read the titles, then the bodies of the ones that bear on this subject. A question an ADR already answers is not a question.
-- **Every ancestor's `epic.md`**, walking the path from the root down to this Epic's parent. Those `Decisions` lines are inherited, not copied: they stay where they were written — see [`references/decisions.md`](./references/decisions.md).
+- **Every ancestor's `epic.md`**, walking the path from the root down to this Epic's parent. Those `Decisions` lines are inherited, **not copied**: they stay where they were written, because copying them onto children would contradict thin children and would need backfilling every time an ancestor settles something after the split. A decision spanning siblings is settled at the parent, so no sibling inherits one it never weighed in on.
 
 Done when you can state, in a few lines, what this Epic has inherited and which of its own questions are already answered.
 

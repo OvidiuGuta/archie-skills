@@ -1,6 +1,6 @@
 # Template: `spec.md`
 
-Exactly one per Specified Epic, beside its `epic.md`. `/archie-to-spec` writes it by synthesising the Architect session that just happened rather than interviewing again.
+Exactly one per Specified Epic, beside its `epic.md`. It is written by synthesising the Architect session that just happened rather than by interviewing again.
 
 ```md
 # Spec: {Title}
@@ -38,6 +38,6 @@ Anything the next reader needs and nothing above carries.
 
 - `Epic:` keeps the Spec self-describing when a sub-agent is handed it as bare text.
 - **No file paths and no code snippets** in `Implementation Decisions` — they go stale within the week. The one exception is a snippet a prototype produced that encodes a decision more precisely than prose can (a state machine, a schema, a type shape): inline the decision-rich part and say where it came from.
-- **Seams are the last human checkpoint before testability is baked in**, because implementation runs AFK and a seam cannot be retrofitted cheaply. Prefer existing seams, sit as high as possible, and use as few as possible — one is ideal. Confirm them with the user before writing the Spec.
-- Seams span all of a leaf's Tasks, which is what puts them at altitude for the Spec and leaves module internals to each Task's design. See [`../altitude.md`](../altitude.md).
-- No status line. Statuses live on Tasks — see [`../epic-tree.md`](../epic-tree.md).
+- **Seams are the last human checkpoint before testability is baked in**, because implementation runs unattended and a seam cannot be retrofitted cheaply. Prefer existing seams, sit as high as possible, and use as few as possible — one is ideal. Confirm them with the user before writing the Spec.
+- A seam spans **all** of the leaf's Tasks, which is what puts it at altitude for the Spec. What lives inside one module is below altitude and belongs to the Task that builds it.
+- No status line. Statuses live on Tasks alone, so nothing here can go stale.

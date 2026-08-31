@@ -8,13 +8,13 @@ disable-model-invocation: true
 
 The Epic's Architect session reached understanding; this turns that understanding into the `spec.md` a sub-agent can build from. It is also **the last human checkpoint before testability is baked in**: everything after `/archie-to-tasks` runs AFK, and a seam chosen wrong is not retrofitted cheaply.
 
-Read [`references/templates/spec.md`](./references/templates/spec.md) first. It fixes every section of the file and the rules governing them. Also read [`references/altitude.md`](./references/altitude.md), which is what decides how much of the design belongs here rather than in a Task's own design.
+Read [`references/spec-template.md`](./references/spec-template.md) first. It fixes every section of the file and the rules governing them.
 
 You write `spec.md` and nothing else. Slicing it into Tasks is `/archie-to-tasks`.
 
 ## 1. Open the Epic
 
-The Epic is the one the session in context just architected, or the reference the user passed (`3.2`, or a root's slug), resolved down the numbered directories — see [`references/epic-tree.md`](./references/epic-tree.md).
+The Epic is the one the session in context just architected, or the reference the user passed — a root's slug, or `3.2`, which is child `02` of child `03` of the root, resolved down the numbered directories under `.archie/`.
 
 A **Split** Epic stops the run. Split and Specified are mutually exclusive, so the Spec belongs to one of its leaves: name the children and ask which one. An Epic that already holds a `spec.md` is being re-specified — say what the existing Spec covers and get the overwrite agreed before touching it.
 
@@ -28,7 +28,9 @@ Assemble the Spec's material from what the session produced: the intent and `Dec
 
 **When the session is not in context** — a fresh session running `/archie-to-spec 3.2` — read it off disk instead: this Epic's `epic.md`, every ancestor's `epic.md` up the path, `CONTEXT.md`, the ADRs touching this area, the earlier siblings' code, and this Epic's own `research/` and `prototypes/`. A question that genuinely never got answered goes back to the user as a question, one at a time; a gap you can close by reading is not one of them.
 
-Write in the glossary's vocabulary throughout, and respect the ADRs in the area. Where the synthesis contradicts one, **surface the conflict** rather than quietly overriding it — the wording is in [`references/decisions.md`](./references/decisions.md).
+Write in the glossary's vocabulary throughout, and respect the ADRs in the area. Where the synthesis contradicts one, **surface the conflict** rather than quietly overriding it:
+
+> _Contradicts ADR-0007 (event-sourced orders), and worth reopening because…_
 
 Done when every section of the template has its material, and you can say for each one which part of the session it came from.
 
@@ -38,7 +40,7 @@ A **seam** is where the feature's integration tests attach. It spans all of the 
 
 Propose them under three constraints, in this order:
 
-- **Prefer an existing seam.** The repo's integration test prior art — named in the [facts section](./references/agents-facts.md) of `AGENTS.md` — already shows where this codebase attaches tests. A new seam is test surface the project has to keep working.
+- **Prefer an existing seam.** The repo's integration test prior art — named in the project facts section of `AGENTS.md` — already shows where this codebase attaches tests. A new seam is test surface the project has to keep working.
 - **Sit as high as possible.** A high seam survives the refactors underneath it; a low one pins the internals the per-Task designs are supposed to choose.
 - **Use as few as possible.** One is ideal.
 

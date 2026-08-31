@@ -8,13 +8,11 @@ disable-model-invocation: true
 
 The Spec says what the leaf is. This cuts it into the Tasks `/archie-implement` runs one at a time, unattended. The cut is the last thing a human shapes: from here the pipeline builds whatever these files say, so a Task that hides two outcomes is two half-built features nobody demoed.
 
-Read [`references/templates/task.md`](./references/templates/task.md) first. It fixes the file's shape and the rules governing it. [`references/epic-tree.md`](./references/epic-tree.md) carries the numbering, the statuses and the two labels.
-
 You write task files and nothing else. Their designs are `/archie-implement`'s to produce.
 
 ## 1. Open the Epic
 
-The Epic is the one whose Spec the session just wrote, or the reference the user passed (`3.2`, or a root's slug), resolved down the numbered directories.
+The Epic is the one whose Spec the session just wrote, or the reference the user passed — a root's slug, or `3.2`, which is child `02` of child `03` of the root, resolved down the numbered directories under `.archie/`.
 
 Read its `spec.md` in full, plus any reference the user passed alongside — a prototype, a research finding, a sibling's code. A **Specified** Epic is the only thing this skill slices: an Epic with children is Split, and its Spec belongs to one of the leaves, so name the children and ask which one. An Epic that already holds a `tasks/` directory is being re-sliced — say what the existing Tasks cover and get the overwrite agreed first. Numbers are identity: a surviving Task keeps the number it has, and a new one takes the next unused number in the leaf.
 
@@ -33,7 +31,7 @@ Two things shape the sequence:
 
 Give each Task its label — `ready-for-agent` when an agent builds it end to end, `ready-for-human` when it needs a third-party UI, a secret or an account that only the user can supply.
 
-Then write the acceptance criteria: **observable outcomes, not instructions**, no file paths, no code. QA checks them against the running app, so a criterion nobody can watch happen is not one.
+Then write the acceptance criteria: **observable outcomes, not instructions**, no file paths, no code, so they still read true weeks later. Each one is walked against the running app at the end of its Task's build, so a criterion nobody can watch happen is not one.
 
 Done when every user story is covered by a Task, every Task names one outcome, and every Task carries its edges, its label and its criteria.
 
@@ -57,7 +55,25 @@ Done when the user has approved the numbered list in their words.
 
 ## 4. Write the Tasks
 
-One file per Task at `tasks/NN-<slug>.md` inside the leaf, following the template exactly, `Epic:` reference and `Status: todo` included. The file numbering is the approved list's order at first slice, and thereafter identity — a re-slice never renumbers.
+One file per Task at `tasks/NN-<slug>.md` inside the leaf, the `Epic:` reference included so the file stays self-describing when a sub-agent is handed it as bare text:
+
+```md
+# {NN} — {Task title}
+
+**Epic:** {3.2}
+**Status:** todo
+**Label:** ready-for-agent
+**Blocked by:** {#2, or "None — can start immediately"}
+
+**Demoable outcome:** {the one end-to-end behaviour this Task makes work, seen from the outside}
+
+- [ ] {An acceptance criterion, stated as an observable outcome.}
+- [ ] {…}
+```
+
+Every Task starts at `Status: todo`. The implementing skills write `in-progress` and `ready-for-review` from there, and `done` is the user's word alone. Statuses live on Tasks and nowhere else, so no `epic.md` carries one to go stale.
+
+The file numbering is the approved list's order at first slice, and thereafter **identity**: a re-slice never renumbers, and a deleted Task leaves a gap that is never backfilled, because reusing a number would make an old reference resolve to different work. A Task is referenced as `3.2#1` — its Epic, then `#`, then its number — and the separator differs from an Epic's dots so the two can never be read for each other.
 
 Keep file paths and code out of them, so a Task still reads true weeks later when the code around it has moved. The single exception is a snippet a prototype produced that encodes a decision more precisely than prose can — a state machine, a schema, a type shape — inlined with the prototype it came from named.
 

@@ -18,7 +18,10 @@ An Epic that has exactly one Spec and no children. All buildable work lives here
 The description of what to build for one Specified Epic. Its own file inside the leaf, never embedded in `epic.md`, and carrying an explicit reference back to its Epic.
 
 **Task**:
-One unit of buildable work derived from a Spec, and the unit `/archie-implement` consumes. Referenced as `3.2#1`.
+One unit of buildable work derived from a Spec, and the unit the implementing skills consume — `/archie-implement` when its label says an agent can build it, `/archie-assist` when it needs a person. Referenced as `3.2#1`.
+
+**Test plan**:
+The list an implementing run ends on: every one of a Task's acceptance criteria marked either covered by a test or walk-it-by-hand, the manual ones written as steps through the running app. There is no browser-driven E2E in the pipeline, so the test plan is what stands between a finished run and a criterion nobody checked.
 
 **Altitude**:
 Whether a question or a decision has blast radius beyond one part of the Epic at hand. At altitude means it is asked and settled now; below altitude means it is deferred, and the deferrals cluster into child Epics.
