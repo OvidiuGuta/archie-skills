@@ -1,34 +1,32 @@
 ---
 name: archie-domain-modeling
-description: Writing a settled decision down — a term to CONTEXT.md, a decision clearing the bar to docs/adr/, the residue to epic.md. Reached by /archie-architect the moment something resolves.
+description: Build and sharpen a project's domain model — pin down domain terminology, keep a ubiquitous language honest, and record architectural decisions as ADRs. Use when the user wants to nail down terms or record a decision, or when another skill needs the domain model maintained.
 ---
 
 # Domain modeling
 
-The Epic tree is disposable and has no close ritual. What this skill writes is all that survives the session, so it runs the moment something resolves rather than at the end.
+Actively build and sharpen the domain model as the design happens. This is the active discipline — challenging terms, keeping the model and the code in agreement, and writing things down the moment they crystallise. Merely *reading* `CONTEXT.md` for vocabulary is not this skill; that is a one-line habit any skill can have.
 
-Read [`references/formats.md`](./references/formats.md) first. It fixes the three destinations and the `CONTEXT.md` and ADR formats. This skill is how a decision gets through them.
+Two destinations, disjoint, so nothing is written twice: a **domain term** goes to `CONTEXT.md`, and a **decision clearing the ADR bar** goes to `docs/adr/`. Read [`references/CONTEXT-FORMAT.md`](./references/CONTEXT-FORMAT.md) and [`references/ADR-FORMAT.md`](./references/ADR-FORMAT.md) for the shape of each. Anything settled that is neither is the caller's to keep.
 
-## Route it
+Create both **lazily** — the first term and the first ADR bring their file into existence. A repo that never needed either does not carry an empty one.
 
-One settled thing, one destination — the table in `formats.md` is the whole routing. The only call it leaves you is between an ADR and the residue, and one test decides it:
-
-> **Does it fit in one line, with no reasoning?**
-
-A decision that will not is a decision that needed its reasoning, which means it clears the bar. That test is self-regulating: it keeps `epic.md` from growing into a spec, and it keeps the ADR set from filling with lines.
-
-Create `CONTEXT.md` and `docs/adr/` **lazily** — the first term and the first ADR bring their file into existence. A repo that never needed either does not carry an empty one.
+**Write as it resolves, never at the end.** A conversation is not storage: a term or a decision still sitting in the transcript when the session closes is one nobody recorded.
 
 ## Terms
 
-Every term goes in the moment it resolves, definition and `_Avoid_` list together. A term still sitting in the conversation at the end of the session is a term the tree takes with it.
-
-`CONTEXT.md` is a **glossary**: what each term *is*, in one or two sentences, in this project's domain. How it is stored, when it is validated and what it talks to are implementation, and belong in a spec.
+Every term goes in the moment it resolves, definition and `_Avoid_` list together.
 
 Two things earn an interruption of the session:
 
 - **A term conflicting with the glossary.** Say so as it is used, name the entry it collides with, and settle which one the project keeps. Drift to a synonym the glossary already lists under `_Avoid_` is the slow way a ubiquitous language stops being one.
-- **Fuzzy or overloaded language.** When a word is carrying two meanings or none, propose the precise canonical term and get it agreed before it enters the glossary.
+- **Fuzzy or overloaded language.** When a word is carrying two meanings or none, propose the precise canonical term and get it agreed before it enters the glossary. "You said *account* — do you mean the Customer or the User? Those are different things."
+
+## Check the model against the code
+
+When someone states how something works, check whether the code agrees, and surface the contradiction rather than recording the claim: "your code cancels whole Orders, but you just said partial cancellation is possible — which is right?"
+
+This is the check no other skill makes. A glossary that quietly disagrees with the codebase is worse than none, because it is read as authority.
 
 ## Decisions
 
@@ -40,17 +38,16 @@ Apply the three-part bar, and all three parts hold or it is not an ADR:
 
 Offer ADRs sparingly: an easy-to-reverse decision gets reversed, an unsurprising one raises no questions, and one with no alternative records only that the obvious thing was done. What qualifies is architectural shape, technology choices carrying lock-in, boundary and scope decisions including the explicit no-s, deliberate deviations from the obvious path, constraints invisible in the code, and rejected alternatives whose rejection was subtle.
 
-When the decision touches ground an ADR already covers, which way it moves decides the shape:
+A decision that will not fit in one line needed its reasoning, which means it clears the bar. That test is self-regulating in both directions: it keeps the ADR set from filling with one-liners, and it stops a real trade-off being filed away as a note.
 
-- **It sharpens** — a lower resolution makes the decision more precise and the earlier statement still holds. **Amend that ADR in place.**
-- **It reverses** — the earlier statement is no longer true. **Write a new ADR superseding the old one.**
+When the decision touches ground an ADR already covers, whether it sharpens or reverses decides the shape — see [`references/ADR-FORMAT.md`](./references/ADR-FORMAT.md).
 
-Everything else at altitude is **residue**: one line under `## Decisions` in this Epic's own `epic.md`, no reasoning. It goes there so the children inherit it — architecting a child reads every ancestor's `epic.md` on its path. Sub-bar decisions die with the tree, which is correct: by then the code encodes them, and nothing durable depended on them.
+**A decision contradicting an existing ADR earns an interruption.** Name the ADR and what it decided, say what the contradiction is, and settle whether the old decision is being sharpened or reversed before anything is written. A skill that noticed the conflict hands it here rather than resolving it, so the choice between amending in place and superseding is made once, by whoever is about to write the file.
 
-## Report
+## Say what you wrote
 
-Back to `/archie-architect` in one line per thing written, so the user sees the durable record grow as the session runs:
+One line, as you write it, so the durable record is visible while the session runs rather than discovered afterwards:
 
 ```md
-_Recorded:_ **Order** in `CONTEXT.md` · ADR-0007 event-sourced orders · 2 decisions in `epic.md`.
+_Recorded:_ **Order** in `CONTEXT.md` · ADR-0007 event-sourced orders.
 ```

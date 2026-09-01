@@ -2,6 +2,8 @@
 
 Supersedes [0005](0005-implement-has-two-pipelines.md) and [0006](0006-three-test-layers-split-by-altitude.md).
 
+_Amended by [0013](0013-planning-is-a-resumable-router-over-four-steps.md): the how came back as `/archie-design`, a HITL planning step writing into `spec.md`. The two-contract rule below is untouched by it._
+
 `/archie-implement` ran seven to nine sub-agents per Task across design, TDD, review, two fix rounds and QA. The design and QA phases cost more context than they returned: the design was a whole sub-agent run and a file on disk restating what the Spec and the ticket already fixed, and QA stood up a browser to re-derive what the acceptance criteria already said. What is left is deliberately small enough that each skill's whole contract fits on one page. Implementing is now **build → review → one fix round → report**, three sub-agent runs.
 
 ## The pipeline

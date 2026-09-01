@@ -14,7 +14,7 @@ This is the work no agent can do: signing up for a service, provisioning access,
 
 You are handed **one** reference — `3.2#1` or a path. Everything resolves from it: Epics are numbered directories nested under `.archie/`, so `3.2` is child `02` of child `03` of the root, `#1` is `tasks/01-<slug>.md` inside it, and the leaf's `spec.md` sits beside the `tasks/` folder.
 
-No `.archie/` at all is a repo that has never been planned. Say so and name `/archie-architect`, then `/archie-to-spec` and `/archie-to-tasks`.
+No `.archie/` at all is a repo that has never been planned. Say so and name `/archie-architect`, which walks the planning steps from scoping through to Tasks.
 
 Read the task file — its demoable outcome, its acceptance criteria, its `Blocked by` line and its `Label` — and the leaf's `spec.md`.
 

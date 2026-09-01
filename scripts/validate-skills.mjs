@@ -19,16 +19,22 @@ const SKILLS_DIR = join(ROOT, 'skills')
 const README = join(ROOT, 'README.md')
 const MARKETPLACE = join(ROOT, '.claude-plugin', 'marketplace.json')
 
-/** The twelve skills of the spec, split by who may invoke them. */
-const ENTRY_SKILLS = [
+// The fourteen skills of the spec, split by who may invoke them. A skill
+// carrying `disable-model-invocation: true` can be fired by nobody but the
+// human — not even by another skill — so the four planning steps must stay
+// model-invoked for `/archie-architect` to route into them. Model-invocation
+// includes user reach, so they are still typeable by name.
+const USER_ONLY_SKILLS = [
   'archie-setup',
   'archie-architect',
-  'archie-to-spec',
-  'archie-to-tasks',
   'archie-implement',
   'archie-assist',
 ]
-const SUB_SKILLS = [
+const MODEL_INVOKED_SKILLS = [
+  'archie-scope',
+  'archie-to-spec',
+  'archie-design',
+  'archie-to-tasks',
   'archie-interview',
   'archie-domain-modeling',
   'archie-research',
@@ -36,7 +42,7 @@ const SUB_SKILLS = [
   'archie-tdd',
   'archie-code-review',
 ]
-const ROSTER = new Set([...ENTRY_SKILLS, ...SUB_SKILLS])
+const ROSTER = new Set([...USER_ONLY_SKILLS, ...MODEL_INVOKED_SKILLS])
 
 const failures = []
 const warnings = []
@@ -145,15 +151,15 @@ for (const dir of skillDirs) {
     fail(skillFile, `frontmatter name \`${name}\` does not match its directory \`${dirName}\``)
   }
 
-  // Invocability: the six entry skills are user-callable only, the six
-  // sub-skills are reachable by naming them and must not be disabled.
+  // Invocability: the four user-only skills are the doors a human opens, and
+  // everything else must stay reachable so a composing skill can fire it.
   const disabled = String(frontmatter['disable-model-invocation']).toLowerCase() === 'true'
   if (!ROSTER.has(dirName)) {
-    fail(skillFile, `\`${dirName}\` is not one of the twelve skills in the spec`)
-  } else if (ENTRY_SKILLS.includes(dirName) && !disabled) {
-    fail(skillFile, 'entry skill is missing `disable-model-invocation: true`')
-  } else if (SUB_SKILLS.includes(dirName) && disabled) {
-    fail(skillFile, 'sub-skill must not carry `disable-model-invocation: true`')
+    fail(skillFile, `\`${dirName}\` is not one of the fourteen skills in the spec`)
+  } else if (USER_ONLY_SKILLS.includes(dirName) && !disabled) {
+    fail(skillFile, 'user-only skill is missing `disable-model-invocation: true`')
+  } else if (MODEL_INVOKED_SKILLS.includes(dirName) && disabled) {
+    fail(skillFile, '`disable-model-invocation: true` here makes the skill unreachable by /archie-architect')
   }
 
   // agents/openai.yaml, for parity with the bundle this one replaces.

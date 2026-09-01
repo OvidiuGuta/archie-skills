@@ -14,11 +14,13 @@
       "skills": [
         "./skills/archie-setup",
         "./skills/archie-architect",
+        "./skills/archie-scope",
         "./skills/archie-interview",
         "./skills/archie-domain-modeling",
         "./skills/archie-research",
-        "./skills/archie-prototype",
         "./skills/archie-to-spec",
+        "./skills/archie-design",
+        "./skills/archie-prototype",
         "./skills/archie-to-tasks"
       ]
     },

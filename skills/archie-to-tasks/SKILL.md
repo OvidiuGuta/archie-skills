@@ -1,20 +1,23 @@
 ---
 name: archie-to-tasks
-description: Slicing one Epic's spec.md into the Tasks /archie-implement consumes — vertical tracer bullets, one demoable outcome each, sequenced by their blocking edges. Run it once the Spec is written.
-disable-model-invocation: true
+description: Slicing one Epic's spec.md into the Tasks /archie-implement consumes — vertical tracer bullets, one demoable outcome each, sequenced by their blocking edges. Reached by /archie-architect once the Spec is written and designed.
 ---
 
 # To tasks
 
-The Spec says what the leaf is. This cuts it into the Tasks `/archie-implement` runs one at a time, unattended. The cut is the last thing a human shapes: from here the pipeline builds whatever these files say, so a Task that hides two outcomes is two half-built features nobody demoed.
+The Spec says what the leaf is. This cuts it into the Tasks `/archie-implement` runs one at a time, unattended. The cut is **the last shape a human gives the whole leaf**: from here each run builds whatever one Task file says, and a Task that hides two outcomes is two half-built features nobody demoed.
 
-You write task files and nothing else. Their designs are `/archie-implement`'s to produce.
+**Requires** `/archie-interview` for the breakdown checkpoint. The session that wrote the Spec has already loaded it; load it if not.
+
+You write task files and nothing else. The Spec is settled — both what it builds and how — and slicing does not reopen either.
 
 ## 1. Open the Epic
 
 The Epic is the one whose Spec the session just wrote, or the reference the user passed — a root's slug, or `3.2`, which is child `02` of child `03` of the root, resolved down the numbered directories under `.archie/`.
 
-Read its `spec.md` in full, plus any reference the user passed alongside — a prototype, a research finding, a sibling's code. A **Specified** Epic is the only thing this skill slices: an Epic with children is Split, and its Spec belongs to one of the leaves, so name the children and ask which one. An Epic that already holds a `tasks/` directory is being re-sliced — say what the existing Tasks cover and get the overwrite agreed first. Numbers are identity: a surviving Task keeps the number it has, and a new one takes the next unused number in the leaf.
+Read its `spec.md` in full, plus any reference the user passed alongside — a prototype, a research finding, a sibling's code. A **Specified** Epic is the only thing this skill slices: an Epic with children is Split, and its Spec belongs to one of the leaves, so name the children and ask which one. An Epic that already holds a `tasks/` directory is being re-sliced — say what the existing Tasks cover and get the overwrite agreed first.
+
+**A Spec still carrying `_Not yet designed._` halts the run.** That leaf has no settled surface — no contract, no structure, no seam — so every Task cut from it would be sliced against an imagined one, which looks exactly like a Task sliced against a real one until it is built. Name `/archie-design` and stop.
 
 Done when you hold one Specified Epic, its Spec read end to end, and the user's call to slice it.
 
@@ -31,7 +34,7 @@ Two things shape the sequence:
 
 Give each Task its label — `ready-for-agent` when an agent builds it end to end, `ready-for-human` when it needs a third-party UI, a secret or an account that only the user can supply.
 
-Then write the acceptance criteria: **observable outcomes, not instructions**, no file paths, no code, so they still read true weeks later. Each one is walked against the running app at the end of its Task's build, so a criterion nobody can watch happen is not one.
+Then write the acceptance criteria: **observable outcomes, not instructions**, no file paths, no code, so they still read true weeks later. Each one is walked against the running app at the end of its Task's build, so a criterion nobody can watch happen is not one. The criteria are the **demoable outcome decomposed**, which is why step 3 asks about the outcome and not about them: the user judges the outcome here, and every criterion under it gets walked at the end of that Task's own run.
 
 Done when every user story is covered by a Task, every Task names one outcome, and every Task carries its edges, its label and its criteria.
 
@@ -44,7 +47,7 @@ Present the whole breakdown as a numbered list, each line the Task's title, its 
 2. **Request a reset** — a user submits their email and receives a reset link. Blocked by: #1.
 ```
 
-Then ask about the two things the user can judge better than you, one at a time:
+Then ask, through `/archie-interview`, about the two things the user can judge better than you:
 
 - **Granularity** — is any Task hiding a second outcome, and is any pair really one?
 - **Edges** — is anything sequenced that could run free, or free that should be blocked?
@@ -73,7 +76,7 @@ One file per Task at `tasks/NN-<slug>.md` inside the leaf, the `Epic:` reference
 
 Every Task starts at `Status: todo`. The implementing skills write `in-progress` and `ready-for-review` from there, and `done` is the user's word alone. Statuses live on Tasks and nowhere else, so no `epic.md` carries one to go stale.
 
-The file numbering is the approved list's order at first slice, and thereafter **identity**: a re-slice never renumbers, and a deleted Task leaves a gap that is never backfilled, because reusing a number would make an old reference resolve to different work. A Task is referenced as `3.2#1` — its Epic, then `#`, then its number — and the separator differs from an Epic's dots so the two can never be read for each other.
+The numbers are the approved list's order at first slice, and thereafter **identity**. A re-slice never renumbers: a surviving Task keeps the number it has, a new one takes the next unused number in the leaf, and a deleted Task leaves a gap that is never backfilled, because reusing a number would make an old reference resolve to different work. A Task is referenced as `3.2#1` — its Epic, then `#`, then its number — and the separator differs from an Epic's dots so the two can never be read for each other.
 
 Keep file paths and code out of them, so a Task still reads true weeks later when the code around it has moved. The single exception is a snippet a prototype produced that encodes a decision more precisely than prose can — a state machine, a schema, a type shape — inlined with the prototype it came from named.
 

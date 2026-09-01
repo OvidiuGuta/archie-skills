@@ -1,6 +1,6 @@
 # Template: `spec.md`
 
-Exactly one per Specified Epic, beside its `epic.md`. It is written by synthesising the Architect session that just happened rather than by interviewing again.
+Exactly one per Specified Epic, beside its `epic.md`. Its what-sections are written by synthesising the scoping session that just happened, without interviewing again. Its two how-sections are written later, by the design session.
 
 ```md
 # Spec: {Title}
@@ -21,11 +21,11 @@ A long, numbered list covering every aspect of the work: `As a {actor}, I want {
 
 ## Implementation Decisions
 
-The modules built or changed and the interfaces they expose, schema changes, API contracts, specific interactions, and the technical clarifications the session produced.
+The data, the contract, the structure and the dependencies this leaf settles. Written by the design session; `_Not yet designed._` until then.
 
 ## Testing Decisions
 
-The **seams** the feature is tested at, and the prior art the new tests should match.
+The **seams** the feature is tested at, and the prior art the new tests should match. Written by the design session; `_Not yet designed._` until then.
 
 ## Out of Scope
 
@@ -36,8 +36,7 @@ What this Spec deliberately leaves out.
 Anything the next reader needs and nothing above carries.
 ```
 
-- `Epic:` keeps the Spec self-describing when a sub-agent is handed it as bare text.
-- **No file paths and no code snippets** in `Implementation Decisions` — they go stale within the week. The one exception is a snippet a prototype produced that encodes a decision more precisely than prose can (a state machine, a schema, a type shape): inline the decision-rich part and say where it came from.
-- **Seams are the last human checkpoint before testability is baked in**, because implementation runs unattended and a seam cannot be retrofitted cheaply. Prefer existing seams, sit as high as possible, and use as few as possible — one is ideal. Confirm them with the user before writing the Spec.
-- A seam spans **all** of the leaf's Tasks, which is what puts it at altitude for the Spec. What lives inside one module is below altitude and belongs to the Task that builds it.
+- `Epic:` keeps the Spec self-describing when a sub-agent is handed it as bare text. It is redundant with the file's own path, deliberately.
 - No status line. Statuses live on Tasks alone, so nothing here can go stale.
+- Every section carries content. A section with nothing in it means the synthesis is short of material, not that the section does not apply — `Out of Scope` in particular is where a Spec proves it has a boundary.
+- The two how-sections are the exception, and only until they are designed. `_Not yet designed._` standing alone under either of them is the **literal marker** that this leaf is Specified and undesigned, so it is written exactly, never paraphrased.

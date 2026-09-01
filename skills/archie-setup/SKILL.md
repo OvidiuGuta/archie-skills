@@ -25,7 +25,7 @@ Fill in every fact below from the repo. A fact is settled only when you have **r
 | Branch convention | `git branch -a`, the merged branches on the remote, and the default branch's name |
 | Commit convention | `git log --oneline -30`, a `commitlint` or `.czrc` config, `CONTRIBUTING.md` |
 
-**`unknown` is a value, not a gap.** A skill that reads one asks the user rather than guessing, and there is no greenfield mode: a fresh repo takes the same path and simply records more `unknown`s. On a greenfield repo the stack is not chosen yet, and choosing it is cross-cutting and hard to reverse — that belongs to the root Epic's Architect session and lands as an ADR, not as a setup output.
+**`unknown` is a value, not a gap.** A skill that reads one asks the user rather than guessing, and there is no greenfield mode: a fresh repo takes the same path and simply records more `unknown`s. On a greenfield repo the stack is not chosen yet, and choosing it is cross-cutting and hard to reverse — that belongs to the root Epic's scoping session and lands as an ADR, not as a setup output.
 
 Done when every row holds either a value read out of the repo or `unknown`.
 

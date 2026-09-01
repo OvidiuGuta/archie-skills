@@ -10,7 +10,7 @@ The fan-out delivered self-contained *installs*, and it worked: no link ever lef
 
 The amplification was the signal that the shared files were serving several skills that each needed a different part of them. `agents-facts.md` was 56 lines, of which `/archie-setup` needed the delimiters and the block format while `/archie-to-spec` needed one clause about test prior art. `altitude.md` was already restated almost whole inside `/archie-interview`, which is the skill that enforces it. So the conventions were not centralised and then copied — they were **cut per consumer**, and most of them turned out to be a paragraph.
 
-Three files stayed files, because they are consulted on demand rather than read every run, and each has exactly one owner: the Epic tree's shape and numbering in `/archie-architect`, the decision formats in `/archie-domain-modeling`, and the `spec.md` template in `/archie-to-spec`.
+Three files stayed files, because they are consulted on demand rather than read every run: the Epic tree's shape and numbering, the decision formats in `/archie-domain-modeling`, and the `spec.md` template in `/archie-to-spec`. The Epic tree is the one carried twice — `/archie-architect` routes on its derived-state table and `/archie-scope` numbers and splits by its rules — which is this ADR's copy cost, paid in full and visible.
 
 ## The boundary is the only thing gated
 

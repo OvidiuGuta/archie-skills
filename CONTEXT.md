@@ -23,15 +23,37 @@ One unit of buildable work derived from a Spec, and the unit the implementing sk
 **Test plan**:
 The list an implementing run ends on: every one of a Task's acceptance criteria marked either covered by a test or walk-it-by-hand, the manual ones written as steps through the running app. There is no browser-driven E2E in the pipeline, so the test plan is what stands between a finished run and a criterion nobody checked.
 
+**Seam**:
+Where a feature's integration tests attach. Fixed in a Specified Epic's Spec, spanning every Task in that leaf, which is what puts it at altitude for the Spec and leaves each module's internals to the Task that builds it. Chosen by preferring one the repo already uses, sitting as high as possible, and using as few as possible — which is unjudgeable until the module surface underneath it is known, so it is confirmed in the Design session rather than alongside the Spec's what. Once baked in it is expensive to move.
+_Avoid_: test boundary, integration point, test hook
+
+**Tracer bullet**:
+The shape of a Task: a narrow but complete path through every layer, fired end to end so something observable happens at the far end. The reason a Task carries exactly one demoable outcome rather than one layer's worth of work.
+_Avoid_: vertical slice, spike, walking skeleton
+
 **Altitude**:
-Whether a question or a decision has blast radius beyond one part of the Epic at hand. At altitude means it is asked and settled now; below altitude means it is deferred, and the deferrals cluster into child Epics.
+Whether a question or a decision has blast radius beyond one part of the thing at hand. At altitude means it is asked and settled now; below altitude means it is left to whoever works that part. Applied question by question, before the interview asks, at two rungs: Scope asks whether it reaches beyond one part of this Epic, and the deferrals cluster into child Epics; Design asks whether it reaches beyond one Task, and what does not is left to the engineer building that Task.
+
+**Residue**:
+An at-altitude decision that does not clear the ADR bar. One line under `## Decisions` in its Epic's own `epic.md`, no reasoning, where child Epics inherit it. Written by the Scope session, and it dies with the tree by design.
 
 **Architect**:
-The verb for a working session in which the user and the agent scope an Epic together, reaching shared understanding rather than producing a plan document up front.
+The router over the four planning steps. It resolves an Epic reference, reads which step that Epic is at off its own files, dispatches that one step, reports where the Epic now stands, and stops. It holds no discipline of its own.
+_Avoid_: Architect as the name of the interviewing session — that is Scope.
+
+**Scope**:
+The verb for the working session that reaches shared understanding of **what** an Epic covers, ending on a recommendation to split or specify. Altitude-bounded, one question a turn.
+
+**Design**:
+The verb for the working session that reaches shared understanding of **how** a Specified Epic is built, in this codebase. Runs on a leaf only, after its Spec exists, and writes the Spec's `Implementation Decisions` and `Testing Decisions`. The last human checkpoint before implementation runs unattended.
+
+**Surface**:
+What other code or a person calls: an endpoint and its shape, a URL, a CLI flag, an exported API, a module or component name, a package. A Spec names surfaces and never file locations, because a location rots within the week and a surface is the thing that was agreed.
+_Avoid_: interface as a synonym, which already means a language construct
 
 **Resolution**:
 The level of detail at which an Epic is understood. Splitting an Epic lowers resolution: children describe the same subject in sharper detail, not different subjects. An Epic is specified once its resolution is high enough to build from.
 
 **Interviewing**:
-The one-question-at-a-time discipline used inside an Architect session to reach shared understanding.
-_Avoid_: Grilling
+The one-question-at-a-time discipline for reaching shared understanding on a plan or design: work down the design tree, dependencies first, each question carrying a recommended answer. General-purpose, and told nothing about Epics or Altitude — the session composing it supplies those.
+_Avoid_: Grilling as the name of the discipline. As a trigger phrase the user types, it is fine.
