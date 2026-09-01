@@ -16,7 +16,7 @@ You find; the engineer fixes. Every finding travels back as text and the working
 
 ## 1. Fix the diff
 
-You are handed a Task reference (`3.2#1`) or its path, and the run's **baseline SHA**.
+You are handed a Task reference (`3.2#1`) or its path, and the run's **baseline SHA**. The reference resolves down the numbered directories under `.archie/`: `3.2` is child `02` of child `03` of the root, `#1` is `tasks/01-<slug>.md` inside it, and the leaf's `spec.md` sits beside the `tasks/` folder.
 
 The diff is `git diff <baseline>` plus the untracked files `git status --porcelain` lists. Confirm the baseline resolves and the diff is non-empty before going further: a bad ref or an empty diff should fail here, not inside two parallel sub-agents.
 
@@ -39,7 +39,7 @@ These hold even in a repo that documents nothing, so they are pasted into the St
 Twelve smells from Fowler's _Refactoring_, ch. 3, stated in full below. Two rules bind them:
 
 - **The repo and the Spec override.** Where either endorses the shape a smell would flag, suppress it — they are the authority, this list is the backstop.
-- **Always a judgement call**, labelled as one ("possible Feature Envy") rather than reported as a breach, and never blocking. Skip anything the repo's lint and typecheck already enforce, since those ran in `/archie-tdd`.
+- **Always a judgement call**, labelled as one ("possible Feature Envy") rather than reported as a breach, and never blocking. Skip anything the repo's lint and typecheck already enforce — the gates ran before this review.
 
 Each reads *what it is* → *how to fix*:
 

@@ -9,11 +9,11 @@ Two loops. The **outer loop** is one integration test at the Spec's seam, red be
 
 The loops are the order of work, not a description of it: a test written after the code it covers passes on the first run, which proves nothing about whether it would have caught the bug.
 
-You own **two layers**, unit and integration. The whole-app walk is the user's, by hand, from the test plan `/archie-implement` reports — which is why step 6 tells them which criteria your tests already cover.
+You own **two layers**, unit and integration. The whole-app walk is the user's, by hand, from a test plan built off your report — which is why step 6 says which criteria your tests already cover.
 
 ## 1. Inherit
 
-You are handed a Task reference (`3.2#1`) or its path. The **task file**'s demoable outcome and acceptance criteria are what the outer loop asserts; the leaf's **`spec.md`** beside it carries the seam and the Implementation Decisions this Task routes to. Read both before writing anything.
+You are handed a Task reference (`3.2#1`) or its path. Everything resolves from it: Epics are numbered directories nested under `.archie/`, so `3.2` is child `02` of child `03` of the root, and `#1` is `tasks/01-<slug>.md` inside it. The **task file**'s demoable outcome and acceptance criteria are what the outer loop asserts; the leaf's **`spec.md`** beside it carries the seam and the Implementation Decisions this Task routes to. Read both before writing anything.
 
 **Handed review findings as well, you are the fix round.** The tests and the code already exist, so the loops narrow to each finding: go red on the behaviour the finding names, fix it, and take the suite green again. Steps 5 and 6 run in full — the gates are exactly what a fix can break — and step 2's one-integration-test rule already holds, so a finding about a missing or misplaced one is fixed by moving or writing that test rather than adding a second.
 
@@ -33,7 +33,7 @@ For every unit this Task **modifies** — a service, a controller, a component �
 
 **Touches means modified, not merely read.** A unit this Task only calls is already someone else's covered ground; pulling it in metastasises the suite and slows every run after this one.
 
-Assert **behaviour at the unit's boundary**: what it returns, what it emits, what it calls on its collaborators. Then apply the **rename test** — a test that would break when a symbol is renamed or a helper extracted was testing implementation, and `/archie-code-review` rejects it. Assertions on private state, call counts of internal helpers, and snapshots of internal shape fail the same way.
+Assert **behaviour at the unit's boundary**: what it returns, what it emits, what it calls on its collaborators. Then apply the **rename test** — a test that would break when a symbol is renamed or a helper extracted was testing implementation; rewrite it against the boundary. Assertions on private state, call counts of internal helpers, and snapshots of internal shape fail the same way.
 
 Done when every unit this Task modified has a passing test asserting its boundary behaviour, and the refactor step has been taken rather than skipped.
 

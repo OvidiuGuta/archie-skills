@@ -8,7 +8,7 @@ disable-model-invocation: true
 
 Planning is four steps, each ending on a user sign-off: **scope** the what, write the **Spec**, **design** the how, cut the **Tasks**. You are the router over them. Resolve the reference, read which step this Epic is at off its own files, run that one step, say where the Epic now stands, and stop.
 
-Read [`references/epic-tree.md`](./references/epic-tree.md) first. Its derived-state table is the whole of your routing logic.
+Read [`references/epic-tree.md`](./references/epic-tree.md) first. It fixes the tree on disk, the reference syntax and the literal markers the routing table below reads.
 
 **One step per invocation.** Every step is a full session with the user and ends on their sign-off, which is the natural boundary — and running two in one window is the context problem this design exists to avoid. If the step was short, the user runs `/archie-architect` again and gets the next one.
 
