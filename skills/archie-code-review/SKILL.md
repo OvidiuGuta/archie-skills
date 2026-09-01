@@ -1,57 +1,45 @@
 ---
 name: archie-code-review
-description: Reviewing one Task's diff against its three contracts — the Spec, the Task's acceptance criteria, and the design.md it claims to follow — plus the Fowler smell baseline, and returning triaged findings. The reviewer step of /archie-implement's ready-for-agent pipeline.
+description: Reviewing one Task's diff on two axes in parallel sub-agents — Spec (does the code do what the spec and the ticket asked?) and Standards (does it follow the repo's conventions, the test rules and the smell baseline?) — and reporting them side by side. The reviewer step of /archie-implement.
 ---
 
 # Code review
 
-One Task's diff, held against **three contracts**: the leaf's Spec, the Task's acceptance criteria, and the `design.md` the code claims to follow. A diff can satisfy any two and break the third, so all three are checked every run, and the **smell baseline** in step 5 catches what no contract speaks to.
+Two-axis review of one Task's diff:
 
-You find; the engineer fixes. Every finding travels back to the orchestrator as text, and the working tree leaves this run exactly as it arrived — a reviewer who fixes has reviewed its own code by the time it reports.
+- **Spec** — does the code faithfully implement the leaf's `spec.md` and the Task's acceptance criteria?
+- **Standards** — does it follow the repo's conventions, cover its units the way the framework requires, and stay clear of the smell baseline?
 
-## 1. Inherit
+Both axes run as **parallel sub-agents** so they do not pollute each other's context, and this skill aggregates what they return. A change can pass one and fail the other, so the two are never merged.
 
-You are handed a Task reference (`3.2#1`) or its path. Read, before looking at any code:
+You find; the engineer fixes. Every finding travels back as text and the working tree leaves this run exactly as it arrived — a reviewer who fixes has reviewed its own code by the time it reports.
 
-- The **task file** — the demoable outcome and the [acceptance criteria](./references/templates/task.md), which are the contract the outcome is judged against.
-- The **`design.md`** beside it — the modules, the seam, and the [units to pin](./references/templates/design.md). This is what the code claims to have done.
-- The leaf's **`spec.md`** — the [seam](./references/templates/spec.md) and the Implementation Decisions.
-- The **test prior art** named in the [facts section](./references/agents-facts.md), so house style is what you measure against rather than your own.
+## 1. Fix the diff
 
-Done when you can state the outcome, the seam, every criterion, and every unit the design listed as modified.
+You are handed a Task reference (`3.2#1`) or its path, and the run's **baseline SHA**. The reference resolves down the numbered directories under `.archie/`: `3.2` is child `02` of child `03` of the root, `#1` is `tasks/01-<slug>.md` inside it, and the leaf's `spec.md` sits beside the `tasks/` folder.
 
-## 2. Read the diff
+The diff is `git diff <baseline>` plus the untracked files `git status --porcelain` lists. Confirm the baseline resolves and the diff is non-empty before going further: a bad ref or an empty diff should fail here, not inside two parallel sub-agents.
 
-Read the whole diff for this Task — every changed file, tests included. Read the surrounding code where the diff lands, because a change is correct or wrong only in the context it sits in.
+## 2. Find the standards files
 
-Done when every changed file has been read and you can name what each one contributes to the outcome.
+The Spec axis already knows its two documents: the task file and the leaf's `spec.md`, which are the only contracts. The Standards axis needs whatever this repo documents about how code is written — `AGENTS.md`, `CLAUDE.md`, `CONTRIBUTING.md`, a coding-standards file — so find those, and carry the step 3 rule sets whether or not any exist.
 
-## 3. Hold the diff against the three contracts
+## 3. The two rule sets the Standards axis always carries
 
-Take them one at a time, and name the specific line or file for each finding:
+These hold even in a repo that documents nothing, so they are pasted into the Standards sub-agent's prompt in full — it has no other access to them.
 
-- **Against the Spec** — does the change respect the Implementation Decisions, the interfaces and the contracts the leaf fixed? Work that reaches past this Task into another Task's territory belongs here too.
-- **Against the acceptance criteria** — is each criterion actually met by code in this diff? A criterion nothing in the diff addresses is a finding, whether or not the tests are green.
-- **Against the design** — did the code build the modules the design named, in the structure it intended? A divergence is a finding even when the code works, because the next Task's architect reads that design as the state of the world.
+### The test rules
 
-Done when every criterion has a verdict and each contract has been walked in full.
+- **One integration test, at the Spec's seam.** A test parked at a lower or more convenient seam — a helper, an internal function, a place that was simply easier to wire — is a finding even when it passes.
+- **Every unit the diff modified has a unit test.** A unit merely read is out of scope; pulling it in metastasises the suite.
+- **Each unit test asserts behaviour at its unit's boundary** — what it returns, what it emits, what it calls on its collaborators. Apply the **rename test**: a test that would break when a symbol is renamed or a helper extracted is testing implementation, and it is rejected. Assertions on private state, call counts of internal helpers, and snapshots of internal shape fail the same way.
 
-## 4. Hold the tests against their layers
+### The smell baseline
 
-The [three test layers](./references/test-layers.md) are what makes the outcome hold tomorrow, so they are reviewed as carefully as the code:
+Twelve smells from Fowler's _Refactoring_, ch. 3, stated in full below. Two rules bind them:
 
-- **The integration test exists, and sits at the Spec's seam.** One test, at that seam. A test parked at a lower or more convenient seam — a helper, an internal function, a place that was simply easier to wire — is a finding even when it passes.
-- **Every unit the Task modified has a unit test.** Walk the design's modified units and the diff's changed units; a modified unit with no test is a finding. A unit merely read is out of scope, and pulling it in metastasises the suite.
-- **Each unit test asserts behaviour at its unit's boundary** — what it returns, what it emits, what it calls on its collaborators. Apply the rename test: a test that would break when a symbol is renamed or a helper is extracted is pinned to implementation rather than behaviour, and it is rejected. A test asserting on private state, call counts of internal helpers, or a snapshot of internal shape fails the same way.
-
-Done when the integration test's seam is confirmed against the Spec, every modified unit is accounted for, and every unit test in the diff has passed or failed the rename test.
-
-## 5. Match the diff against the smell baseline
-
-Twelve [Fowler smells](https://martinfowler.com/books/refactoring.html) (_Refactoring_, ch. 3), which apply on top of the three contracts and hold even where nothing is documented. Two rules bind them:
-
-- **The design and the Spec override.** Where either endorses the shape a smell would flag, the smell is suppressed — the contracts are the authority, this list is the backstop.
-- **Every smell is a judgement call**, labelled as one ("possible Feature Envy") rather than reported as a breach, and it never blocks. Skip anything the repo's lint and typecheck gates already enforce, since those ran in `/archie-tdd`.
+- **The repo and the Spec override.** Where either endorses the shape a smell would flag, suppress it — they are the authority, this list is the backstop.
+- **Always a judgement call**, labelled as one ("possible Feature Envy") rather than reported as a breach, and never blocking. Skip anything the repo's lint and typecheck already enforce — the gates ran before this review.
 
 Each reads *what it is* → *how to fix*:
 
@@ -68,34 +56,28 @@ Each reads *what it is* → *how to fix*:
 - **Middle Man** — a class or function that mostly delegates onward. → cut it, call the real target direct.
 - **Refused Bequest** — a subclass or implementer ignoring or overriding most of what it inherits. → drop the inheritance, use composition.
 
-Done when all twelve have been matched against the diff, each one you name quotes its hunk, and anything the design or the Spec endorses has been suppressed rather than reported.
+## 4. Dispatch both sub-agents in parallel
 
-## 6. Triage every finding
+**The Spec sub-agent's prompt** carries the diff command, the path to the task file and the path to `spec.md`, and this brief:
 
-Each finding is one of three kinds, and the label decides what the orchestrator does with it, so it is your job rather than the reader's:
+> Report: (a) acceptance criteria or Spec requirements that are missing or only partly built; (b) behaviour in the diff nobody asked for — scope creep, or work reaching into another Task's territory; (c) requirements that look built but where the implementation looks wrong. Quote the criterion or the Spec line behind each finding, and name the file and line. The task file and the `spec.md` are the contracts, so judge against what they say rather than against anything you infer from elsewhere in the repo. Where a criterion is too ambiguous to judge, say so as a finding and give the reading you reviewed against. Under 400 words.
 
-- **Code defect** — the contracts are sound and the code missed them. The engineer fixes it in place.
-- **Planning defect** — the contracts themselves are the problem: an ambiguous or unbuildable acceptance criterion, code that is right against the Spec and wrong against the design, or two contracts that contradict each other. Its blast radius reaches past this Task, so only the user settles it. See [`references/altitude.md`](./references/altitude.md).
-- **Smell** — the contracts hold and the shape is worth a second look. A judgement call, reported for the user's eye and the engineer's discretion, and never worth a fix round on its own. A smell that also breaks a contract is a code defect, and belongs there instead.
+**The Standards sub-agent's prompt** carries the diff command, the standards files you found, **and both rule sets from step 3 pasted in full**, and this brief:
 
-For the first two, the distinction is which document has to change for the finding to go away: this Task's code, or something above it.
+> Report, per file or hunk: (a) every place the diff breaks a documented repo standard, citing the file and the rule; (b) every place it breaks one of the test rules; (c) any baseline smell you spot, named, quoting the hunk. Documented standards and the test rules can be hard findings; baseline smells are always judgement calls, and a documented repo standard overrides the baseline. Skip anything the repo's tooling enforces. Under 400 words.
 
-Done when every finding carries one of the three labels.
-
-## 7. Report
+## 5. Aggregate
 
 ```md
 _Reviewed:_ {Task reference} — {Task title}
-_Verdict:_ {pass, or N findings — X code, Y planning, Z smells}
 
-### Code defects
-- {file:line} — {what breaks which contract, and what the fix has to achieve.}
+## Spec
+{the Spec sub-agent's report, verbatim or lightly cleaned}
 
-### Planning defects
-- {what contradicts what, and which document has to change.}
+## Standards
+{the Standards sub-agent's report, verbatim or lightly cleaned}
 
-### Smells
-- {possible {smell name}} — {file:line} — {the hunk, and the refactor it suggests.}
+_Findings:_ {N} on Spec, {N} on Standards — worst on each axis: {…} / {…}
 ```
 
-Findings only, ordered worst first, each naming its file and line so the engineer does not repeat your reading. A clean diff reports as a pass in the same shape, with the contracts you checked stated — the orchestrator triages on what you report, and an unnamed finding is one nobody acts on.
+**Report the axes separately, in their own order.** One merged ranking lets a clean Standards report bury a missing requirement, or a pile of smells bury a Spec that is fully met. Name the worst finding *within* each axis and pick no winner between them.

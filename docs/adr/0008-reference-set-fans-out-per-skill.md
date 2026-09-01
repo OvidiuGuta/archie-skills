@@ -1,5 +1,7 @@
 # The reference set is authored once and fanned out into every skill
 
+**Superseded by [0011](0011-each-skill-is-authored-self-contained.md).** `reference/` and the fan-out script are gone; each skill is authored self-contained, stating the slice of the conventions it uses.
+
 Supersedes the second half of [`0004-setup-records-facts-in-agents-md.md`](0004-setup-records-facts-in-agents-md.md), which had the conventions living as one copy in the bundle that every skill pointed at.
 
 skills.sh installs **one skill directory at a time**: it copies the chosen directory and its subdirectories, and nothing else. A skill whose first instruction was to read `../reference/altitude.md` therefore arrived with a dangling link, silently, and skipped the gate it was supposed to enforce. `reference/` is now the single **authored** source, never installed, and `scripts/sync-references.mjs` copies each file into the `references/` folder of every skill that links it. Every skill directory is self-contained.
@@ -9,7 +11,7 @@ We took the duplication over the alternatives. Restating each convention in the 
 ## Consequences
 
 - A skill's copies are the **transitive closure** of what its `SKILL.md` links, not just the direct links, because the reference files link each other. A skill needing `altitude.md` also gets the `decisions.md` that `altitude.md` points at.
-- **No link in a `SKILL.md` may leave its own directory**, and no link in a reference file may leave the reference set. Both are gated. This is why `/archie-code-review` reads the three test layers from [`test-layers.md`](../../reference/test-layers.md) rather than from ADR 0006, and why sibling skills are dispatched by name rather than by path.
+- **No link in a `SKILL.md` may leave its own directory**, and no link in a reference file may leave the reference set. Both are gated. This is why `/archie-interview` reads the altitude test from `reference/altitude.md` rather than from ADR 0002, and why sibling skills are dispatched by name rather than by path.
 - The copies are **generated, committed output**. Editing one is a mistake the gate catches, and every reference change means re-running the sync script in the same commit.
 - 378 authored lines become roughly 1,100 committed ones. That is noise in a diff and inert at runtime, which is the cheaper failure than a reference file that is not there.
 - A skill needing one fact from a long reference file should **inline the fact** instead. `/archie-prototype` and `/archie-research` each pulled in 88 lines of `epic-tree.md` for a single path, and now carry no reference copies at all.

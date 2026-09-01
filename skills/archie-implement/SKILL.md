@@ -1,20 +1,14 @@
 ---
 name: archie-implement
-description: Orchestrating one Task through the pipeline its label selects — design, test-first implementation, review, bounded fix rounds and QA for an agent Task, or guiding the user through the work it needs a person for and verifying what they produced — and stopping at ready-for-review. Run it on a single Task reference once the Tasks blocking it are done.
+description: Orchestrating one agent Task from todo to ready-for-review — test-first build, two-axis review, one fix round, and a report carrying the manual test plan. Run it on a single Task reference once the Tasks blocking it are done.
 disable-model-invocation: true
 ---
 
 # Implement
 
-One Task, from `todo` to `ready-for-review`. You dispatch sub-agents, triage what they return, drive bounded fix rounds and report.
+One Task, from `todo` to `ready-for-review`, unattended. You dispatch sub-agents, read what they return, drive one fix round and report.
 
-The Task's label picks one of two pipelines. A `ready-for-agent` Task is built by sub-agents while you are away: **the engineer writes every line of feature code**, and staying out of the diff is what makes your read of it honest. A `ready-for-human` Task is work only a person can do — signing up for a service, provisioning access, obtaining a key — so you guide the user through it in this conversation and then verify what they produced.
-
-Sub-agents hand off **by path**. The design goes to disk and comes back as a pointer, so your context stays small enough to run the whole pipeline and every reader downstream reads the same file. Passing a design or a research finding onward inline is how a nine-run pipeline runs out of room at run four.
-
-The reference set carries what the files mean: the Task and Epic [reference syntax, the statuses and the labels](./references/epic-tree.md), the [task file](./references/templates/task.md), the [design](./references/templates/design.md).
-
-**Requires** `/archie-software-architecture`, `/archie-tdd`, `/archie-code-review` and `/archie-qa`, and a Task that `/archie-to-tasks` wrote. A missing sub-skill halts the run and is named: you are the orchestrator, so absorbing a step yourself would put the reviewer's context and the engineer's diff in the same head, which is the one thing this pipeline exists to keep apart.
+**The engineer writes every line of feature code.** Staying out of the diff is what makes your read of it honest, so the one diff you judge yourself is the fix round's, which you did not write. **Requires** `/archie-tdd` and `/archie-code-review`, and a missing one halts the run and is named — absorbing its step would put the reviewer's context and the engineer's diff in the same head.
 
 ## Readouts
 
@@ -26,115 +20,81 @@ Every dispatch ends in a **readout** — one lead line in your words, then the s
 {the sub-agent's report, unaltered}
 ```
 
-The lead line is the only part you write, and the triage is the part only you hold: name the verdict, name every finding's destination — fix round, halt or the report — and name what you dispatch next. Leave the body exactly as it arrived, because a `file:line`, a criterion's wording and a gate's command are what the user acts on and a tidied paraphrase is where they go missing. A fix round is its own readout, numbered, so two rounds read as two.
+The lead line is the only part you write. Leave the body exactly as it arrived: a `file:line`, a criterion's wording and a gate's command are what the user acts on, and a tidied paraphrase is where they go missing. Step 5's summary is for the user coming back to a finished run; readouts are for the user watching one.
 
-A readout is what makes an AFK run legible while it is still running. The summary of step 8 is written for the user coming back to a finished run; these are written for the user watching one.
+## 1. Resolve the Task, record the baseline, clear the gates
 
-## 1. Resolve the Task and clear both gates
+You are handed **one** reference — `3.2#1` or a path. Everything resolves from it: Epics are numbered directories nested under `.archie/`, so `3.2` is child `02` of child `03` of the root, `#1` is `tasks/01-<slug>.md` inside it, and the leaf's `spec.md` sits beside the `tasks/` folder.
 
-You are handed **one** reference — `3.2#1` or a path. Everything else resolves from it: the Task's file inside the leaf's `tasks/`, the leaf's `spec.md` beside it, and the Epic path the numbered directories spell out. Read the task file: its demoable outcome, its acceptance criteria, its `Blocked by` line and its `Label`.
+No `.archie/` at all is a repo that has never been planned. Say so and name `/archie-architect`, which walks the planning steps from scoping through to Tasks, rather than inventing a Task from the reference. Implementing installs without Planning, so this is a state you will meet.
 
-No `.archie/` in the repo at all is not an unresolvable reference, it is a repo that has never been planned: say so and name `/archie-architect`, then `/archie-to-spec` and `/archie-to-tasks`, rather than inventing a Task from the reference you were given. Implementing installs without Planning, so this is a state you will meet.
+Read the task file — its demoable outcome, its acceptance criteria, its `Blocked by` line and its `Label` — and the leaf's `spec.md`.
 
-Two gates decide whether this run happens at all:
+**Record the run's baseline**: `git rev-parse HEAD`. Every diff this run reviews is measured from it, including the fix diff you judge yourself.
 
-- **The blocking edges are met.** Every Task named on `Blocked by` is `done`. An unmet edge halts here: a Task built out of order is built against code that does not exist yet, and the diff reads as correct until its sibling lands.
-- **The label selects the pipeline.** `ready-for-agent` runs steps 2, 3, 4, 6 and 8 — design, build, review, QA, report. `ready-for-human` runs steps 5, 6 and 8 — guide, QA, report. Any other value, and a task file carrying no `Label` line at all, halts and names what it found. The pipeline is chosen from the label rather than defaulted to, because the wrong pipeline runs the wrong sub-agents.
+Three gates decide whether this run happens at all:
 
-Then set the Task's `Status:` to `in-progress`, so a reader of the tree can see a pipeline holds it.
+- **The blocking edges are met.** Every Task on `Blocked by` is `done`. A Task built out of order is built against code that does not exist yet, and the diff reads as correct until its sibling lands.
+- **The label is `ready-for-agent`.** A `ready-for-human` Task halts here and names `/archie-assist`. Any other value, and a task file with no `Label` line, halts and names what it found.
+- **The tree is clean enough to read a diff off.** Uncommitted work already in the tree lands inside every diff this run reviews. Say what is dirty and let the user clear it.
 
-Done when the Task, its Spec and its Epic path are in hand, both gates have passed, and the status line reads `in-progress`.
+Then set the Task's `Status:` to `in-progress`.
 
-## 2. Design, in a read-only sub-agent
+Done when the Task and its Spec are in hand, the baseline SHA is recorded, all three gates have passed, and the status line reads `in-progress`.
 
-Dispatch `/archie-software-architecture` with the Task reference. It writes `tasks/NN-<slug>.design.md` beside the task file and returns that path, the approach and a contents list — one line per module the design names.
+## 2. Build, test-first
 
-Hold the path, relay the contents list in the readout, and hand the path onward. The design file stays closed to you for the whole run: the engineer and the reviewer read it from disk, and the context you would spend opening it is the context the remaining steps run on. A readout that looks thin is answered by `/archie-software-architecture` returning a fuller contents list, never by you reading the file.
+Dispatch `/archie-tdd` with the Task reference. It goes red at the Spec's seam, drives each unit it modifies, goes green, and runs the repo's lint, typecheck, test and build gates.
 
-Done when you hold a design path that exists and its readout is out, or the sub-agent reported a planning defect and you are at step 7.
+Read the gate results first. **A red gate halts the run** — a review and a fix round spent on a diff that does not build is the whole pipeline spent on nothing — so report the failing command and its output. A gate the engineer could not find travels into the final report as a gap, so the user knows which of the four vouched for this diff.
 
-## 3. Build, test-first
+Hold the engineer's list of which acceptance criteria its tests cover. Step 5's test plan is built from it.
 
-Dispatch `/archie-tdd` with the Task reference and the design path. It goes red at the Spec's seam, drives each unit the design lists, goes green, and runs the repo's lint, typecheck, test and build gates.
+## 3. Review, on two axes
 
-Read the gate results before anything else:
+Invoke `/archie-code-review` **inline, in this conversation** — not as a sub-agent. It fans out two sub-agents of its own, one per axis, and sub-agents cannot nest, so the fan-out has to happen at your level. Hand it the Task reference and the baseline SHA.
 
-- **A red gate halts the run.** Review, QA and three fix rounds spent on a diff that does not build is the whole pipeline spent on nothing. Report the failing command and its output.
-- **A gate recorded as `unknown`** stays unrun and travels into the final report as a gap, so the user knows which of the four actually vouched for this diff.
+It returns two reports, Spec and Standards, side by side and unmerged. Relay both verbatim in one readout.
 
-Done when the engineer reports green on every known gate and the readout is out.
+Every finding goes to the fix round or to the report — those are the only two destinations, so the pipeline runs to the end from here. Where a criterion was too ambiguous to judge, the reviewer says so as a finding and the run continues on the reading it reviewed against.
 
-## 4. Review, then up to two fix rounds
+## 4. One fix round
 
-Dispatch `/archie-code-review` with the Task reference. It holds the diff against the Spec, the criteria and the design, and labels every finding.
+Dispatch `/archie-tdd` again, with the Task reference and both axis reports. **One round, and only one.** A second round on a diff one review and one fix could not settle is a loop, and the user's read is the faster way out.
 
-**Triage before acting.** The label the reviewer gave each finding decides where it goes, and the three destinations are disjoint:
+The same skill fixes as built, so each fix arrives driven by a test and the gates run again over it — a fix merely applied is how untested behaviour lands in a diff that has already been reviewed. Spec and Standards findings are what the round is for; smells are the engineer's discretion inside it, being labelled judgement calls that never earn a round of their own.
 
-- **Code defect** → a fix round. Dispatch an engineer with the findings and the design path, then dispatch `/archie-code-review` again over the updated diff.
-- **Planning defect** → step 7. It halts the run whole, and the rest of this step does not happen.
-- **Smell** → the report. A judgement call never spends a fix round of its own; the engineer sees it in the round it happens to share.
+Then **you judge the fix diff yourself** — `git diff` from the baseline, read against the findings it answers. Review does not re-run: the diff is small, and you did not write it, so the reason a reviewer exists does not apply. What the fix did and did not resolve goes in the report in your own words, and anything still standing is named with its file and line. A gate the fix round turned red is reported red.
 
-**Two rounds is the bound.** Code defects still standing after the second round travel into the report as unresolved, named with their file and line. A third round on a diff two reviews could not settle is a loop, and the user's read is the faster path out.
+Skip this step when both axes came back clean.
 
-Done when the review passes clean, or two fix rounds have been spent and every remaining finding is written down — with the review's readout out before each fix round is dispatched, and the round's own readout out when it returns.
+Done when the fix round is spent and judged, or was not needed, and its readout is out with your own read of the diff as the lead line.
 
-## 5. Guide the user, one step at a time
+## 5. Set the status and report once
 
-This step is the whole build of a `ready-for-human` Task. Design, TDD and code review all presuppose a diff, and this Task produces none — the outcome is an account, a key, a permission — so a `ready-for-agent` run reaches step 6 from step 4 and never arrives here, and this run's only sub-agent is the `/archie-qa` of step 6. You do the guiding yourself, in this conversation, because the user is here.
-
-**Derive the steps now, at guide time.** Read the Task's outcome and its criteria to learn *what* has to exist, then work out the current path to it from the service's own documentation as it stands today. A third-party UI moves: a signup flow written down three weeks ago names a button that has been renamed and a settings page that has been split in two, and following it lands the user somewhere that does not match what they are reading. Instructions the task file happens to carry are stale context rather than the script — leave them, and leave the criteria as the outcomes they are. What you derive is guidance for this run and stays in the conversation.
-
-**One step at a time.** Give the user a single action, wait, and confirm it landed before deriving the next one from where they actually are. A batch of ten pasted at once comes back as one "done" that covers whichever of them happened, and a step that went differently early makes every step after it wrong. When the user reports something the path does not predict — a screen that is not there, a plan that costs money, a permission they do not hold — that is the new starting point, so re-derive from it rather than repeating the step.
-
-Done when the user has confirmed every step and the outcome exists, or a step they cannot complete has stopped the run and you have reported where it stopped and why.
-
-## 6. QA, then one fix round
-
-Dispatch `/archie-qa` with the Task reference. It stands the real app up, pins the outcome in one journey test, and grades every criterion **pinned**, **verified but not pinned** or **unverified**.
-
-A `ready-for-human` Task has no journey to write, so QA checks the **observable state the user produced** instead: the env var is present where the app reads it, the key authenticates against the real service on a live call, the account signs in. A criterion nothing observable can confirm comes back **unverified**, and it stays unverified through the report of step 8 — the state was created by hand and there is no suite to hide behind, so an unverified criterion silently counted as a pass is the one thing this pipeline cannot afford.
-
-Triage its findings exactly as in step 4: a code defect earns the run's **one** QA fix round, a planning defect halts, a smell is reported. On a `ready-for-human` Task the fix round belongs to the user, not an engineer: a criterion QA cannot see means a step did not take, so go back to step 5 for that step alone and dispatch `/archie-qa` once more. What is still unseen after that pass travels into the report unresolved.
-
-After an engineer's fix round, **you judge the fix diff yourself**. Read it against the finding it answers and the design it lands in. Code review does not re-run here: the diff is small, and you did not write it, so the reason a reviewer exists does not apply. What the fix did and did not resolve goes in the report in your own words.
-
-Done when every criterion carries a grade, the one fix round is either spent and judged or was not needed, and both readouts are out — QA's, and the fix round's, whose lead line is your own read of the diff.
-
-## 7. Halt on a planning defect
-
-A **planning defect** is a finding no amount of engineering resolves: an ambiguous or unbuildable acceptance criterion, a criterion the Spec contradicts, two contracts that disagree. Its blast radius reaches past this Task, so only the user settles it — see [`references/altitude.md`](./references/altitude.md).
-
-Stop the pipeline where it stands and leave the Task at `in-progress`, because the run did not finish. Report the defect, what established it, and which document has to change. Never pick the reading that lets the run continue: a guessed answer to a planning question is spent unattended and surfaces later as a built feature nobody asked for.
-
-## 8. Set the status and report once
-
-Set the Task's `Status:` to `ready-for-review`. `done` is the user's word and only the user writes it, so the AFK phase never declares its own work finished.
+Set the Task's `Status:` to `ready-for-review`. `done` is the user's word and only the user writes it, so the unattended phase never declares its own work finished.
 
 Then one summary, the run in a single read:
 
 ```md
 _Implemented:_ {Task reference} — {Task title}
 _Status:_ ready-for-review
-_Design:_ `{path to the design file}`
 
 ### Built
-{The seam the integration test attaches at, the units pinned, and one line per gate with its result.}
+{The seam the integration test sits at, the units it covers, and one line per gate with its result.}
 
 ### Review
-{Round by round: the findings, and which are fixed. Then the unresolved ones, file and line each.}
-{Smells, labelled as judgement calls.}
+_Spec:_ {the findings, and which the fix round resolved}
+_Standards:_ {the same, with smells marked as judgement calls}
+{Then the unresolved ones, file and line each.}
 
-### QA
-_Journey:_ `{path to the journey spec}`
-- **pinned** — {criterion}
-- **verified, not pinned** — {criterion}
-- **unverified** — {criterion} — {why nothing could confirm it}
-{The QA fix, and your read of what it resolved.}
+### Test plan
+{One line per acceptance criterion:}
+- **covered by tests** — {criterion} — {the test that covers it}
+- **walk it by hand** — {criterion} — {the steps through the running app that show it, in order}
 
 ### Left for you
-{The unresolved findings, the unrun gates, and every criterion that is not pinned.}
+{The unresolved findings, any gate that did not run, and every criterion needing a manual walk.}
 ```
 
-A `ready-for-human` run has no design, no diff and no gates, so it drops the `_Design:_` line and replaces **Built** and **Review** with one **Guided** section — the steps the user performed, in order, and any step that could not be completed — and carries the rest exactly as written.
-
-The two grades a green suite hides — **verified but not pinned** and **unverified** — are stated per criterion rather than folded into a pass. This report is the last thing between the Task and `done`, and the user's next move is only as good as what it says.
+**The test plan is the point of the report.** No browser drives this app during the run, so a criterion the unit and integration tests do not cover has been proven by nobody until the user walks it. Give the manual ones as steps someone can follow through the running app without reading the code.

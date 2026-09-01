@@ -1,3 +1,0 @@
-interface:
-  display_name: "Archie: Software architecture"
-  short_description: "Design one Task in a read-only sub-agent and return the design's path"

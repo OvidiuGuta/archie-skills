@@ -6,37 +6,43 @@
 // Exits non-zero on any failure, printing one line per failure naming the file
 // and the problem. See README.md for what it checks and why some checks are
 // warnings while the bundle is still being built.
+//
+// Each skill directory is authored self-contained: it owns whatever reference
+// files it needs, and nothing is generated or shared. The check that keeps that
+// true is the one below forbidding a link out of a skill's own directory.
 
 import { readFileSync, readdirSync, existsSync, statSync } from 'node:fs'
-import { execFileSync } from 'node:child_process'
-import { join, dirname, relative, resolve, posix } from 'node:path'
+import { join, dirname, relative, resolve } from 'node:path'
 
 const ROOT = process.cwd()
 const SKILLS_DIR = join(ROOT, 'skills')
-const REFERENCE_DIR = join(ROOT, 'reference')
-const COPY_DIR_NAME = 'references'
 const README = join(ROOT, 'README.md')
 const MARKETPLACE = join(ROOT, '.claude-plugin', 'marketplace.json')
 
-/** The thirteen skills of the spec, split by who may invoke them. */
-const ENTRY_SKILLS = [
+// The fourteen skills of the spec, split by who may invoke them. A skill
+// carrying `disable-model-invocation: true` can be fired by nobody but the
+// human — not even by another skill — so the four planning steps must stay
+// model-invoked for `/archie-architect` to route into them. Model-invocation
+// includes user reach, so they are still typeable by name.
+const USER_ONLY_SKILLS = [
   'archie-setup',
   'archie-architect',
-  'archie-to-spec',
-  'archie-to-tasks',
   'archie-implement',
+  'archie-assist',
 ]
-const SUB_SKILLS = [
+const MODEL_INVOKED_SKILLS = [
+  'archie-scope',
+  'archie-to-spec',
+  'archie-design',
+  'archie-to-tasks',
   'archie-interview',
   'archie-domain-modeling',
   'archie-research',
   'archie-prototype',
-  'archie-software-architecture',
   'archie-tdd',
   'archie-code-review',
-  'archie-qa',
 ]
-const ROSTER = new Set([...ENTRY_SKILLS, ...SUB_SKILLS])
+const ROSTER = new Set([...USER_ONLY_SKILLS, ...MODEL_INVOKED_SKILLS])
 
 const failures = []
 const warnings = []
@@ -116,13 +122,10 @@ if (!existsSync(SKILLS_DIR)) {
 const skillDirs = listDirs(SKILLS_DIR).map((e) => join(SKILLS_DIR, e.name))
 
 const presentSkills = new Set(skillDirs.map((dir) => dir.split('/').pop()))
-const referenceFiles = walkFiles(REFERENCE_DIR, (p) => p.endsWith('.md'))
 const readmeText = existsSync(README) ? readFileSync(README, 'utf8') : ''
 if (!readmeText) fail(README, 'missing — every skill has to be documented here')
 
 // --- per-skill checks -------------------------------------------------------
-
-const referencedReferenceFiles = new Set()
 
 for (const dir of skillDirs) {
   const dirName = dir.split('/').pop()
@@ -148,15 +151,15 @@ for (const dir of skillDirs) {
     fail(skillFile, `frontmatter name \`${name}\` does not match its directory \`${dirName}\``)
   }
 
-  // Invocability: the five entry skills are user-callable only, the eight
-  // sub-skills are reachable by naming them and must not be disabled.
+  // Invocability: the four user-only skills are the doors a human opens, and
+  // everything else must stay reachable so a composing skill can fire it.
   const disabled = String(frontmatter['disable-model-invocation']).toLowerCase() === 'true'
   if (!ROSTER.has(dirName)) {
-    fail(skillFile, `\`${dirName}\` is not one of the thirteen skills in the spec`)
-  } else if (ENTRY_SKILLS.includes(dirName) && !disabled) {
-    fail(skillFile, 'entry skill is missing `disable-model-invocation: true`')
-  } else if (SUB_SKILLS.includes(dirName) && disabled) {
-    fail(skillFile, 'sub-skill must not carry `disable-model-invocation: true`')
+    fail(skillFile, `\`${dirName}\` is not one of the fourteen skills in the spec`)
+  } else if (USER_ONLY_SKILLS.includes(dirName) && !disabled) {
+    fail(skillFile, 'user-only skill is missing `disable-model-invocation: true`')
+  } else if (MODEL_INVOKED_SKILLS.includes(dirName) && disabled) {
+    fail(skillFile, '`disable-model-invocation: true` here makes the skill unreachable by /archie-architect')
   }
 
   // agents/openai.yaml, for parity with the bundle this one replaces.
@@ -187,39 +190,13 @@ for (const dir of skillDirs) {
   // Independence: skills.sh installs one skill directory at a time, so a link
   // leaving the skill's own directory is dead the moment the bundle lands.
   for (const target of relativeLinksIn(body)) {
-    if (target.startsWith('../')) {
-      fail(skillFile, `link \`${target}\` leaves the skill's own directory`)
-      continue
-    }
-    // `./references/<key>` is a generated copy; the authored source is what
-    // has to be pointed at for the reference set to count as used.
-    const copyPrefix = `./${COPY_DIR_NAME}/`
-    if (target.startsWith(copyPrefix)) {
-      referencedReferenceFiles.add(join(REFERENCE_DIR, target.slice(copyPrefix.length)))
-    }
-  }
-}
-
-// A reference file reached only from another reference file is still in use:
-// the fan-out copies the transitive closure, not just the direct links.
-for (let changed = true; changed; ) {
-  changed = false
-  for (const file of referenceFiles) {
-    if (!referencedReferenceFiles.has(file)) continue
-    const { body } = splitFrontmatter(readFileSync(file, 'utf8'))
-    for (const target of relativeLinksIn(body)) {
-      const resolved = resolve(dirname(file), target)
-      if (referenceFiles.includes(resolved) && !referencedReferenceFiles.has(resolved)) {
-        referencedReferenceFiles.add(resolved)
-        changed = true
-      }
-    }
+    if (target.startsWith('../')) fail(skillFile, `link \`${target}\` leaves the skill's own directory`)
   }
 }
 
 // --- link checks across every markdown file in the bundle -------------------
-// Skill bodies are what the ticket asks for, but the reference set cross-links
-// too and rots the same way, so it is checked on the same pass.
+// A skill's own reference files cross-link and rot the same way as its
+// SKILL.md, so they are checked on the same pass.
 
 const linkedFiles = [...walkFiles(SKILLS_DIR, (p) => p.endsWith('.md')), README].filter(existsSync)
 
@@ -236,18 +213,6 @@ for (const file of linkedFiles) {
   for (const ref of new Set(skillRefsIn(body))) {
     if (!ROSTER.has(ref)) fail(file, `references \`/${ref}\`, which is not a skill in the bundle`)
   }
-}
-
-// --- orphaned reference files -----------------------------------------------
-// The reference set exists so skills point at it instead of restating it. A
-// file nothing points at has drifted out of the framework. Only a failure once
-// the bundle is complete: until then, most of it is simply not built yet.
-
-const bundleComplete = ROSTER.size === presentSkills.size
-for (const file of referenceFiles) {
-  if (referencedReferenceFiles.has(file)) continue
-  const problem = 'no skill points at this reference file'
-  bundleComplete ? fail(file, problem) : warn(file, problem)
 }
 
 // --- the phase manifest -----------------------------------------------------
@@ -286,27 +251,11 @@ if (!existsSync(MARKETPLACE)) {
   }
 }
 
-// --- generated reference copies ---------------------------------------------
-// One authored source, one copy per skill that needs it. This is the whole
-// reason the copies are safe, so it gates alongside everything else.
-
-try {
-  execFileSync(process.execPath, [join(ROOT, 'scripts', 'sync-references.mjs'), '--check'], {
-    cwd: ROOT,
-    stdio: 'pipe',
-  })
-} catch (error) {
-  const detail = String(error.stdout ?? '') + String(error.stderr ?? '')
-  // The child prints its own tally; this run has one report, so drop it.
-  for (const line of detail.split('\n').filter(Boolean)) {
-    if (!/^\d+ problem\(s\)\.$/.test(line)) failures.push(line)
-  }
-}
-
 // --- report -----------------------------------------------------------------
 
 const missing = [...ROSTER].filter((name) => !presentSkills.has(name))
-console.log(`skills: ${presentSkills.size}/${ROSTER.size} present, ${referenceFiles.length} reference files`)
+const ownReferenceFiles = walkFiles(SKILLS_DIR, (p) => p.endsWith('.md') && !p.endsWith('SKILL.md'))
+console.log(`skills: ${presentSkills.size}/${ROSTER.size} present, ${ownReferenceFiles.length} skill-owned reference files`)
 if (missing.length) console.log(`not built yet: ${missing.map((n) => `/${n}`).join(', ')}`)
 
 for (const warning of warnings) console.log(`warn  ${warning}`)

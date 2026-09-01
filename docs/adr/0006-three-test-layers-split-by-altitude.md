@@ -1,5 +1,7 @@
 # Tests come in three layers, and ownership splits by altitude
 
+**Superseded by [0010](0010-implementing-is-one-build-one-review-one-fix.md).** There are two layers, both `/archie-tdd`'s; E2E is the user's, walked by hand from the test plan the run reports.
+
 The test pyramid has three layers with two owners.
 
 - **Unit** — each service, controller or component in isolation with dependencies mocked. Covers everything a single task touched ("touches" meaning modified, not merely read), so it is below altitude and belongs to the engineer. Written by `/archie-tdd`.

@@ -1,5 +1,7 @@
 # /archie-implement takes one task and runs one of two pipelines
 
+**Superseded by [0010](0010-implementing-is-one-build-one-review-one-fix.md).** The design and QA phases are gone, the fix rounds are one, and the `ready-for-human` pipeline moved out into `/archie-assist`.
+
 `/archie-implement` is invoked by the user on a **single task** (`3.2#1` or its path), not on an Epic or a subtree. Running a whole leaf's task list is deferred to a future `/archie-implement-epic` skill that loops this one; the single-task flow is already AFK enough because it designs, implements, reviews and QAs by itself.
 
 The orchestrator never writes feature code. It reads the task and its spec, then runs the pipeline its label selects.

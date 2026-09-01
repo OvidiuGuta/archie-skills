@@ -1,0 +1,9 @@
+1. Split qa into a separate phase - archie-verify. It gets the link to the spec. it's way too much per task - and I want to see what it does
+2. Bring back the instruction to choose the right model per task - ideally a cheeper one ???
+3. Make implement do all the tickets, with design and implement per ticket, code review and fix at the end???
+4. separate the ready-for-human part of /archie-implement into a separate skil
+5. only /archie-implement can touch CONTEXT and ADR's - and alse doesn't need to read them. they are only planning phase. spec and the task should be enouth for /tdd to do it's job
+6. after all the above run a prune step and stive for how concice and independent can the skills be.X
+
+
+we should make Phase 3 more like implement-sprit and use matt's /tdd and code-reviw skills closer. they seem more efficient
