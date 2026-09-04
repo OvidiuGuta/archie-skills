@@ -38,7 +38,7 @@ Whether a question or a decision has blast radius beyond one part of the thing a
 An at-altitude decision that does not clear the ADR bar. One line under `## Decisions` in its Epic's own `epic.md`, no reasoning, where child Epics inherit it. Written by the Scope session, and it dies with the tree by design.
 
 **Architect**:
-The router over the four planning steps. It resolves an Epic reference, reads which step that Epic is at off its own files, dispatches that one step, reports where the Epic now stands, and stops. It holds no discipline of its own.
+The router over the four planning steps. It resolves an Epic reference, reads which step that Epic is at off its own files, dispatches that step, reports where the Epic now stands, and stops. One interview per invocation, so a step holding an interview carries its own synthesis to the end and the four steps run as two sessions. It holds no discipline of its own.
 _Avoid_: Architect as the name of the interviewing session — that is Scope.
 
 **Scope**:

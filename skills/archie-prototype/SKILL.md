@@ -65,5 +65,3 @@ _Prototype:_ {the question it answers}
 For a logic demo the list is the scenarios rather than the variants.
 
 **When the winner is written and committed**, return the winner's name, the file it is in, and — for a UI prototype — the branch it is on and the branch you switched back to. That is what the Spec's prototype section is written from.
-
-A prototype the user cannot open in one step has not answered anything.

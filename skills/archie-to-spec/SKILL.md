@@ -37,7 +37,7 @@ Done when every section of the template has its material, and you can say for ea
 
 Write `spec.md` beside the Epic's `epic.md`, following the template exactly, `Epic:` reference included.
 
-`## Implementation Decisions` and `## Testing Decisions` each get the single line `_Not yet designed._` and nothing else, and the template's conditional `## Prototype` heading is omitted — it is `/archie-design`'s to insert. Those two are the **how**, they are `/archie-design`'s to write, and that literal line is what tells every later reader — the user, `/archie-architect`, `/archie-to-tasks` — that this leaf has a Spec and no design yet.
+`## Implementation Decisions` and `## Testing Decisions` each get the single line `_Not yet designed._` and nothing else, and the template's conditional `## Prototype` heading is omitted — it is `/archie-design`'s to insert. Those two are the **how**, and they are `/archie-design`'s to write.
 
 Two rules govern the rest, and they are what keeps a Spec true weeks later:
 

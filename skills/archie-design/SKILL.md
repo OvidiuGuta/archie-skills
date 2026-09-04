@@ -9,7 +9,7 @@ One leaf, one session. The Spec says **what** to build; this settles **how**, wi
 
 **Requires** `/archie-interview` for the questioning and `/archie-domain-modeling` for anything durable, and it dispatches `/archie-prototype`. If one is not installed, say which and stop.
 
-The only thing you write in the tree is two sections of the leaf's existing `spec.md`. You write no Tasks, no code, no `design.md`.
+The only thing you write in the tree is two sections of the leaf's existing `spec.md` — never a `design.md` beside it.
 
 ## 1. Open the leaf
 
@@ -106,12 +106,24 @@ This is where "the Spec is actually two features" surfaces, because it is the fi
 2. **The leaf is too big.** The understanding holds; the unit does not. Name `/archie-scope`'s size backstop and stop.
 3. **The understanding is wrong.** The boundary is in the wrong place, or the Spec describes a structure the repo no longer has. Name `/archie-scope`, then `/archie-to-spec`, and stop.
 
-You never re-scope and you never delete anything. Say which rung, say what gets dropped, hand it to the user. Rungs 2 and 3 both drop `spec.md`, because a Split Epic cannot hold one, and if `tasks/` exists say so loudly:
+Name the rung, name what gets dropped, and hand it to the user, who re-scopes and deletes. Rungs 2 and 3 both drop `spec.md`, because a Split Epic cannot hold one, and if `tasks/` exists say so loudly:
 
 ```md
 _Heads up:_ three Tasks exist and `#1` is ready-for-review. Re-scoping drops the Spec they were built against.
 ```
 
-## 6. Hand off
+## 6. Confirm, then cut the Tasks
 
-Report in two lines — the surfaces this leaf adds or changes, and the seam as confirmed — then name `/archie-to-tasks` as the next step and stop.
+Report in two lines — the surfaces this leaf adds or changes, and the seam as confirmed — then close the turn by saying shared understanding is reached, inviting anything still open, and naming what you will do otherwise:
+
+```md
+That's shared understanding as I have it. Anything still open, or shall I cut the Tasks?
+```
+
+The floor is open, so the answer is not a yes. Three shapes carry consequences:
+
+- **A reopened question** rejoins the frontier and gets asked next, and the section it lands in is rewritten in place.
+- **A boundary the user now thinks is wrong** — *this is actually two features* — is step 5's exit, not a chain. Name the rung and stop.
+- **A redirect** to a different step is obeyed. Where it drops work that already exists, say what it drops before running it.
+
+On their word to carry on, invoke `/archie-to-tasks` **inline, in this session**, and stop when it has reported. It asks about the breakdown's granularity and blocking edges, and that checkpoint is only worth answering where the reasons behind the seam are still in the room — in its own window it reads them off this file. It writes the Tasks; you write none.

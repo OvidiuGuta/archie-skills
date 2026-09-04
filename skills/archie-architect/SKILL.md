@@ -10,7 +10,7 @@ Planning is four steps, each ending on a user sign-off: **scope** the what, writ
 
 Read [`references/epic-tree.md`](./references/epic-tree.md) first. It fixes the tree on disk, the reference syntax and the literal markers the routing table below reads.
 
-**One step per invocation.** Every step is a full session with the user and ends on their sign-off, which is the natural boundary — and running two in one window is the context problem this design exists to avoid. If the step was short, the user runs `/archie-architect` again and gets the next one.
+**One interview per invocation.** Two interviews in one window is the context problem this design exists to avoid. A step that holds one — `/archie-scope`, `/archie-design` — carries its own synthesis to the end of the same session rather than handing it to a window that would read it off a file, so the four steps run as two sessions: scope and Spec, then design and Tasks. That chaining is the step's own, stated in its hand-off; you dispatch one step and read the state again afterwards.
 
 You hold no discipline of your own. Every judgement below belongs to the step you dispatch, and each step is also callable directly by name when the user already knows which one they want.
 
@@ -35,8 +35,6 @@ Read it off the files, using the table in `epic-tree.md`. Nothing records this, 
 | `spec.md` complete, no `tasks/` | `/archie-to-tasks` |
 | `tasks/` populated | none — the leaf is planned; name `/archie-implement` and the Task to start with |
 
-An Epic holding both children and a `spec.md` was hand-edited into an invalid state. Stop and surface it.
-
 **Say the step before you run it**, in one line, so the user can redirect you into a different one:
 
 ```md
@@ -49,11 +47,11 @@ The user overrules this freely. Re-scoping a leaf that already has Tasks, re-sli
 
 Invoke the step **inline, in this conversation**. It is a session with the user, not a sub-agent: hiding it in a sub-agent would hide the interview.
 
-When it returns, close with two lines — what that step settled, and what running `/archie-architect` again will do next:
+When it returns, close with two lines — what the session settled, chained synthesis included, and what running `/archie-architect` again will do next:
 
 ```md
-_Designed:_ `3.2` — three endpoints, one new package, tests at the existing API seam.
-_Next:_ `/archie-architect 3.2` cuts the Tasks.
+_Designed and sliced:_ `3.2` — three endpoints, one new package, tests at the existing API seam, four Tasks.
+_Next:_ `/archie-implement 3.2#1`.
 ```
 
 Then stop. The next step is the user's to start, in a fresh window if they want one.

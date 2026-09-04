@@ -76,7 +76,7 @@ One file per Task at `tasks/NN-<slug>.md` inside the leaf, the `Epic:` reference
 
 Every Task starts at `Status: todo`. The implementing skills write `in-progress` and `ready-for-review` from there, and `done` is the user's word alone. Statuses live on Tasks and nowhere else, so no `epic.md` carries one to go stale.
 
-The numbers are the approved list's order at first slice, and thereafter **identity**. A re-slice never renumbers: a surviving Task keeps the number it has, a new one takes the next unused number in the leaf, and a deleted Task leaves a gap that is never backfilled, because reusing a number would make an old reference resolve to different work. A Task is referenced as `3.2#1` — its Epic, then `#`, then its number — and the separator differs from an Epic's dots so the two can never be read for each other.
+The numbers are the approved list's order at first slice, and thereafter **identity**. A re-slice never renumbers: a surviving Task keeps the number it has, a new one takes the next unused number in the leaf, and a deleted Task leaves a gap that is never backfilled, because reusing a number would make an old reference resolve to different work. A Task is referenced as `3.2#1` — its Epic, then `#`, then its number.
 
 Keep file paths and code out of them, so a Task still reads true weeks later when the code around it has moved.
 

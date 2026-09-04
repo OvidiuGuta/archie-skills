@@ -9,6 +9,8 @@ One Epic, one session. Reach shared understanding of **what** it covers by inter
 
 Read [`references/epic-tree.md`](./references/epic-tree.md) first. It fixes the tree on disk, how an Epic's state is read off its own files, identity numbering and the reference syntax.
 
+[`references/reshaping.md`](./references/reshaping.md) is for the three branches that change a tree instead of growing one: **re-scoping** a leaf `/archie-design` sent back, the **size backstop** on a specifiable Epic too big to build as one leaf, and **editing** children that already exist. Read it when one of those fires.
+
 **Requires** `/archie-interview` for the questioning and `/archie-domain-modeling` for anything durable, and it dispatches `/archie-research`. Each carries its own discipline and knows nothing about Epics, altitude or this tree, so everything framework-shaped below is yours. If one is not installed, say which and stop rather than improvising it — a session that asks its questions unbounded, or leaves a decision nobody writes down, produces a tree that reads finished and is not.
 
 You settle the **what**. How it gets built is `/archie-design`'s, on a leaf, after its Spec exists, and you never write `spec.md` or a task file.
@@ -34,11 +36,11 @@ Nothing about this Epic is written to disk until step 4. The intent is agreed at
 2. `02-{slug}` — {one line of intent}
 ```
 
-`## Decisions` is **always written**, because its presence is what marks this Epic as scoped: with no residue it carries the single line `_None at this resolution._`. `Children` is the **build order** authority and appears only on a Split Epic. A Specified Epic has no `Children`, and its `spec.md` and `tasks/` sit beside this file.
+`## Decisions` is **always written**, because its presence is what marks this Epic as scoped. `Children` appears only on a Split Epic; a Specified Epic has `spec.md` and `tasks/` beside this file instead.
 
-**An Epic reference** (`3.2`, or a root's slug) — resolve it down the numbered directories and open that Epic. A reference that does not resolve, or an Epic holding both children and a `spec.md`, stops the session and goes to the user.
+**An Epic reference** (`3.2`, or a root's slug) — resolve it down the numbered directories and open that Epic. A reference that does not resolve stops the session and goes to the user.
 
-An Epic that is already **Split** is not the one to scope: name its children's states and ask which to open. An Epic that already carries a `spec.md` has had its session; re-running here means **re-scoping**, which is step 6.
+An Epic that is already **Split** is not the one to scope: name its children's states and ask which to open. An Epic that already carries a `spec.md` has had its session; re-running here means **re-scoping**, in `references/reshaping.md`.
 
 Done when a loose idea has an agreed title, slug and intent, or a referenced Epic is open and thin — and nothing new has been written either way.
 
@@ -112,7 +114,7 @@ Spawn the sub-agent and tell it to use `/archie-research`; the skill is the sub-
 
 Carry on down the frontier while it runs, and ask the waiting question when its pointer lands.
 
-That destination is the one thing that reaches disk before step 4, so **create the directory lazily** — the first finding brings it into existence, and nothing else goes in it. An Epic carrying only `research/` is still thin.
+That destination is the one thing that reaches disk before step 4, created lazily by the first finding.
 
 ### Check in every eight questions
 
@@ -136,50 +138,35 @@ An Epic that already had an `epic.md` is updated in the same single write: the i
 
 That write and the recommendation land in the same turn, so the recommendation **is** the diff — the user reads what was settled and what you propose doing about it together, rather than approving a recommendation about files that already changed under them.
 
-The children are proposed here and written in step 5, because which children exist is still the user's call.
-
 Then cluster the deferrals — each cluster named, with the deferred questions under it — and read the recommendation off them, giving the reasoning with it:
 
-- **An empty frontier and no deferrals** — recommend **specify**. Everything at this resolution is settled and there is nothing left to sharpen.
+- **An empty frontier and no deferrals** — recommend **specify**. Everything at this resolution is settled and there is nothing left to sharpen — run the size backstop first, so a leaf too big to build as one is sliced before you propose it.
 - **Deferrals in clusters** — recommend **split**, one child per cluster, in the build order you would suggest, with a line on why each is a child rather than a question you should have asked.
 
-Present it as a recommendation and stop. **Going deeper is the user's call, always** — they may specify an Epic you wanted to split, split one you wanted to specify, merge two of your clusters or add a child you missed. Do that, do not argue it twice.
+Then close the turn by saying shared understanding is reached, inviting anything still open, and naming what you will do otherwise — the child Epics on a split, the Spec on a specify:
 
-On **specify**, name `/archie-to-spec` as the next step and stop. Nothing else here writes a Spec.
+```md
+That's shared understanding as I have it. Anything still open, or shall I write the Spec?
+```
+
+**Going deeper is the user's call, always** — they may specify an Epic you wanted to split, split one you wanted to specify, merge two of your clusters or add a child you missed. Do that, do not argue it twice.
+
+The floor is open, so the answer is not a yes. Three shapes carry consequences:
+
+- **A reopened deferral** rejoins the frontier and gets asked next. It can move the recommendation from split to specify or back, so read the recommendation again once it settles.
+- **A redirect** to a different step is obeyed. Where it drops work that already exists, say what it drops before running it.
+- **Anything else** — a question, a correction, a change of mind about a cluster — is followed as asked.
+
+On the user's call to **split**, that is step 5. On their call to **specify**, invoke `/archie-to-spec` **inline, in this session**: it asks nothing, its whole input is the conversation that just happened, and a fresh window would read that off files instead. You still write no `spec.md` yourself.
 
 ## 5. Split, if that is the call
 
-A child is created **thin**: a directory `NN-<slug>` taking the next unused number, an `epic.md` holding the title and one or two lines of intent and **no `## Decisions` heading**, and a line in the parent's ordered `Children` list — which is where the parent's `epic.md`, written a step ago without one, gains its `Children` section. Nothing else — no decisions, no questions, no notes toward its own session. It gets its own scoping session later, and everything you could write into it now is something that session will know better.
+A child is created **thin**: its directory and its position in the parent's list follow `epic-tree.md`, its `epic.md` holds the title and one or two lines of intent, and it has **no `## Decisions` heading** — not even an empty one, which would make it indistinguishable from a scoped Epic. Nothing else goes in it: no decisions, no questions, no notes toward its own session. It gets its own scoping session later, and everything you could write into it now is something that session will know better.
 
-The missing `## Decisions` heading is what a later session reads to know the child has not been scoped. Writing an empty one would make a thin child indistinguishable from a scoped one.
+The parent's `epic.md`, written a step ago without one, gains its `Children` section here.
 
-The deferred questions themselves are **not** copied down. They were announced in the session, they shaped the child's intent, and the child's own interview will raise the live ones again with the siblings' code to read.
+The deferred questions themselves are **not** copied down: they shaped the child's intent, and its own interview will raise the live ones with the siblings' code to read.
 
-Done when every cluster has a directory, an `epic.md` and a position in the parent's list, and the parent holds no `spec.md`.
+Done when every cluster has a directory, an `epic.md` and a position in the parent's list.
 
-## 6. Re-scope, when you were called to repair
-
-`/archie-design` sends a leaf back here when the how reveals the boundary is wrong. Two shapes, and the user has already chosen which:
-
-- **The leaf is too big.** The understanding holds; the unit does not. Run the size backstop below. No re-interviewing.
-- **The understanding is wrong.** Interview from step 2 with the design session's finding on the frontier, and rewrite the intent and `## Decisions` in step 4.
-
-Either way, **`spec.md` is dropped** the moment the Epic gains children, because Split and Specified are mutually exclusive. Say what the Spec covered before deleting it, and if `tasks/` exists say what state its Tasks are in — a Task at `in-progress` or `ready-for-review` was built against the Spec about to disappear.
-
-## The size backstop
-
-Applies only after the call is **specify**. A specifiable Epic can still be too large to build as one leaf — one Spec and a task list nobody wants to run.
-
-Slice it into children on **mechanical** lines: sequence, surface, one deployable step at a time. This is not a resolution question and it does not reopen the interview — the understanding is complete, the unit is just too big. Say that to the user when you propose the slices, so a split arriving after a specify recommendation does not read as a new round of questions.
-
-## Editing the tree
-
-The tree is a hypothesis, so children can be added, deleted, reordered or further split at any time, in this session or a later one. `epic-tree.md` fixes the mechanics — numbers are identity, gaps are never backfilled, build order lives in the parent's list.
-
-**A Specified child is different.** Reordering it, or changing its scope, means the siblings scoped around it may no longer hold. Say so explicitly before touching it:
-
-```md
-_Heads up:_ `02-password-reset` is Specified. Moving it after `03-sessions` means its Spec was written assuming sessions did not exist yet.
-```
-
-Name what was scoped around it and what may now be stale, then let the user decide. Editing it silently hands them a tree that no longer means what they think it does.
+Then report the tree as it now stands, name `/archie-architect` on the first child as the next session, and stop. The chain ends here.
