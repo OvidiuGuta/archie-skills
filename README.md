@@ -70,7 +70,7 @@ Run from the repo root. It exits non-zero on any failure and prints one line per
 It asserts that:
 
 - every `SKILL.md` has frontmatter with a `name` and a `description`, and the name matches its directory
-- exactly the five user-only skills carry `disable-model-invocation: true`, and none of the ten model-invoked ones do — the flag makes a skill unreachable by `/archie-architect`, which is the bug that check exists to catch
+- no skill carries `disable-model-invocation` — the flag errors out even the user's own autocompleted invocation — and each of the five user-only skills ends its description with the verbatim guard sentence reserving it for explicit user invocation ([ADR 0017](docs/adr/0017-user-only-skills-gate-by-description-not-flag.md))
 - every skill directory is one of the fifteen the spec names
 - every skill reference in a skill body resolves to a skill in the bundle
 - **no link in a `SKILL.md` leaves the skill's own directory**, since that is what makes each one installable alone
@@ -109,7 +109,7 @@ Written to the sub-agent that does the building, and dispatched by `/archie-desi
 
 ### `/archie-architect`
 
-User-callable, and the **router** over the four planning steps. It resolves a loose idea or a reference like `3.2`, reads which step that Epic is at off its own files — the derived-state table in `epic-tree.md` is the whole of its logic — announces the step in one line so the user can redirect it, fires that **one** step inline, and closes on what the step settled and what running it again will do. The four steps are model-invoked precisely so a router can fire them: `disable-model-invocation: true` would make each reachable by nobody but the human. One step per invocation, because every step is a full session ending on a sign-off and two in one window is the context problem the split exists to solve. It holds no discipline of its own: every judgement belongs to the step it dispatches, and each step is callable directly by name when the user already knows which one they want. A leaf whose Tasks exist is planned, so it names `/archie-implement` and stops. See [ADR 0013](docs/adr/0013-planning-is-a-resumable-router-over-four-steps.md).
+User-callable, and the **router** over the four planning steps. It resolves a loose idea or a reference like `3.2`, reads which step that Epic is at off its own files — the derived-state table in `epic-tree.md` is the whole of its logic — announces the step in one line so the user can redirect it, fires that **one** step inline, and closes on what the step settled and what running it again will do. The four steps are model-invoked precisely so a router can fire them — unlike the five user-only doors, their descriptions carry no guard sentence ([ADR 0017](docs/adr/0017-user-only-skills-gate-by-description-not-flag.md)). One step per invocation, because every step is a full session ending on a sign-off and two in one window is the context problem the split exists to solve. It holds no discipline of its own: every judgement belongs to the step it dispatches, and each step is callable directly by name when the user already knows which one they want. A leaf whose Tasks exist is planned, so it names `/archie-implement` and stops. See [ADR 0013](docs/adr/0013-planning-is-a-resumable-router-over-four-steps.md).
 
 ### `/archie-scope`
 

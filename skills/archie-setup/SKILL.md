@@ -1,7 +1,6 @@
 ---
 name: archie-setup
-description: Prepare a repo for Archie — record its project facts in AGENTS.md and keep `.archie/` committed.
-disable-model-invocation: true
+description: Prepare a repo for Archie — record its project facts in AGENTS.md and keep `.archie/` committed. Only for explicit user invocation — never fire it on your own.
 ---
 
 # Set up Archie

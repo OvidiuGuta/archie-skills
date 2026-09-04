@@ -1,7 +1,6 @@
 ---
 name: archie-implement
-description: Implementing one Task inline or a whole leaf Epic through engineer sub-agents, ending on a summary and a hand-test walkthrough. Run it on a Task or leaf Epic reference.
-disable-model-invocation: true
+description: Implementing one Task inline or a whole leaf Epic through engineer sub-agents, ending on a summary and a hand-test walkthrough. Run it on a Task or leaf Epic reference. Only for explicit user invocation — never fire it on your own.
 ---
 
 # Implement

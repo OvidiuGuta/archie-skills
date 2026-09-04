@@ -1,7 +1,6 @@
 ---
 name: archie-assist
-description: Guiding the user through one ready-for-human Task — a signup, a secret, a permission — one step at a time from the service's live documentation, then verifying the state they produced and reporting. Run it on a single Task reference whose label says it needs a person.
-disable-model-invocation: true
+description: Guiding the user through one ready-for-human Task — a signup, a secret, a permission — one step at a time from the service's live documentation, then verifying the state they produced and reporting. Run it on a single Task reference whose label says it needs a person. Only for explicit user invocation — never fire it on your own.
 ---
 
 # Assist

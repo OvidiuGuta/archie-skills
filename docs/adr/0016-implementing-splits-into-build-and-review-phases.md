@@ -21,6 +21,6 @@ Input is a PR, the current branch against `main`, or an Epic — the Epic adds t
 ## Consequences
 
 - **The walkthrough replaces the test plan.** Both implement modes end on one summary paragraph and the uncovered criteria as steps through the running app; covered criteria stay out, since the suite says so. Reports across both phases shrink to what the user acts on.
-- **`/archie-review` is user-only.** Nothing dispatches it — it is the fifth door a human opens — so it carries `disable-model-invocation: true` and no context load.
+- **`/archie-review` is user-only.** Nothing dispatches it — it is the fifth door a human opens. *(The flag mechanics are superseded by [0017](0017-user-only-skills-gate-by-description-not-flag.md): it no longer carries `disable-model-invocation` — a guard sentence in the description reserves it.)*
 - **The marketplace grows a third phase group**, `archie-reviewing`, requiring Implementing for `/archie-tdd`.
 - **An Epic carries one status.** `Status: ready-for-review` on the leaf's `epic.md`, written only by epic mode's last move — the exception to 0003's statuses-on-Tasks-only, accepted because the review session starts from it.

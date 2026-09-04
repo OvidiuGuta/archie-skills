@@ -1,7 +1,6 @@
 ---
 name: archie-architect
-description: Archie's planning router — read which step an Epic is at, run that one step, report where it now stands. Run it on a loose idea or on an Epic reference like 3.2, as many times as it takes.
-disable-model-invocation: true
+description: Archie's planning router — read which step an Epic is at, run that one step, report where it now stands. Run it on a loose idea or on an Epic reference like 3.2, as many times as it takes. Only for explicit user invocation — never fire it on your own.
 ---
 
 # Architect

@@ -1,7 +1,6 @@
 ---
 name: archie-review
-description: Grading a PR, the current branch, or an Epic for mergeability on two axes — Spec and Standards — and turning accepted findings into the next fix Task. The review phase, run after /archie-implement.
-disable-model-invocation: true
+description: Grading a PR, the current branch, or an Epic for mergeability on two axes — Spec and Standards — and turning accepted findings into the next fix Task. The review phase, run after /archie-implement. Only for explicit user invocation — never fire it on your own.
 ---
 
 # Review

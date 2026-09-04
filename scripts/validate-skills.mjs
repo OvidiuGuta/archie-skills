@@ -19,11 +19,12 @@ const SKILLS_DIR = join(ROOT, 'skills')
 const README = join(ROOT, 'README.md')
 const MARKETPLACE = join(ROOT, '.claude-plugin', 'marketplace.json')
 
-// The fifteen skills of the spec, split by who may invoke them. A skill
-// carrying `disable-model-invocation: true` can be fired by nobody but the
-// human — not even by another skill — so the four planning steps must stay
-// model-invoked for `/archie-architect` to route into them. Model-invocation
-// includes user reach, so they are still typeable by name.
+// The fifteen skills of the spec, split by who may invoke them. No skill
+// carries `disable-model-invocation: true` — the harness refuses a flagged
+// skill even when the user themself named it in the prompt (ADR 0017). The
+// five user-only doors are reserved by a sentence in their description
+// instead, pinned verbatim so it cannot drift or be trimmed away.
+const USER_ONLY_GUARD = 'Only for explicit user invocation — never fire it on your own.'
 const USER_ONLY_SKILLS = [
   'archie-setup',
   'archie-architect',
@@ -155,15 +156,15 @@ for (const dir of skillDirs) {
     fail(skillFile, `frontmatter name \`${name}\` does not match its directory \`${dirName}\``)
   }
 
-  // Invocability: the four user-only skills are the doors a human opens, and
-  // everything else must stay reachable so a composing skill can fire it.
-  const disabled = String(frontmatter['disable-model-invocation']).toLowerCase() === 'true'
+  // Invocability: the five user-only skills are the doors a human opens,
+  // reserved by the guard sentence in their description. The flag is banned
+  // everywhere — it errors out even the user's own autocompleted invocation.
   if (!ROSTER.has(dirName)) {
     fail(skillFile, `\`${dirName}\` is not one of the fifteen skills in the spec`)
-  } else if (USER_ONLY_SKILLS.includes(dirName) && !disabled) {
-    fail(skillFile, 'user-only skill is missing `disable-model-invocation: true`')
-  } else if (MODEL_INVOKED_SKILLS.includes(dirName) && disabled) {
-    fail(skillFile, '`disable-model-invocation: true` here makes the skill unreachable by /archie-architect')
+  } else if ('disable-model-invocation' in frontmatter) {
+    fail(skillFile, '`disable-model-invocation` is banned — reserve user-only skills with the guard sentence instead (ADR 0017)')
+  } else if (USER_ONLY_SKILLS.includes(dirName) && !description.includes(USER_ONLY_GUARD)) {
+    fail(skillFile, `user-only skill's description is missing the guard sentence \`${USER_ONLY_GUARD}\``)
   }
 
   // agents/openai.yaml, for parity with the bundle this one replaces.
