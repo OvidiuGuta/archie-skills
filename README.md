@@ -4,23 +4,44 @@ A four-phase way of working with AI agents: **Setup**, **Planning** (HITL), **Im
 
 Planning is a conversation rather than a document, and it runs in **four steps**: `/archie-scope` settles what an **Epic** covers, `/archie-to-spec` writes that down, `/archie-design` settles how the leaf gets built, and `/archie-to-tasks` cuts it into Tasks. Each ends on a sign-off, so each is its own session — `/archie-architect` is the **router** that reads which step an Epic is at off its own files and runs that one. Scoping interviews one question at a time and defers everything below altitude into thin children that get scoped later, when their earlier siblings are already built. Then `/archie-implement` builds a single Task inline, or a whole leaf Epic through engineer sub-agents with a criteria check before every commit, ending on a walkthrough for the parts no test covers — and `/archie-review` grades the branch for mergeability and turns accepted findings into the next fix Task.
 
+## Flows
+
+Archie runs at three depths, and the same install runs any of them. Pick one per piece of work: a one-off chore in lite, the same week's feature in full.
+
+| | **lite** | **medium** | **full** |
+| --- | --- | --- | --- |
+| Plan | `/archie-interview` | + `/archie-domain-modeling` | `/archie-architect` over its four steps |
+| Build | `/archie-tdd` | `/archie-tdd` | `/archie-implement` → `/archie-tdd` |
+| Review | — | `/archie-review`, Standards axis | `/archie-review`, both axes |
+| Records | `/archie-standards` | + `/archie-setup` | everything |
+
+**lite** is one session: get grilled on the change, then build it test-first. `/archie-tdd` takes the change itself — a prompt, or the shared understanding the interview closed on — restates the outcome and its acceptance criteria for a sign-off, and runs the repo's gates. Nothing reaches disk but the code and whatever `/archie-standards` was told to remember.
+
+**medium** adds the two things a change worth remembering needs: `/archie-domain-modeling` writing terms and ADRs as they resolve, and `/archie-review` grading the diff before it merges. With no Epic to supply the contracts the Spec axis is skipped; the Standards axis is unchanged.
+
+**full** is the four phases: an Epic tree in `.archie/`, a Spec and Tasks per leaf, and the implement → review loop until the branch grades 🟢.
+
+Nothing on disk records which flow a repo is using, and no rule keeps them apart. A lite chore committed onto an in-flight Epic branch turns up in that Epic's Spec axis as behaviour nobody asked for — cheap, and you know what you did. See [ADR 0018](docs/adr/0018-archie-runs-at-three-flows.md).
+
 ## Install
 
 ```bash
 npx skills@latest add OvidiuGuta/archie-skills --skill '*'
 ```
 
-Installs all fourteen skills into whichever agents the installer detects. Upgrade with `npx skills@latest update`.
+Installs all fifteen skills into whichever agents the installer detects. Upgrade with `npx skills@latest update`.
 
 Archie ships in **phases you can install separately**. Drop `--skill '*'` and the installer shows them as groups you can tick whole:
 
 | Phase | Skills | Requires |
 | --- | --- | --- |
 | **Archie Planning** | `archie-setup`, `archie-architect`, `archie-scope`, `archie-interview`, `archie-domain-modeling`, `archie-standards`, `archie-research`, `archie-to-spec`, `archie-design`, `archie-prototype`, `archie-to-tasks` | nothing |
-| **Archie Implementing** | `archie-implement`, `archie-assist`, `archie-tdd` | Planning, for the Epic tree it consumes |
+| **Archie Implementing** | `archie-implement`, `archie-assist`, `archie-tdd` | nothing for `archie-tdd` alone; Planning for the other two, which consume the Epic tree |
 | **Archie Reviewing** | `archie-review` | Implementing, for `/archie-tdd` fix rounds and the Tasks it writes |
 
-Planning alone is a coherent install: scope, spec, design and slice into Tasks, then hand them wherever you like. Implementing alone is not fed by anything, so its entry skills say which skill is missing rather than improvising. Whole-framework is the recommended install.
+The flows are not install groups, because no flow is a phase: lite reaches for `archie-interview` from Planning and `archie-tdd` from Implementing. Install everything and type the flow you want; the phase groups are for a partial install.
+
+Planning alone is a coherent install: scope, spec, design and slice into Tasks, then hand them wherever you like. Implementing alone gives you `archie-tdd` as a standalone test-first build door, while `/archie-implement` and `/archie-assist` have no tree to read and say which skill is missing rather than improvising. Whole-framework is the recommended install.
 
 Archie **replaces mattpocock/skills** rather than complementing it. Both installed is supported — every skill name is prefixed `archie-`, and the Epic tree lives in `.archie/` rather than `.scratch/` — but running both methods on one repo means two ways of working in one head.
 
@@ -51,7 +72,7 @@ The conventions are fixed by the framework rather than chosen per repo, so each 
 | [`archie-prototype/references/LOGIC.md`](skills/archie-prototype/references/LOGIC.md) | The logic branch: the single-file demo, the portable module, and the walkthroughs |
 | [`archie-to-spec/references/spec-template.md`](skills/archie-to-spec/references/spec-template.md) | Every section of `spec.md`, including the two the design session writes. The rules governing its content are in the skills' own steps |
 
-Everything else a skill needs — the facts section format, the task file's shape, the ADR bar — is a paragraph in the skill that uses it. A framework concept lives in exactly one skill, the one whose job it is: the altitude gate is `/archie-architect`'s, and the skills it composes are told nothing about it ([ADR 0012](docs/adr/0012-a-skill-states-only-its-own-discipline.md)). A Task's contract is one task file and one `spec.md`, so the implementing skills read no framework conventions at all: see [ADR 0010](docs/adr/0010-implementing-is-one-build-one-review-one-fix.md).
+Everything else a skill needs — the facts section format, the task file's shape, the ADR bar — is a paragraph in the skill that uses it. A framework concept lives in exactly one skill, the one whose job it is: the altitude gate is `/archie-architect`'s, and the skills it composes are told nothing about it ([ADR 0012](docs/adr/0012-a-skill-states-only-its-own-discipline.md)). A Task's contract is one task file and one `spec.md`, so the implementing skills read no framework conventions at all: see [ADR 0010](docs/adr/0010-implementing-is-one-build-one-review-one-fix.md). In lite there is no task file either, and `/archie-tdd` builds off the contract it was handed ([ADR 0018](docs/adr/0018-archie-runs-at-three-flows.md)).
 
 What genuinely varies per repo is **facts**, not conventions: the package manager, the gate commands, how to start the real app, and the branch and commit conventions. `/archie-setup` records those in a delimited block of `AGENTS.md`; anything it cannot read out of the repo is asked of the user, who gives the value or removes the line, so the block only ever carries real answers. The file is the user's — no skill writes to it beyond that block ([ADR 0015](docs/adr/0015-facts-are-user-confirmed-lines.md)).
 
@@ -129,7 +150,7 @@ Reached by `/archie-architect`, and typeable by name. Cuts a Specified Epic's Sp
 
 ### `/archie-tdd`
 
-The engineer step of `/archie-implement` and the fix round of `/archie-review`, running the [double loop](docs/adr/0010-implementing-is-one-build-one-review-one-fix.md). The outer loop is one integration test at the Spec's seam, derived from the Task's acceptance criteria and red before any implementation exists; the inner loop takes each unit the Task modifies through red-green-refactor with its dependencies mocked. Its contract is two documents — the task file and the leaf's `spec.md` — so what a build is judged on fits on one page. "Touches" means modified, not merely read, so unit testing does not metastasise, and each unit test asserts behaviour at its boundary: one that would break on a rename or an extracted helper is testing implementation. It then finds the repo's lint, typecheck, test and build commands itself and runs each as the repo defines it, reporting an absent gate as absent rather than guessing at a conventional command. The report carries every gate result and, for the orchestrator's walkthrough, which acceptance criteria the tests cover and which they cannot reach.
+The build half of every flow, running the [double loop](docs/adr/0010-implementing-is-one-build-one-review-one-fix.md): the engineer step of `/archie-implement`, the fix round of `/archie-review`, and in lite and medium the door the user types. The outer loop is one integration test at the seam, derived from the acceptance criteria and red before any implementation exists; the inner loop takes each unit the change modifies through red-green-refactor with its dependencies mocked. Its contract is **whatever it was handed** — a Task reference resolving to the task file and the leaf's `spec.md`, a review's findings, or the change itself, in which case it writes the outcome and criteria back for a sign-off because nobody else ever wrote them down ([ADR 0018](docs/adr/0018-archie-runs-at-three-flows.md)). No integration harness in the repo, or nothing to observe but a screen, and the outer loop is reported absent rather than faked. "Touches" means modified, not merely read, so unit testing does not metastasise, and each unit test asserts behaviour at its boundary: one that would break on a rename or an extracted helper is testing implementation. It then finds the repo's lint, typecheck, test and build commands itself and runs each as the repo defines it, reporting an absent gate as absent rather than guessing at a conventional command. The report carries every gate result and, for the orchestrator's walkthrough, which acceptance criteria the tests cover and which they cannot reach.
 
 ### `/archie-implement`
 

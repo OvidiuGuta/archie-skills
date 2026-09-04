@@ -4,6 +4,10 @@
 
 ## Language
 
+**Flow**:
+The depth at which Archie is run for one piece of work: **lite** an interview and a test-first build, **medium** those plus domain modeling and a review, **full** every phase. A way of working rather than a set of files, so nothing on disk records which one is in use and the choice is made per piece of work.
+_Avoid_: tier, mode, level, profile
+
 **Epic**:
 A unit of scoped work in the planning tree. The single recursive node type: an Epic may contain child Epics, and those children are themselves Epics at any depth. An Epic here is a level of **Resolution**, not a size class, so unlike an Epic in a tracker it has no fixed rung and nests without limit.
 _Avoid_: Effort, Roadmap, roadmap item, initiative, theme, milestone, track, Story, Sub-task

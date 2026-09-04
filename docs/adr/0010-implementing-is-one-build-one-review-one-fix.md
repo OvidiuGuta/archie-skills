@@ -6,6 +6,8 @@ _Amended by [0013](0013-planning-is-a-resumable-router-over-four-steps.md): the 
 
 _Amended by [0016](0016-implementing-splits-into-build-and-review-phases.md): the pipeline is unbundled — review moved out of `/archie-implement` into its own phase, `/archie-review`, and implement gained an epic mode. The two-contract rule and the two-axis review shape survive._
 
+_Amended by [0018](0018-archie-runs-at-three-flows.md): `/archie-tdd` inherits from whatever contract it was handed, so a build can run with no Task file and no `spec.md`. The two-contract rule below holds wherever a Task exists._
+
 `/archie-implement` ran seven to nine sub-agents per Task across design, TDD, review, two fix rounds and QA. The design and QA phases cost more context than they returned: the design was a whole sub-agent run and a file on disk restating what the Spec and the ticket already fixed, and QA stood up a browser to re-derive what the acceptance criteria already said. What is left is deliberately small enough that each skill's whole contract fits on one page. Implementing is now **build → review → one fix round → report**, three sub-agent runs.
 
 ## The pipeline
