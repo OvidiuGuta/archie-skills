@@ -13,7 +13,7 @@ You own **two layers**, unit and integration. The whole-app walk is the user's, 
 
 ## 1. Inherit
 
-You are handed a Task reference (`3.2#1`) or its path. Everything resolves from it: Epics are numbered directories nested under `.archie/`, so `3.2` is child `02` of child `03` of the root, and `#1` is `tasks/01-<slug>.md` inside it. The **task file**'s demoable outcome and acceptance criteria are what the outer loop asserts; the leaf's **`spec.md`** beside it carries the seam and the Implementation Decisions this Task routes to. Read both before writing anything.
+You are handed a Task reference (`3.2#1`) or its path. Everything resolves from it: Epics are numbered directories nested under `.archie/`, so `3.2` is child `02` of child `03` of the root, and `#1` is `tasks/01-<slug>.md` inside it. The **task file**'s demoable outcome and acceptance criteria are what the outer loop asserts; the leaf's **`spec.md`** beside it carries the seam and the Implementation Decisions this Task routes to. Read both before writing anything. If the Spec carries a `## Prototype` section, read the artifact it names too — it is authoritative for what is on the screen, and the Spec deliberately does not repeat it.
 
 **Handed review findings as well, you are the fix round.** The tests and the code already exist, so the loops narrow to each finding: go red on the behaviour the finding names, fix it, and take the suite green again. Steps 5 and 6 run in full — the gates are exactly what a fix can break — and step 2's one-integration-test rule already holds, so a finding about a missing or misplaced one is fixed by moving or writing that test rather than adding a second.
 

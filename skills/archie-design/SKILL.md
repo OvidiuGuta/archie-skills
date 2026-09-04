@@ -61,9 +61,11 @@ That is the Spec's altitude test one rung down, and it is what keeps this sessio
 
 ### Some questions are answered by looking
 
-A question of the form "how should this look or behave" resolves badly in conversation. Spawn a **sub-agent** and tell it to use `/archie-prototype`; the skill is the sub-agent's, and what only you know is the brief — the question narrowed to what is actually in doubt, and for a **logic** demo a destination, `prototypes/<slug>/` inside this Epic's directory. A **UI** prototype mounts on the real route in the app source and finds its own host page, so give it the question and let it look.
+A question of the form "how should this look or behave" resolves badly in conversation. Spawn a **sub-agent** and tell it to use `/archie-prototype`; the skill is the sub-agent's, and what only you know is the brief — the question narrowed to what is actually in doubt, and for a **logic** demo a destination, `prototypes/<slug>/` inside this Epic's directory. A **UI** prototype cuts its own throwaway branch and finds its own host page, so give it the question and let it look.
 
-**Keep the sub-agent's id.** A reaction usually lands as a small change, and it goes back to the sub-agent already holding the artifact, which revises in one edit. A fresh one reads the world again and quietly rebuilds the thing slightly differently, which makes the second reaction incomparable to the first. When the user confirms a shape, that same sub-agent prunes it to the winner.
+**Relay what it returns verbatim.** It comes back with the question, one line on how to open the artifact and one line per variant, written to be read by the user. Summarising it — "three layouts to compare" — throws away the only thing that gets them to the artifact.
+
+**Keep the sub-agent's id.** A reaction usually lands as a small change, and it goes back to the sub-agent already holding the artifact, which revises in one edit. A fresh one reads the world again and quietly rebuilds the thing slightly differently, which makes the second reaction incomparable to the first. When the user confirms a shape, that same sub-agent names the winner and returns what the Spec's prototype section is written from.
 
 The user reacts in their own words, and you record what the reaction settles like any other answer.
 
@@ -83,15 +85,18 @@ A **new dependency outlives the tree**, so it clears the ADR bar: hand it to `/a
 
 Done when the frontier is empty and every heading is settled or excused.
 
-## 4. Write the two sections
+## 4. Write the sections
 
-Replace `_Not yet designed._` under both `## Implementation Decisions` and `## Testing Decisions` in the existing `spec.md`. Touch nothing else in the file — the what was signed off in its own session.
+Replace `_Not yet designed._` under both `## Implementation Decisions` and `## Testing Decisions` in the existing `spec.md`. Touch nothing else — the what was signed off in its own session — with one exception: if a prototype was built, insert a `## Prototype` section directly above `Implementation Decisions`, written from the sub-agent's second return.
 
 `Implementation Decisions` carries the five headings' answers. `Testing Decisions` carries the seams and the prior art the new tests should match.
 
-One rule governs the content: **name surfaces, never file locations**. An endpoint and its shape, a URL, a CLI flag, an exported API, a module or component name, a package — all of those are what was agreed, and they survive a refactor. `apps/api/src/shift/shift.controller.ts` does not, and the code is where that lives. The single exception is a snippet a prototype produced that encodes a decision more precisely than prose can — a state machine, a schema, a type shape. Inline the decision-rich part and say which prototype it came from.
+Two rules govern the content:
 
-Done when neither placeholder remains, every heading has content or a one-line reason it does not, and no line names a path.
+- **Name surfaces, never file locations.** An endpoint and its shape, a URL, a CLI flag, an exported API, a module or component name, a package — all of those are what was agreed, and they survive a refactor. `apps/api/src/shift/shift.controller.ts` does not, and the code is where that lives. The `## Prototype` section is the exception, because a pointer that names no file points at nothing.
+- **Do not restate the prototype.** Per decision: would an implementer reading the winning variant arrive at this on their own? If yes, leave it out. The prototype owns what is on the screen; the Spec owns everything behind it, and every decision this session settled that the artifact could not express still has to be here.
+
+Done when neither placeholder remains, every heading has content or a one-line reason it does not, and no line outside `## Prototype` names a path.
 
 ## 5. Send it back, if the boundary is wrong
 

@@ -4,9 +4,9 @@ One self-contained HTML file that lets anyone drive a state model by clicking bu
 
 Because it is one file with nothing to install, it can be handed to a designer, a PM or a domain expert, who will feel the model for themselves. So it speaks their language, not the code's.
 
-If the question is what something should look like, this is the wrong branch: use [`UI.md`](./UI.md).
+If the question is what something should look like, this is the wrong shape: use [`UI.md`](./UI.md).
 
-It is written into the directory you were given, so it stays committed, shareable and disposable with the rest of the planning tree.
+It is written into the directory you were given, so it stays shareable and disposable with the rest of the planning tree. No branch and no commit: it touches no app source, and it sits uncommitted like every other planning file.
 
 ## 1. State the question
 
@@ -44,11 +44,13 @@ Keep it restrained — clean typography, generous spacing, one accent colour. No
 
 ## 4. Hand it over
 
-Return the file. The interesting moments are "wait, that should not be possible" and "I assumed X would be different" — those are bugs in the *idea*, which is the entire point. A request for another action or another scenario is a revision, not a verdict.
+Return the block the skill's return section specifies: the question, one line on how to open it, and one line per scenario. The interesting moments are "wait, that should not be possible" and "I assumed X would be different" — those are bugs in the *idea*, which is the entire point. A request for another action or another scenario is a revision, not a verdict.
 
-## 5. Prune when the model is confirmed
+## 5. Name the confirmed model
 
-Delete the scenarios that were exploring rejected shapes, and delete the framing copy that explained what was being compared. What is left is the confirmed model, drivable, reading as the answer rather than as a menu.
+Once the model is confirmed, **delete nothing**. The scenarios that were exploring rejected shapes stay, as the record of what was ruled out.
+
+Mark the confirmed module in the file, plainly enough that a reader knows which part is the agreed answer rather than the exploration around it. Then return its name and the file's path.
 
 The validated module lifts into the real code when the work is built; the page around it never does.
 

@@ -15,7 +15,7 @@ You write task files and nothing else. The Spec is settled — both what it buil
 
 The Epic is the one whose Spec the session just wrote, or the reference the user passed — a root's slug, or `3.2`, which is child `02` of child `03` of the root, resolved down the numbered directories under `.archie/`.
 
-Read its `spec.md` in full, plus any reference the user passed alongside — a prototype, a research finding, a sibling's code. A **Specified** Epic is the only thing this skill slices: an Epic with children is Split, and its Spec belongs to one of the leaves, so name the children and ask which one. An Epic that already holds a `tasks/` directory is being re-sliced — say what the existing Tasks cover and get the overwrite agreed first.
+Read its `spec.md` in full, plus any reference the user passed alongside — a research finding, a sibling's code. A **Specified** Epic is the only thing this skill slices: an Epic with children is Split, and its Spec belongs to one of the leaves, so name the children and ask which one. An Epic that already holds a `tasks/` directory is being re-sliced — say what the existing Tasks cover and get the overwrite agreed first.
 
 **A Spec still carrying `_Not yet designed._` halts the run.** That leaf has no settled surface — no contract, no structure, no seam — so every Task cut from it would be sliced against an imagined one, which looks exactly like a Task sliced against a real one until it is built. Name `/archie-design` and stop.
 
@@ -78,7 +78,7 @@ Every Task starts at `Status: todo`. The implementing skills write `in-progress`
 
 The numbers are the approved list's order at first slice, and thereafter **identity**. A re-slice never renumbers: a surviving Task keeps the number it has, a new one takes the next unused number in the leaf, and a deleted Task leaves a gap that is never backfilled, because reusing a number would make an old reference resolve to different work. A Task is referenced as `3.2#1` — its Epic, then `#`, then its number — and the separator differs from an Epic's dots so the two can never be read for each other.
 
-Keep file paths and code out of them, so a Task still reads true weeks later when the code around it has moved. The single exception is a snippet a prototype produced that encodes a decision more precisely than prose can — a state machine, a schema, a type shape — inlined with the prototype it came from named.
+Keep file paths and code out of them, so a Task still reads true weeks later when the code around it has moved.
 
 A `ready-for-human` Task states the outcome and what the user must supply; its steps are derived at guide time, when the third-party UI is whatever it is that day.
 

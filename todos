@@ -1,9 +1,14 @@
-1. Split qa into a separate phase - archie-verify. It gets the link to the spec. it's way too much per task - and I want to see what it does
-2. Bring back the instruction to choose the right model per task - ideally a cheeper one ???
-3. Make implement do all the tickets, with design and implement per ticket, code review and fix at the end???
-4. separate the ready-for-human part of /archie-implement into a separate skil
-5. only /archie-implement can touch CONTEXT and ADR's - and alse doesn't need to read them. they are only planning phase. spec and the task should be enouth for /tdd to do it's job
-6. after all the above run a prune step and stive for how concice and independent can the skills be.X
+Architect phase:
+- archie-to-spec is ran imedietly after specify in the same session because the user has nothing more to add
+- prototype should be constructured on a throw-away branch. Also, we don't need the gate anymore since it's on a throwaway branch. Also, present to the user more clearly how he needs to look at the prototype. Also. make sure no tests and don't prune the looses :D. keep it cheep
+- the prototype is almost never suggested. let's make it so it always suggests building a prototype when there is frontend work
+
+Implementing phase:
+- restructure everything:
+    - /archie-implement can receive aither a task or an epic with sub-tasks. 
+        - if it's a task, it implements it in a /archie-tdd subagent and the "orchestrator" just provides a summary and a manual test plan for the user
+        - if it's an epic, it runs a loop of /archie-tdd subagents and the orchestrator just gives a summary and a test plan to test everything.
+    - /archie-code-review is separate phase at the end, do on an entire chunk of work (branch).
 
 
-we should make Phase 3 more like implement-sprit and use matt's /tdd and code-reviw skills closer. they seem more efficient
+also remove disable-model-invocation: true because I can't autocomplete the skills in T3 code

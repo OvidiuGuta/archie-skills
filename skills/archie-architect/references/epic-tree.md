@@ -52,7 +52,7 @@ An Epic's directory and its `epic.md` are created **once**, when its scoping ses
 
 Only `NN-<slug>` directories are children. `research/` and `prototypes/` are session artifacts, and an Epic carrying them is still thin.
 
-`prototypes/` holds only what has nowhere else to live: a logic demo is one self-contained HTML file, so it goes here. A **UI** prototype is mounted on the real route in the app source, because variants are only judgeable against the real header, sidebar and data — it lives on the branch, gated and named as a prototype, and it is not a session artifact under `.archie/`.
+`prototypes/` holds only what has nowhere else to live: a logic demo is one self-contained HTML file, so it goes here. A **UI** prototype is mounted on the real route in the app source, because variants are only judgeable against the real header, sidebar and data — it lives on its own throwaway `prototype/<slug>` branch, and it is not a session artifact under `.archie/`.
 
 A directory holding both children and a `spec.md` was hand-edited into an invalid state. Stop and surface it to the user.
 

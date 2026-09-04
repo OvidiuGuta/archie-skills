@@ -1,14 +1,14 @@
 # UI prototype
 
-Several **radically different** variants of one surface, rendered on the real route and switchable from a floating bar. The user flips between them, picks one — or steals parts of each — and the rest is deleted.
+Several **radically different** variants of one surface, rendered on the real route and switchable from a floating bar. The user flips between them and picks one, or steals parts of each.
 
-If the question is about logic or state rather than what something looks like, this is the wrong branch: use [`LOGIC.md`](./LOGIC.md).
+If the question is about logic or state rather than what something looks like, this is the wrong shape: use [`LOGIC.md`](./LOGIC.md).
 
 ## Where the variants go
 
 A UI variant is much easier to judge when it is **butting up against the rest of the app** — real header, real sidebar, real data, real density. A route on its own is a vacuum where every variant looks fine.
 
-**Mount them on the existing page.** The route already exists, so keep its data fetching, its params and its auth exactly as they are, and swap only the rendered subtree, gated by a `?variant=` search param. Something that has no page yet but would naturally live inside one — a new section of a dashboard, a new card on a settings screen, a new step in a flow — still mounts inside its host page.
+**Mount them on the existing page.** The route already exists, so keep its data fetching, its params and its auth exactly as they are, and swap only the rendered subtree, selected by a `?variant=` search param. Something that has no page yet but would naturally live inside one — a new section of a dashboard, a new card on a settings screen, a new step in a flow — still mounts inside its host page.
 
 **A new route is the last resort**, for a genuinely new top-level surface with nowhere to embed. Follow the project's routing convention, put `prototype` in the path, and use the same `?variant=` pattern. Before taking it, check again whether some existing page could host this: an empty route hides the design problems a populated one exposes.
 
@@ -54,21 +54,24 @@ Fixed at the bottom centre, three pieces: a left arrow cycling back with wraparo
 - Clicking an arrow updates the search param through the project's router, so the URL always names what is on screen.
 - `←` and `→` cycle too, except while an `<input>`, `<textarea>` or `[contenteditable]` has focus.
 - Visually obviously **not** part of the design being judged — high contrast, its own shape.
-- Gated so it cannot render in a production build, so a stray merge cannot ship it.
 
 ## 5. Hand it over
 
-Return the URL and the variant keys. The most useful reaction is usually "the header from B with the sidebar from C" — that is the actual design, and it is a revision, not a verdict.
+Return the block the skill's return section specifies: the question, one line on how to open it, and one line per variant on what makes it different. The most useful reaction is usually "the header from B with the sidebar from C" — that is the actual design, and it is a revision, not a verdict.
 
-## 6. Prune to the winner
+## 6. Name the winner
 
-Once a variant is confirmed: delete the losing variants, delete the switcher, and delete the plan line and any copy explaining what to compare. One variant is left, still gated and still named as a prototype, on a host page that renders exactly what it rendered before.
+Once a variant is confirmed, **delete nothing**. The losing variants and the switcher stay where they are, as the record of what was ruled out.
 
-Do not promote it in the same move. It was written with no tests and no error handling, so the Task that builds the real thing rewrites it properly and points at this as the reference.
+Write the confirmed shape as its own variant, named for what it is rather than `VariantD`, so nobody has to reconstruct "B's header with C's sidebar" from a conversation. Add it to the switcher alongside the others.
+
+Then commit — only the files you touched — switch back to the branch you started on, and return the winner's name, its file, and both branch names.
+
+Do not promote it. It was written with no tests and no error handling, so the Task that builds the real thing rewrites it properly and points at this as the reference.
 
 ## Anti-patterns
 
 - **Variants differing only in colour or copy.** That is a tweak. Real variants disagree about structure.
 - **Sharing so much code that no variant can restructure.** A shared layout defeats the exercise.
 - **Wiring a variant to a real mutation.** Read-only is fine; point at a stub if it must write. The question is what this should look like, not whether the backend works.
-- **Replacing the page's real render** to save the trouble of a param.
+- **Replacing the page's real render** to save the trouble of a param. Then there is nothing to flip between, which is the whole exercise.
