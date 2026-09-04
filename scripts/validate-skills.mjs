@@ -17,6 +17,11 @@ import { join, dirname, relative, resolve } from 'node:path'
 const ROOT = process.cwd()
 const SKILLS_DIR = join(ROOT, 'skills')
 const README = join(ROOT, 'README.md')
+// The README-facing pages: one per skill, plus the structure page. `docs/` is
+// the repo's own records — ADRs and agent notes — and is not indexed here.
+const MANUAL_DIR = join(ROOT, 'manual')
+const SKILL_DOCS_DIR = join(MANUAL_DIR, 'skills')
+const DOCS_DIR = join(ROOT, 'docs')
 const MARKETPLACE = join(ROOT, '.claude-plugin', 'marketplace.json')
 
 // The fifteen skills of the spec, split by who may invoke them. No skill
@@ -128,7 +133,7 @@ const skillDirs = listDirs(SKILLS_DIR).map((e) => join(SKILLS_DIR, e.name))
 
 const presentSkills = new Set(skillDirs.map((dir) => dir.split('/').pop()))
 const readmeText = existsSync(README) ? readFileSync(README, 'utf8') : ''
-if (!readmeText) fail(README, 'missing — every skill has to be documented here')
+if (!readmeText) fail(README, 'missing — it indexes every skill page')
 
 // --- per-skill checks -------------------------------------------------------
 
@@ -178,10 +183,13 @@ for (const dir of skillDirs) {
     if (!iface.short_description) fail(openaiFile, 'no `short_description`')
   }
 
-  // Every skill is documented in the README, by the ticket that built it.
-  const documented =
-    skillRefsIn(readmeText).includes(dirName) || readmeText.includes(`skills/${dirName}/`)
-  if (!documented) fail(README, `skill \`/${dirName}\` is not documented in the README`)
+  // Every skill has its own page under manual/skills/, written by the ticket
+  // that built it, and the README indexes it. Two halves, so both are checked.
+  const docFile = join(SKILL_DOCS_DIR, `${dirName}.md`)
+  if (!existsSync(docFile)) fail(docFile, `missing — every skill needs a page under manual/skills/`)
+  if (!readmeText.includes(`manual/skills/${dirName}.md`)) {
+    fail(README, `skill \`/${dirName}\` is not in the README's index`)
+  }
 
   // Skill references in the body resolve to a skill in the bundle. A reference
   // to a rostered skill that is not built yet is a warning, so the gate stays
@@ -200,10 +208,15 @@ for (const dir of skillDirs) {
 }
 
 // --- link checks across every markdown file in the bundle -------------------
-// A skill's own reference files cross-link and rot the same way as its
-// SKILL.md, so they are checked on the same pass.
+// A skill's own reference files and the pages under docs/ cross-link and rot
+// the same way as a SKILL.md, so they are checked on the same pass.
 
-const linkedFiles = [...walkFiles(SKILLS_DIR, (p) => p.endsWith('.md')), README].filter(existsSync)
+const linkedFiles = [
+  ...walkFiles(SKILLS_DIR, (p) => p.endsWith('.md')),
+  ...walkFiles(MANUAL_DIR, (p) => p.endsWith('.md')),
+  ...walkFiles(DOCS_DIR, (p) => p.endsWith('.md')),
+  README,
+].filter(existsSync)
 
 for (const file of linkedFiles) {
   const { body } = splitFrontmatter(readFileSync(file, 'utf8'))
@@ -213,8 +226,11 @@ for (const file of linkedFiles) {
   }
 
   // Outside a SKILL.md there is no bundle position to resolve against, so a
-  // skill reference is checked against the roster instead.
+  // skill reference is checked against the roster instead. ADRs and the agent
+  // notes are exempt: an ADR records the names that were true when it was
+  // written, including the ones since retired, and rewriting that is lying.
   if (file.endsWith('SKILL.md')) continue
+  if (file.startsWith(join(DOCS_DIR, 'adr')) || file.startsWith(join(DOCS_DIR, 'agents'))) continue
   for (const ref of new Set(skillRefsIn(body))) {
     if (!ROSTER.has(ref)) fail(file, `references \`/${ref}\`, which is not a skill in the bundle`)
   }

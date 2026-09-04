@@ -1,8 +1,12 @@
+<p align="center">
+  <img src="logo.jpg" alt="Archie" width="260">
+</p>
+
 # Archie
 
-A four-phase way of working with AI agents: **Setup**, **Planning** (HITL), **Implementing** (AFK) and **Reviewing**, where Implementing and Reviewing loop until the branch grades mergeable and Planning restarts the cycle on the next Epic. This repo is Archie's engineering skill bundle. It replaces mattpocock/skills.
+A four-phase way of working with AI agents: **Setup**, **Planning** (HITL), **Implementing** (AFK) and **Reviewing**. Implementing and Reviewing loop until the branch grades mergeable, and Planning restarts the cycle on the next Epic. This repo is Archie's engineering skill bundle — fifteen skills, installable whole or by phase. It replaces mattpocock/skills.
 
-Planning is a conversation rather than a document, and it runs in **four steps**: `/archie-scope` settles what an **Epic** covers, `/archie-to-spec` writes that down, `/archie-design` settles how the leaf gets built, and `/archie-to-tasks` cuts it into Tasks. Each ends on a sign-off, so each is its own session — `/archie-architect` is the **router** that reads which step an Epic is at off its own files and runs that one. Scoping interviews one question at a time and defers everything below altitude into thin children that get scoped later, when their earlier siblings are already built. Then `/archie-implement` builds a single Task inline, or a whole leaf Epic through engineer sub-agents with a criteria check before every commit, ending on a walkthrough for the parts no test covers — and `/archie-review` grades the branch for mergeability and turns accepted findings into the next fix Task.
+Planning is a conversation rather than a document. It runs in four steps, each ending on a sign-off so each is its own session, with `/archie-architect` as the router that reads which step an Epic is at off its own files. Implementing builds one Task inline or a whole leaf Epic through engineer sub-agents, and Reviewing grades the branch and turns accepted findings into the next fix Task.
 
 ## Flows
 
@@ -15,11 +19,70 @@ Archie runs at three depths, and the same install runs any of them. Pick one per
 | Review | — | `/archie-review`, Standards axis | `/archie-review`, both axes |
 | Records | `/archie-standards` | + `/archie-setup` | everything |
 
-**lite** is one session: get grilled on the change, then build it test-first. `/archie-tdd` takes the change itself — a prompt, or the shared understanding the interview closed on — restates the outcome and its acceptance criteria for a sign-off, and runs the repo's gates. Nothing reaches disk but the code and whatever `/archie-standards` was told to remember.
+### lite — one session, nothing on disk but the code
 
-**medium** adds the two things a change worth remembering needs: `/archie-domain-modeling` writing terms and ADRs as they resolve, and `/archie-review` grading the diff before it merges. With no Epic to supply the contracts the Spec axis is skipped; the Standards axis is unchanged.
+```mermaid
+flowchart LR
+  I["/archie-interview<br/>grill the change"] --> T["/archie-tdd<br/>build it test-first"] --> G["repo gates"]
+```
 
-**full** is the four phases: an Epic tree in `.archie/`, a Spec and Tasks per leaf, and the implement → review loop until the branch grades 🟢.
+Use it for a chore, a bug fix, or anything you could hold in your head while building it. `/archie-tdd` takes the change itself — a prompt, or the shared understanding the interview closed on — restates the outcome and its acceptance criteria for a sign-off, and runs the repo's gates. Nothing reaches disk but the code and whatever `/archie-standards` was told to remember.
+
+### medium — the same session, with a memory and a reviewer
+
+```mermaid
+flowchart LR
+  I["/archie-interview"] --> T["/archie-tdd"] --> R["/archie-review<br/>Standards axis"]
+  R -- "findings" --> T
+  R -- "🟢" --> M["merge"]
+  I -. "terms, ADRs" .-> D["/archie-domain-modeling"]
+  T -. "rules" .-> S["/archie-standards"]
+```
+
+Use it when the change is small but the reasoning behind it is worth keeping, or when the diff is big enough that you want it read before it merges. `/archie-domain-modeling` writes terms and ADRs as they resolve; `/archie-review` grades the diff. With no Epic to supply the contracts the Spec axis is skipped, and the Standards axis is unchanged.
+
+### full — the four phases
+
+Use it for a feature big enough that you cannot see the whole of it yet. Each phase is its own set of sessions and ends on artefacts the next phase reads, so the handoff is a file rather than a conversation you have to still be in.
+
+**Setup** — once per repo.
+
+```mermaid
+flowchart LR
+  SU["/archie-setup"] --> F[/"AGENTS.md facts block<br/>CLAUDE.md importing it<br/>.archie/ committed, not ignored"/]
+```
+
+**Planning** — HITL, one Epic at a time, one step per session. `/archie-architect` is the door: it resolves a reference like `3.2`, reads which step that Epic is at off its own files, announces it, and runs that one.
+
+```mermaid
+flowchart LR
+  AR["/archie-architect"] --> A["/archie-scope"]
+  A -- "split" --> T1[/"thin children in .archie/,<br/>scoped later"/]
+  A -- "specify" --> B["/archie-to-spec"] --> C["/archie-design"] --> E["/archie-to-tasks"]
+  E --> T2[/"epic.md + spec.md<br/>tasks/NN-slug.md at todo<br/>CONTEXT.md, ADRs, research/"/]
+```
+
+**Implementing** — AFK. One Task inline, or the whole leaf as an autonomous loop over its Tasks.
+
+```mermaid
+flowchart LR
+  IM["/archie-implement"] --> TD["/archie-tdd"]
+  TD --> CR["criteria checked<br/>against the diff"]
+  CR -- "unmet, one fix round" --> TD
+  CR -- "met" --> CM["commit"]
+  CM -- "next Task" --> TD
+  CM -- "leaf done" --> T3[/"a commit per Task<br/>leaf at ready-for-review<br/>walkthrough of what no test covers"/]
+```
+
+**Reviewing** — grades the branch, and its output is the next phase's input.
+
+```mermaid
+flowchart LR
+  RV["/archie-review"] --> S1["Spec axis"] --> G["grade"]
+  RV --> S2["Standards axis"] --> G
+  G -- "🔴 🟠" --> T4[/"one new fix Task in the leaf"/] --> IM["/archie-implement"]
+  G -- "🟢" --> T5[/"mergeable branch —<br/>scope the next Epic"/]
+```
 
 Nothing on disk records which flow a repo is using, and no rule keeps them apart. A lite chore committed onto an in-flight Epic branch turns up in that Epic's Spec axis as behaviour nobody asked for — cheap, and you know what you did. See [ADR 0018](docs/adr/0018-archie-runs-at-three-flows.md).
 
@@ -31,7 +94,7 @@ npx skills@latest add OvidiuGuta/archie-skills --skill '*'
 
 Installs all fifteen skills into whichever agents the installer detects. Upgrade with `npx skills@latest update`.
 
-Archie ships in **phases you can install separately**. Drop `--skill '*'` and the installer shows them as groups you can tick whole:
+Archie also ships in **phases you can install separately**. Drop `--skill '*'` and the installer shows them as groups you can tick whole:
 
 | Phase | Skills | Requires |
 | --- | --- | --- |
@@ -45,121 +108,41 @@ Planning alone is a coherent install: scope, spec, design and slice into Tasks, 
 
 Archie **replaces mattpocock/skills** rather than complementing it. Both installed is supported — every skill name is prefixed `archie-`, and the Epic tree lives in `.archie/` rather than `.scratch/` — but running both methods on one repo means two ways of working in one head.
 
-## Layout
+## The skills
 
-```
-skills/
-└── archie-<name>/        SKILL.md, agents/openai.yaml, and its own references/ if it needs one
-scripts/
-└── validate-skills.mjs   the bundle's only gate
-.claude-plugin/
-└── marketplace.json      the phase groups the installer shows
-```
+One page each, written by the ticket that built the skill.
 
-skills.sh installs **one skill directory at a time**, so every skill is authored self-contained: **no link leaves a skill's own directory**, nothing is generated, and there is no shared folder to sync. A skill that consults material on demand owns that file itself, under its own `references/`, and a skill dispatches its siblings by name rather than by path. The gate enforces the boundary — see [ADR 0011](docs/adr/0011-each-skill-is-authored-self-contained.md).
+**Setup and records**
 
-## Conventions
+- [`/archie-setup`](manual/skills/archie-setup.md) — records this repo's facts in `AGENTS.md`
+- [`/archie-domain-modeling`](manual/skills/archie-domain-modeling.md) — terms into `CONTEXT.md`, decisions into `docs/adr/`
+- [`/archie-standards`](manual/skills/archie-standards.md) — coding standards into `STANDARDS.md`
 
-The conventions are fixed by the framework rather than chosen per repo, so each skill states the part it uses. A handful of files are big enough to consult on demand rather than carry inline:
+**Planning**
 
-| Skill-owned reference | What it settles |
-| --- | --- |
-| [`archie-architect/references/epic-tree.md`](skills/archie-architect/references/epic-tree.md) | The Epic tree on disk, the derived-state table that says which planning step an Epic is at, identity numbering, and the `3.2` / `3.2#1` reference syntax. `/archie-scope` carries [its own copy](skills/archie-scope/references/epic-tree.md), since each skill installs alone |
-| [`archie-domain-modeling/references/CONTEXT-FORMAT.md`](skills/archie-domain-modeling/references/CONTEXT-FORMAT.md) | The `CONTEXT.md` glossary format and the rules on what belongs in it |
-| [`archie-domain-modeling/references/ADR-FORMAT.md`](skills/archie-domain-modeling/references/ADR-FORMAT.md) | The ADR file format, and amend-in-place versus supersede |
-| [`archie-standards/references/STANDARDS-FORMAT.md`](skills/archie-standards/references/STANDARDS-FORMAT.md) | The `STANDARDS.md` format: flat rules under topic headings, each checkable against a diff |
-| [`archie-prototype/references/UI.md`](skills/archie-prototype/references/UI.md) | The UI branch: variants on the real route, the switcher, and pruning to the winner |
-| [`archie-prototype/references/LOGIC.md`](skills/archie-prototype/references/LOGIC.md) | The logic branch: the single-file demo, the portable module, and the walkthroughs |
-| [`archie-to-spec/references/spec-template.md`](skills/archie-to-spec/references/spec-template.md) | Every section of `spec.md`, including the two the design session writes. The rules governing its content are in the skills' own steps |
+- [`/archie-architect`](manual/skills/archie-architect.md) — the router over the four planning steps
+- [`/archie-scope`](manual/skills/archie-scope.md) — the what-step: settle what one Epic covers, split or specify
+- [`/archie-to-spec`](manual/skills/archie-to-spec.md) — synthesise the scoping session into `spec.md`
+- [`/archie-design`](manual/skills/archie-design.md) — the how-step: data, contract, structure, dependencies, seam
+- [`/archie-to-tasks`](manual/skills/archie-to-tasks.md) — slice the Spec into tracer-bullet Tasks
 
-Everything else a skill needs — the facts section format, the task file's shape, the ADR bar — is a paragraph in the skill that uses it. A framework concept lives in exactly one skill, the one whose job it is: the altitude gate is `/archie-architect`'s, and the skills it composes are told nothing about it ([ADR 0012](docs/adr/0012-a-skill-states-only-its-own-discipline.md)). A Task's contract is one task file and one `spec.md`, so the implementing skills read no framework conventions at all: see [ADR 0010](docs/adr/0010-implementing-is-one-build-one-review-one-fix.md). In lite there is no task file either, and `/archie-tdd` builds off the contract it was handed ([ADR 0018](docs/adr/0018-archie-runs-at-three-flows.md)).
+**Called by the planning steps**
 
-What genuinely varies per repo is **facts**, not conventions: the package manager, the gate commands, how to start the real app, and the branch and commit conventions. `/archie-setup` records those in a delimited block of `AGENTS.md`; anything it cannot read out of the repo is asked of the user, who gives the value or removes the line, so the block only ever carries real answers. The file is the user's — no skill writes to it beyond that block ([ADR 0015](docs/adr/0015-facts-are-user-confirmed-lines.md)).
+- [`/archie-interview`](manual/skills/archie-interview.md) — general-purpose interviewing, one question per turn
+- [`/archie-research`](manual/skills/archie-research.md) — resolve a fact against primary sources, in a sub-agent
+- [`/archie-prototype`](manual/skills/archie-prototype.md) — answer a design question by building something to look at
 
-`CONTEXT.md`, `docs/adr/` and `STANDARDS.md` are the **repo's** domain docs, not Archie's. Archie reads and writes them, and so does anything else that keeps a glossary, ADRs or coding standards at the root. That sharing is deliberate: two competing glossaries in one repo is the failure mode, not two frameworks agreeing on one. `STANDARDS.md` goes one further — it is linked from `AGENTS.md`, so its rules bind any agent in the repo whether or not an Archie skill is running.
+**Implementing**
 
-The design decisions behind the framework are in [`CONTEXT.md`](CONTEXT.md) and [`docs/adr/`](docs/adr/). A skill contradicting one of those ADRs is wrong.
+- [`/archie-implement`](manual/skills/archie-implement.md) — one Task inline, or a whole leaf Epic autonomously
+- [`/archie-tdd`](manual/skills/archie-tdd.md) — the double loop, and the build half of every flow
+- [`/archie-assist`](manual/skills/archie-assist.md) — guide a `ready-for-human` Task and verify the result
 
-## Validating the bundle
+**Reviewing**
 
-```
-node scripts/validate-skills.mjs
-```
+- [`/archie-review`](manual/skills/archie-review.md) — grade a branch on the Spec and Standards axes
 
-Run from the repo root. It exits non-zero on any failure and prints one line per failure naming the file and the problem. Fifteen self-contained skills and a manifest listing every one of them is exactly the structure where things rot silently, and the failure only shows up later as a skill quietly skipping a step. This is the bundle's only automated gate.
+## Working on the bundle
 
-It asserts that:
-
-- every `SKILL.md` has frontmatter with a `name` and a `description`, and the name matches its directory
-- no skill carries `disable-model-invocation` — the flag errors out even the user's own autocompleted invocation — and each of the five user-only skills ends its description with the verbatim guard sentence reserving it for explicit user invocation ([ADR 0017](docs/adr/0017-user-only-skills-gate-by-description-not-flag.md))
-- every skill directory is one of the fifteen the spec names
-- every skill reference in a skill body resolves to a skill in the bundle
-- **no link in a `SKILL.md` leaves the skill's own directory**, since that is what makes each one installable alone
-- every relative link resolves to a file that exists, across the skills and this README
-- `marketplace.json` lists every skill exactly once, in a phase, with a path the installer will not silently drop
-- every skill ships an `agents/openai.yaml` carrying a `display_name` and a `short_description`
-- every skill is documented in this README
-
-## Skills
-
-Each skill is documented here by the ticket that builds it, while the knowledge is fresh.
-
-### `/archie-setup`
-
-User-callable. Records this repo's facts in `AGENTS.md`, makes sure a `CLAUDE.md` imports them, and keeps `.archie/` out of the ignore file so planning is committed. It explores, shows the draft, and writes only once the user has confirmed it; a fact it cannot read out of the repo is a direct question, answered with a value or with *remove*, so no placeholder is ever written. Re-running rewrites the delimited facts block and leaves the rest of `AGENTS.md` untouched.
-
-### `/archie-interview`
-
-General-purpose interviewing, and the only skill in the bundle that knows nothing about Archie: it is told nothing about Epics, altitude or the tree, so it also works on its own when you want a plan stress-tested. It walks down the design tree resolving dependencies between decisions one at a time, asks one question per turn ending on the question mark, and lays each question's plausible answers out as lettered choices with its recommendation underneath so agreeing costs a letter. Anything it could answer by exploring the codebase it explores instead of asking, and it does not act on its own recommendations until the user confirms shared understanding. `/archie-architect` supplies the bounding — the altitude gate, the deferrals and the frontier are its, not the interview's: see [ADR 0012](docs/adr/0012-a-skill-states-only-its-own-discipline.md).
-
-### `/archie-domain-modeling`
-
-General-purpose domain modeling, told nothing about Epics or the tree, so it also works on its own when you just want a term pinned down. Two disjoint destinations: a term to the `CONTEXT.md` glossary, a decision clearing the [ADR bar](skills/archie-domain-modeling/references/ADR-FORMAT.md) to `docs/adr/`. It writes as things resolve rather than at the end, because a conversation is not storage. A term conflicting with the glossary, or language too fuzzy or overloaded to enter it, interrupts the session rather than being quietly recorded, and a claim about how something works is checked against the code before it is written down — the one check no other skill makes. A decision that contradicts an existing ADR interrupts too, and the skill that noticed hands it here rather than resolving it, so amend-or-supersede is decided once by whoever writes the file: a sharpening amends its ADR in place, a reversal supersedes it. Both files are created lazily, by the first thing that needs them. The other durability levels — the residue in `epic.md` and the coding standards in `STANDARDS.md` — belong to `/archie-architect` and `/archie-standards` ([ADR 0007](docs/adr/0007-four-durability-levels-for-decisions.md)).
-
-### `/archie-standards`
-
-General-purpose like its sibling, told nothing about Epics or the tree. It records **coding standards** — the user's rules for how code is written, each worded so a reviewer can check a diff against it and answer yes or no — in `STANDARDS.md` at the repo root, following [its format](skills/archie-standards/references/STANDARDS-FORMAT.md). A stated preference is the request: the user saying how they want code written is the instruction to record it, and only edits to *existing* standards wait to be asked for. Where an ADR carries the why, a standard carries the enforceable rule; one decision can produce both, never cross-linked, and the ADR half is the user's to route. A new rule contradicting an existing one interrupts the session before anything is written, because two contradicting rules make the whole file unenforceable. The first standard creates the file and links it from `AGENTS.md`, which is what makes the rules bind any agent in the repo — `/archie-tdd` reads them before writing code, `/archie-review`'s Standards axis enforces them, and an agent running no skill at all still finds them in context. A separate skill from `/archie-domain-modeling` because standards crystallise in any phase, including implementation, where the planning docs are never written ([ADR 0007](docs/adr/0007-four-durability-levels-for-decisions.md)).
-
-### `/archie-research`
-
-Written to the sub-agent that does the looking, and dispatched by `/archie-scope` for a question with an answer that holds whether or not the project likes it. It reads primary sources — the project's own code and lockfile first, then the vendor's docs at the version in use — writes what it found to the file it was given, and returns the path plus the answer in two lines. It never returns the findings themselves, because the pages it read are exactly what the sub-agent exists to keep out of the session's context. Every claim carries its source and version; a question that turns out to be a decision comes back with its options rather than an answer; a question the sources do not settle comes back marked unsettled.
-
-### `/archie-prototype`
-
-Written to the sub-agent that does the building, and dispatched by `/archie-design` for a question the user answers by looking. It is a **how**-question by definition, which is why it sits on the design side: at scope altitude the question is whether to split, and needing to drive a state machine by hand is evidence the Epic is already specifiable. The question picks one of two branches, and picking wrong wastes the prototype: a [UI prototype](skills/archie-prototype/references/UI.md) puts three radically different variants of one surface on the **real route** behind `?variant=` with a floating switcher, because variants are only judgeable against the real header, sidebar, data and density; a [logic prototype](skills/archie-prototype/references/LOGIC.md) is one self-contained HTML file with free-play buttons and tabbed guided walkthroughs, drivable by a designer or a PM, over a pure module that could lift into the real code as it stands. Prototypes live on the current branch next to what they prototype, so three rules keep them from shipping: named as a prototype, gated out of production builds and behind their own switch, and never replacing the page's real render. It builds and stops — it does not judge its own artifact or stand in for the reaction. A revision goes back to the same sub-agent, which still holds the shape, so "the header from B with the sidebar from C" is one edit rather than another read of the world. When a shape is confirmed, that sub-agent prunes it: losing variants, switcher and every word of framing copy deleted, leaving one gated artifact that reads as the agreed shape and that the Spec can point at.
-
-### `/archie-architect`
-
-User-callable, and the **router** over the four planning steps. It resolves a loose idea or a reference like `3.2`, reads which step that Epic is at off its own files — the derived-state table in `epic-tree.md` is the whole of its logic — announces the step in one line so the user can redirect it, fires that **one** step inline, and closes on what the step settled and what running it again will do. The four steps are model-invoked precisely so a router can fire them — unlike the five user-only doors, their descriptions carry no guard sentence ([ADR 0017](docs/adr/0017-user-only-skills-gate-by-description-not-flag.md)). One step per invocation, because every step is a full session ending on a sign-off and two in one window is the context problem the split exists to solve. It holds no discipline of its own: every judgement belongs to the step it dispatches, and each step is callable directly by name when the user already knows which one they want. A leaf whose Tasks exist is planned, so it names `/archie-implement` and stops. See [ADR 0013](docs/adr/0013-planning-is-a-resumable-router-over-four-steps.md).
-
-### `/archie-scope`
-
-Reached by `/archie-architect`, and typeable by name. The **what**-step, and everything `/archie-architect` used to hold. It opens the Epic, then inherits before asking anything: what was written down (`CONTEXT.md`, the ADRs touching the area, every ancestor's `epic.md` up the path) and what was built (the code the earlier siblings actually produced, which is what makes a thin child a deferral to greater knowledge rather than a gap). It drives [`/archie-interview`](skills/archie-interview/SKILL.md) for the questioning and supplies the bounding the interview knows nothing about: the **frontier**, the **altitude gate**, the one-line deferral announcements, the eight-question check-in, and the residue line in `epic.md`. A question about *how* is not deferred into a child but announced as `/archie-design`'s, one rung down and a later step on the same Epic. A question that is a **fact** goes to a sub-agent told to use [`/archie-research`](skills/archie-research/SKILL.md), briefed with the one thing that skill cannot know — the question, what turns on it, and the destination inside the Epic. Each resolved term or ADR is recorded through [`/archie-domain-modeling`](skills/archie-domain-modeling/SKILL.md) as it resolves. Nothing else about the Epic reaches disk while the session runs: the intent would be written at the moment of least knowledge and rewritten by what the interview learns, so `epic.md` is written once, in the same turn as the recommendation, which makes the recommendation the diff. `## Decisions` is written every time, carrying `_None at this resolution._` when there is no residue, because its **presence is what marks the Epic as scoped** — a thin child has no such heading, and that is the only thing telling the two apart on disk. It ends on a recommendation with its reasoning — an empty frontier means specify, deferral clusters mean split into those children — and the call is the user's. Splitting writes thin children and nothing else. A specifiable Epic too large to build as one leaf gets sliced mechanically, announced as a size backstop rather than a new round of questions. It is also where `/archie-design` sends a leaf back when the boundary turns out wrong. It never writes `spec.md` or a task file.
-
-### `/archie-to-spec`
-
-Reached by `/archie-architect`, and typeable by name. Turns the scoping session that just happened into the Specified Epic's `spec.md`, following [the template](skills/archie-to-spec/references/spec-template.md). It asks **nothing** — the seam checkpoint it used to own moved to `/archie-design`, so it is now what it always claimed to be: pure synthesis. It assembles the intent and decisions in `epic.md`, the terms and ADRs the session wrote and the `research/` findings, and reads the same material off disk when the session is no longer in context. `Implementation Decisions` and `Testing Decisions` are written as the single literal line `_Not yet designed._`, which is the marker every later reader uses to know this leaf has a Spec and no design. It refuses to run against a Split Epic, since Split and Specified are mutually exclusive, and hands any contradiction with an ADR to [`/archie-domain-modeling`](skills/archie-domain-modeling/SKILL.md) rather than resolving it — amending or superseding is that skill's call. The one content rule is **name surfaces, never file locations**: an endpoint and its shape, a URL, a CLI flag, an exported API, a module name, a package are all what was agreed and survive a refactor, while a path rots within the week.
-
-### `/archie-design`
-
-Reached by `/archie-architect`, and typeable by name. The **how**-step: the last human checkpoint before implementation runs unattended, and the first time anyone reads the real code for this leaf. It runs on one Specified, undesigned leaf and writes two sections of the Spec it already has — never a `design.md`, which is what leaves [ADR 0010](docs/adr/0010-implementing-is-one-build-one-review-one-fix.md)'s two-contract rule untouched and `/archie-tdd` and `/archie-review` unchanged. It **surveys by precedent** first: for each heading it finds the nearest existing example in the repo and holds it as the default, which turns every question from "how should we build this" into "the repo does it this way, follow or diverge" and puts the burden of a reason on the divergence. Five headings seed the frontier — **data**, **contract**, **structure**, **dependencies**, **seam** — and the session ends when the frontier is empty *and* every heading is settled or excused, because ticking a checklist is not settling one. Its gate is the Spec's altitude test one rung down: *could a Task building this alone get it wrong in a way another Task then has to work around?* If not, it belongs to the engineer. A question answered better by looking goes to a sub-agent told to use [`/archie-prototype`](skills/archie-prototype/SKILL.md), whose id it keeps so a reaction is one edit rather than a rebuild. The **seam** is asked last, because "sit as high as possible" is unjudgeable until the structure is settled, and it does not pass on silence. A new dependency outlives the tree, so it goes to [`/archie-domain-modeling`](skills/archie-domain-modeling/SKILL.md) as an ADR. When the how reveals the boundary is wrong it names the repair and stops rather than repairing anything: a wrong decision is revised in place and the session carries on, a leaf that is merely too big goes to `/archie-scope`'s size backstop, and a wrong boundary goes back through `/archie-scope` and `/archie-to-spec` — the last two dropping `spec.md`, which it says loudly when Tasks already exist.
-
-### `/archie-to-tasks`
-
-Reached by `/archie-architect`, and typeable by name. Cuts a Specified Epic's Spec into the Tasks `/archie-implement` consumes, and writes nothing else. Each Task is a vertical **tracer bullet** — a narrow but complete path through every layer — carrying exactly one end-to-end demoable outcome, which is what makes "is this Task too big" a check rather than a matter of taste. It slices against the Spec's long user story list so no story is dropped, sequences prefactoring ahead of the bullets it makes smaller, and records the blocking edges and the `ready-for-agent` or `ready-for-human` label on each. The breakdown goes to the user as a numbered list, and it asks about granularity and edges through [`/archie-interview`](skills/archie-interview/SKILL.md) until they approve it — this is the last shape a human gives the whole leaf. A Spec still carrying `_Not yet designed._` **halts the run** and names `/archie-design`: that leaf has no settled surface, so every Task cut from it would be sliced against an imagined one, which looks exactly like a Task sliced against a real one until it is built. It does not quiz the acceptance criteria, because they are the demoable outcome decomposed and each one is walked at the end of its own Task's run. Then it publishes one file per Task at `tasks/NN-<slug>.md` inside the leaf, at `Status: todo`, with numbers that are identity: a re-slice never renumbers and a deleted Task's number is never reused. Acceptance criteria are observable outcomes with no file paths and no code, bar a decision-encoding snippet from a prototype.
-
-### `/archie-tdd`
-
-The build half of every flow, running the [double loop](docs/adr/0010-implementing-is-one-build-one-review-one-fix.md): the engineer step of `/archie-implement`, the fix round of `/archie-review`, and in lite and medium the door the user types. The outer loop is one integration test at the seam, derived from the acceptance criteria and red before any implementation exists; the inner loop takes each unit the change modifies through red-green-refactor with its dependencies mocked. Its contract is **whatever it was handed** — a Task reference resolving to the task file and the leaf's `spec.md`, a review's findings, or the change itself, in which case it writes the outcome and criteria back for a sign-off because nobody else ever wrote them down ([ADR 0018](docs/adr/0018-archie-runs-at-three-flows.md)). No integration harness in the repo, or nothing to observe but a screen, and the outer loop is reported absent rather than faked. "Touches" means modified, not merely read, so unit testing does not metastasise, and each unit test asserts behaviour at its boundary: one that would break on a rename or an extracted helper is testing implementation. It then finds the repo's lint, typecheck, test and build commands itself and runs each as the repo defines it, reporting an absent gate as absent rather than guessing at a conventional command. The report carries every gate result and, for the orchestrator's walkthrough, which acceptance criteria the tests cover and which they cannot reach.
-
-### `/archie-implement`
-
-User-callable, and the build phase in two modes selected by the reference. **Task mode** (`3.2#1` or a path) checks three gates — the blocking edges are met, the label is `ready-for-agent` (a `ready-for-human` one halts and names [`/archie-assist`](skills/archie-assist/SKILL.md)), and the tree is clean enough to read a diff off — then runs [`/archie-tdd`](skills/archie-tdd/SKILL.md) **inline**, checks every acceptance criterion against the diff, sets `ready-for-review` and **stops dirty** so the user tests from the working tree, offering to set `done` and commit at their word. **Epic mode** (a leaf reference like `3.2`) is the autonomous loop over the same shape: it halts if the branch is `main` — branching is the user's job — then per Task dispatches an engineer sub-agent through the sub-agent tool running `/archie-tdd`, reads the gates, verifies the criteria itself read-only, and on success writes `done` and commits before moving on. A Task whose criteria survive **one** fix round unmet halts the whole run with a short report — what went wrong and a suggested fix — because a round the fix could not settle means the Spec is the problem and the user's read is the faster way out. It ends by stamping the leaf `ready-for-review`, offering a PR, and naming [`/archie-review`](skills/archie-review/SKILL.md) for its own session. Both modes end on the **walkthrough**: one summary paragraph, then the criteria no test reaches as steps through the running app — in epic mode one summary and a walkthrough per Task. Review runs in the next phase, so this one carries none.
-
-### `/archie-review`
-
-User-callable, and the review phase. Takes a PR, the current branch (diffed from its merge-base with `main`), or an Epic reference — the Epic adds the contracts, `spec.md` and the task files, which is what turns the **Spec** axis on; without one that axis is skipped and the header says so. Two parallel axis sub-agents that never see each other's findings: **Spec** (missing, partial or wrongly built requirements, and behaviour nobody asked for) and **Standards** (the repo's documented conventions plus the **test rules**, five **hard checks** — secrets, escape hatches, swallowed failures, leftovers, comment drift — and the **smell baseline** of twelve Fowler smells, each smell a labelled judgement call the repo or the Spec can suppress). Each axis reads its whole discipline from its own briefing file under the skill's `references/`, handed over by path, so the orchestrator relays rules it never loads. Each axis ends on a **grade** — 🟢 `mergeable`, 🟠 `mergeable with reservations`, 🔴 `needs work` — and the overall is the worse of the two. The report is a grade header and one severity-ordered list of only the findings needing a fix, each tagged `[spec]` or `[standards]` with its file and line; what passed is silence. Then the user picks which findings to act on: with an Epic they become **one new Task** in the leaf, closing the implement → review loop until the grade reads 🟢; without one it asks — fix now (an `/archie-tdd` sub-agent briefed with the findings, its diff judged read-only and re-graded), comment on the PR, or something else. It fixes nothing itself, which is what keeps the reviewing and the fixing honest.
-
-### `/archie-assist`
-
-User-callable, and the counterpart for the work an agent cannot do: a `ready-for-human` Task — a signup, a secret, a permission — which produces no diff, so the build, the review and the fix round all drop out rather than being no-opped through. It derives the route to the outcome **at guide time** from the service's own documentation rather than replaying instructions stored in the Task, because a third-party UI renames its buttons between the day the Task was written and the day it runs — so the Task's criteria stay outcomes and the guidance is never written back into it. It guides **one step at a time**, confirming each landed before deriving the next from where the user actually is, and treats a screen that is not there or a plan that costs money as the new starting point rather than a step to repeat. Then it verifies the state itself, against the real world: the env var is present where the app reads it, the key authenticates on a live call, the account signs in. Every criterion is graded **verified** or **unverified**, and an unverified one travels into the report as unverified — the state was made by hand and no suite stands behind it. It stops at `ready-for-review` like `/archie-implement`.
+- [Structure and conventions](manual/structure.md) — the layout, the skill-owned references, what varies per repo, and the validation gate
+- [`CONTEXT.md`](CONTEXT.md) and [`docs/adr/`](docs/adr/) — the design decisions behind the framework. A skill contradicting one of those ADRs is wrong

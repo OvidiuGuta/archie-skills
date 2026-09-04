@@ -8,6 +8,8 @@ Skill framework for the way I like to work.
 
 **No link in a `SKILL.md` may leave its own directory.** Sibling skills are dispatched by name, not by path.
 
+**Every skill has a page at `manual/skills/<name>.md`**, written by the ticket that builds it, and the README indexes it. The README itself carries only the flows, the install and the index; the layout and conventions live in [`manual/structure.md`](manual/structure.md).
+
 `node scripts/validate-skills.mjs` gates all of it, plus the phase groups in `.claude-plugin/marketplace.json`. Run it before committing.
 
 ## Agent skills

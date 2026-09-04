@@ -1,0 +1,3 @@
+# `/archie-research`
+
+Written to the sub-agent that does the looking, and dispatched by `/archie-scope` for a question with an answer that holds whether or not the project likes it. It reads primary sources — the project's own code and lockfile first, then the vendor's docs at the version in use — writes what it found to the file it was given, and returns the path plus the answer in two lines. It never returns the findings themselves, because the pages it read are exactly what the sub-agent exists to keep out of the session's context. Every claim carries its source and version; a question that turns out to be a decision comes back with its options rather than an answer; a question the sources do not settle comes back marked unsettled.
