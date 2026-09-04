@@ -12,7 +12,7 @@ Could the composing skill supply this line? Then it is repetition, and it belong
 
 The inverse is what a skill must keep. Nothing in `/archie-architect` says to order questions by dependency, or to end the turn on the question mark — that is technique, not framework, so it stays in the interview even though the interview is where the cuts came from.
 
-Applied three times now: the interview lost the altitude gate, `/archie-domain-modeling` lost the `epic.md` residue that was its third destination ([0007](0007-three-durability-levels-for-decisions.md)), and `/archie-research` and `/archie-prototype` lost their dispatch sections. Each time the displaced concept landed in the skill that was already writing the file it concerned, which is the tell for where a concept belongs.
+Applied three times now: the interview lost the altitude gate, `/archie-domain-modeling` lost the `epic.md` residue that was its third destination ([0007](0007-four-durability-levels-for-decisions.md)), and `/archie-research` and `/archie-prototype` lost their dispatch sections. Each time the displaced concept landed in the skill that was already writing the file it concerned, which is the tell for where a concept belongs.
 
 The third case adds a corollary about **audience**. Those two skills each mixed instructions to the caller ("one sub-agent, carrying four things", "keep the sub-agent's id") with instructions to the builder (the source bar, the throwaway bar), so whoever read one was being told both to dispatch and to build — and the throwaway bar depended on the caller remembering to restate it in the brief. Each skill is now written to exactly one audience, the sub-agent that does the work, and `/archie-architect` owns dispatch.
 

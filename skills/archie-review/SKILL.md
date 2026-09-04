@@ -37,7 +37,7 @@ Both go out **through the sub-agent (Agent) tool**, so neither pollutes the othe
 
 **The Spec sub-agent's prompt** carries the diff command, the paths to `spec.md` and the task files, and the path to [`references/spec-review.md`](references/spec-review.md).
 
-**The Standards sub-agent's prompt** carries the diff command, the repo's own standards files — find `AGENTS.md`, `CLAUDE.md`, `CONTRIBUTING.md`, a coding-standards file — and the path to [`references/standards-review.md`](references/standards-review.md), which also carries the test rules, the hard checks and the smell baseline that hold even in a repo that documents nothing.
+**The Standards sub-agent's prompt** carries the diff command, the repo's own standards files — the coding-standards file `AGENTS.md` links first, then `AGENTS.md` itself, `CLAUDE.md`, `CONTRIBUTING.md` — and the path to [`references/standards-review.md`](references/standards-review.md), which also carries the test rules, the hard checks and the smell baseline that hold even in a repo that documents nothing.
 
 ## 4. Report
 

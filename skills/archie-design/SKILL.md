@@ -7,7 +7,7 @@ description: Settling how one leaf gets built — its data, contract, structure,
 
 One leaf, one session. The Spec says **what** to build; this settles **how**, with the user, against the codebase as it actually is. It is the **last human checkpoint before implementation runs unattended**, and the first time anyone reads the real code for this leaf.
 
-**Requires** `/archie-interview` for the questioning and `/archie-domain-modeling` for anything durable, and it dispatches `/archie-prototype`. If one is not installed, say which and stop.
+**Requires** `/archie-interview` for the questioning and `/archie-domain-modeling` and `/archie-standards` for anything durable, and it dispatches `/archie-prototype`. If one is not installed, say which and stop.
 
 The only thing you write in the tree is two sections of the leaf's existing `spec.md` — never a `design.md` beside it.
 
@@ -81,7 +81,7 @@ Judging "as high as possible" needs the structure heading settled first, so ask 
 
 ### Record what settles, the moment it settles
 
-A **new dependency outlives the tree**, so it clears the ADR bar: hand it to `/archie-domain-modeling` — what was added, what it replaces, and why — rather than leaving it as a line in a Spec that dies with the Epic. The same goes for any term this session coins and any decision that reaches past this leaf. Where the design **contradicts an existing ADR**, hand that over too; amending or superseding is that skill's call, not yours.
+A **new dependency outlives the tree**, so it clears the ADR bar: hand it to `/archie-domain-modeling` — what was added, what it replaces, and why — rather than leaving it as a line in a Spec that dies with the Epic. The same goes for any term this session coins and any decision that reaches past this leaf. Where the design **contradicts an existing ADR**, hand that over too; amending or superseding is that skill's call, not yours. When the user states how they want code written — a **coding standard**, not a decision about this leaf — invoke `/archie-standards`.
 
 Done when the frontier is empty and every heading is settled or excused.
 

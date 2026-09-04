@@ -41,6 +41,10 @@ Whether a question or a decision has blast radius beyond one part of the thing a
 **Residue**:
 An at-altitude decision that does not clear the ADR bar. One line under `## Decisions` in its Epic's own `epic.md`, no reasoning, where child Epics inherit it. Written by the Scope session, and it dies with the tree by design.
 
+**Coding standard**:
+A rule of the user's about how code is written in a repo, enforceable line by line on a diff. Where an ADR records why something is built the way it is, a standard says whether a line of code is acceptable; one decision can produce both. Lives in `STANDARDS.md` at the repo root, linked from `AGENTS.md`, and edited only at the user's request.
+_Avoid_: convention — Archie's own conventions ship inside the skills; code style
+
 **Architect**:
 The router over the four planning steps. It resolves an Epic reference, reads which step that Epic is at off its own files, dispatches that step, reports where the Epic now stands, and stops. One interview per invocation, so a step holding an interview carries its own synthesis to the end and the four steps run as two sessions. It holds no discipline of its own.
 _Avoid_: Architect as the name of the interviewing session — that is Scope.

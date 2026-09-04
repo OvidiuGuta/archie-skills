@@ -17,7 +17,7 @@ You are handed a Task reference (`3.2#1`) or its path. Everything resolves from 
 
 **Handed findings as well — an orchestrator's criteria check or a review's — you are the fix round.** The tests and the code already exist, so the loops narrow to each finding: go red on the behaviour the finding names, fix it, and take the suite green again. Steps 5 and 6 run in full — the gates are exactly what a fix can break — and step 2's one-integration-test rule already holds, so a finding about a missing or misplaced one is fixed by moving or writing that test rather than adding a second.
 
-Then read the code the Task lands in, and the tests nearest it. New tests match the house style around them rather than importing yours.
+Then read the code the Task lands in, and the tests nearest it. New tests match the house style around them rather than importing yours. If `AGENTS.md` links a coding-standards file, read it too — its rules bind every line you write. No link means there are no standards.
 
 ## 2. Outer loop: go red at the seam
 

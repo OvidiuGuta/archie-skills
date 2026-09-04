@@ -6,7 +6,7 @@ Directory names carry a **stable identity number** assigned per parent on creati
 
 The tree is **committed** so work can resume on another machine, and **disposable**: the user removes a root Epic's tree whenever they like, including mid-Epic when they pivot. Nothing is archived and there is no close ritual. Git history retains every version, so removal costs findability, not the content.
 
-An Epic's own files are written **once per session, when its frontier empties**, not as the session goes. The intent line would otherwise be written at the moment of least knowledge and rewritten by what the interview learns, and an abandoned session would leave a directory behind. Only the durable levels — `CONTEXT.md` and `docs/adr/` — are written as they settle, and the residue is held in the session until the write, since it is the level defined to die with the tree anyway ([0007](0007-three-durability-levels-for-decisions.md)).
+An Epic's own files are written **once per session, when its frontier empties**, not as the session goes. The intent line would otherwise be written at the moment of least knowledge and rewritten by what the interview learns, and an abandoned session would leave a directory behind. Only the durable levels — `CONTEXT.md` and `docs/adr/` — are written as they settle, and the residue is held in the session until the write, since it is the level defined to die with the tree anyway ([0007](0007-four-durability-levels-for-decisions.md)).
 
 ## Consequences
 

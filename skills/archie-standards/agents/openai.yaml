@@ -1,0 +1,3 @@
+interface:
+  display_name: "Archie: Coding standards"
+  short_description: "Records the user's enforceable code rules in STANDARDS.md"

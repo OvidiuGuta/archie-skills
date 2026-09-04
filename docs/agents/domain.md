@@ -2,20 +2,22 @@
 
 How the engineering skills should consume this repo's domain documentation when exploring the codebase.
 
-This repo is **single-context**: one `CONTEXT.md` and one `docs/adr/` at the root.
+This repo is **single-context**: one `CONTEXT.md`, one `docs/adr/` and one `STANDARDS.md` at the root.
 
 ## Before exploring, read these
 
 - **`CONTEXT.md`** at the repo root: the glossary of domain terms.
 - **`docs/adr/`** — read ADRs that touch the area you're about to work in.
+- **`STANDARDS.md`** — the user's coding standards, binding for any code you write.
 
-If either doesn't exist yet, **proceed silently**. Don't flag their absence; don't suggest creating them upfront. The `/domain-modeling` skill (reached via `/grill-with-docs` and `/improve-codebase-architecture`) creates them lazily when terms or decisions actually get resolved.
+If any doesn't exist yet, **proceed silently**. Don't flag their absence; don't suggest creating them upfront. `/archie-domain-modeling` and `/archie-standards` create them lazily when terms, decisions or standards actually get resolved.
 
 ## File structure
 
 ```
 /
 ├── CONTEXT.md
+├── STANDARDS.md
 ├── docs/adr/
 │   ├── 0001-some-decision.md
 │   └── 0002-another-decision.md
@@ -26,7 +28,7 @@ If either doesn't exist yet, **proceed silently**. Don't flag their absence; don
 
 When your output names a domain concept (in an issue title, a refactor proposal, a hypothesis, a test name), use the term as defined in `CONTEXT.md`. Don't drift to synonyms the glossary explicitly avoids.
 
-If the concept you need isn't in the glossary yet, that's a signal — either you're inventing language the project doesn't use (reconsider) or there's a real gap (note it for `/domain-modeling`).
+If the concept you need isn't in the glossary yet, that's a signal — either you're inventing language the project doesn't use (reconsider) or there's a real gap (note it for `/archie-domain-modeling`).
 
 ## Flag ADR conflicts
 

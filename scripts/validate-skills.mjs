@@ -19,7 +19,7 @@ const SKILLS_DIR = join(ROOT, 'skills')
 const README = join(ROOT, 'README.md')
 const MARKETPLACE = join(ROOT, '.claude-plugin', 'marketplace.json')
 
-// The fourteen skills of the spec, split by who may invoke them. A skill
+// The fifteen skills of the spec, split by who may invoke them. A skill
 // carrying `disable-model-invocation: true` can be fired by nobody but the
 // human — not even by another skill — so the four planning steps must stay
 // model-invoked for `/archie-architect` to route into them. Model-invocation
@@ -38,6 +38,7 @@ const MODEL_INVOKED_SKILLS = [
   'archie-to-tasks',
   'archie-interview',
   'archie-domain-modeling',
+  'archie-standards',
   'archie-research',
   'archie-prototype',
   'archie-tdd',
@@ -91,9 +92,12 @@ const MD_LINK = /\[[^\]]*\]\(([^)\s]+)(?:\s+"[^"]*")?\)/g
 
 const skillRefsIn = (body) => [...body.matchAll(SKILL_REF)].map((m) => m[2])
 
+/** A link inside a fenced code block is an example, not a link. */
+const stripFences = (body) => body.replace(/^```[\s\S]*?^```/gm, '')
+
 /** Relative link targets only: external, absolute and anchor-only links are not ours to check. */
 function relativeLinksIn(body) {
-  return [...body.matchAll(MD_LINK)]
+  return [...stripFences(body).matchAll(MD_LINK)]
     .map((m) => m[1])
     .filter((href) => !/^([a-z][a-z0-9+.-]*:|#|\/)/i.test(href))
     .map((href) => href.split('#')[0])
@@ -155,7 +159,7 @@ for (const dir of skillDirs) {
   // everything else must stay reachable so a composing skill can fire it.
   const disabled = String(frontmatter['disable-model-invocation']).toLowerCase() === 'true'
   if (!ROSTER.has(dirName)) {
-    fail(skillFile, `\`${dirName}\` is not one of the fourteen skills in the spec`)
+    fail(skillFile, `\`${dirName}\` is not one of the fifteen skills in the spec`)
   } else if (USER_ONLY_SKILLS.includes(dirName) && !disabled) {
     fail(skillFile, 'user-only skill is missing `disable-model-invocation: true`')
   } else if (MODEL_INVOKED_SKILLS.includes(dirName) && disabled) {

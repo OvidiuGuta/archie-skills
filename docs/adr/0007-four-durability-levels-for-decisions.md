@@ -1,9 +1,10 @@
-# Decisions are recorded at three durability levels
+# Decisions are recorded at four durability levels
 
-A scoping session settles decisions at its resolution. Where each one is written depends on what it is, and the three destinations are disjoint, so nothing is recorded twice.
+A scoping session settles decisions at its resolution. Where each one is written depends on what it is. The destinations are disjoint **by role**, not by subject: one decision may surface in two files — an ADR carrying the why, a coding standard carrying the enforceable rule — but no destination duplicates another's role, and the two are not cross-linked because they serve different readers.
 
 - **`CONTEXT.md`** — domain terms. The glossary, and nothing else.
 - **`docs/adr/`** — decisions clearing the standard bar: hard to reverse, surprising without context, the result of a real trade-off. The bar is **not** lowered for this framework.
+- **`STANDARDS.md`** — coding standards: the user's rules for how code is written, each enforceable on a diff. Freely editable, at the user's request only, with `git log` as the history. Linked from `AGENTS.md` so the rules bind any agent in the repo, with or without an Archie skill. Absent or empty means there are no standards to follow — never a gap to flag.
 - **The Epic's own `epic.md`** — the **residue**: every other at-altitude decision. One line each, no reasoning.
 
 Child Epics **inherit** by walking up their path: architecting `3.2` reads `epic.md` at the root, at `3`, and at `3.2`, alongside `CONTEXT.md` and the ADRs touching the area. Inherited decisions are never copied onto children, which would contradict thin children and would need backfilling whenever a decision is settled after the split.
@@ -14,6 +15,8 @@ ADRs are **living** documents. A lower resolution sharpening a decision amends t
 
 - A self-regulating rule keeps `epic.md` from bloating into a spec: if a decision needs more than a line, it needed the reasoning, which means it clears the ADR bar and belongs in `docs/adr/`.
 - Sub-bar decisions die with the tree when the user deletes it. That is correct: by then the code encodes them, and nothing durable depended on them.
-- `/archie-domain-modeling` owns the first two levels and is told nothing about the third: it routes a term to `CONTEXT.md` and a decision clearing the bar to `docs/adr/`, and `/archie-scope` writes the residue into `epic.md` itself, since it already owns the tree and the inheritance walk. See [0012](0012-a-skill-states-only-its-own-discipline.md).
+- `/archie-domain-modeling` owns the first two levels and is told nothing about the others. `/archie-standards` owns `STANDARDS.md`, a separate skill because standards crystallise in any phase — including implementation, where the planning docs are never written. `/archie-scope` writes the residue into `epic.md` itself, since it already owns the tree and the inheritance walk. See [0012](0012-a-skill-states-only-its-own-discipline.md).
+- A library choice or a testing approach can be both an ADR and a standard; "no `any` in TypeScript" is only a standard.
+- `STANDARDS.md` does not reintroduce the per-repo config [0004](0004-setup-records-facts-in-agents-md.md) deleted: 0004 moved *Archie's* conventions into the bundle, while `STANDARDS.md` carries the *user's* rules for their own code, which were never the framework's to ship.
 - "Offer ADRs sparingly" survives unchanged, because the residue has somewhere to go.
 - `epic.md` holds a title, an intent, the decisions settled at this resolution, and, for a Split Epic, the ordered child list. Everything in it is written at the moment it is known.

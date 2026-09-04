@@ -11,7 +11,7 @@ Read [`references/epic-tree.md`](./references/epic-tree.md) first. It fixes the 
 
 [`references/reshaping.md`](./references/reshaping.md) is for the three branches that change a tree instead of growing one: **re-scoping** a leaf `/archie-design` sent back, the **size backstop** on a specifiable Epic too big to build as one leaf, and **editing** children that already exist. Read it when one of those fires.
 
-**Requires** `/archie-interview` for the questioning and `/archie-domain-modeling` for anything durable, and it dispatches `/archie-research`. Each carries its own discipline and knows nothing about Epics, altitude or this tree, so everything framework-shaped below is yours. If one is not installed, say which and stop rather than improvising it — a session that asks its questions unbounded, or leaves a decision nobody writes down, produces a tree that reads finished and is not.
+**Requires** `/archie-interview` for the questioning and `/archie-domain-modeling` and `/archie-standards` for anything durable, and it dispatches `/archie-research`. Each carries its own discipline and knows nothing about Epics, altitude or this tree, so everything framework-shaped below is yours. If one is not installed, say which and stop rather than improvising it — a session that asks its questions unbounded, or leaves a decision nobody writes down, produces a tree that reads finished and is not.
 
 You settle the **what**. How it gets built is `/archie-design`'s, on a leaf, after its Spec exists, and you never write `spec.md` or a task file.
 
@@ -100,7 +100,7 @@ The user overrules the gate continuously. When they name a deferred question, it
 
 ### Record what settles, the moment it settles
 
-**The durable levels are written now**, before the next question is asked. Invoke `/archie-domain-modeling` for a **domain term** or a decision **clearing the ADR bar**; it owns those two destinations and knows nothing about this tree. Those are the levels that outlive the tree, so a session that dies before step 4 must not take them with it.
+**The durable levels are written now**, before the next question is asked. Invoke `/archie-domain-modeling` for a **domain term** or a decision **clearing the ADR bar**, and `/archie-standards` when the user states how they want code written — a **coding standard**. Each owns its destinations and knows nothing about this tree. Those are the levels that outlive the tree, so a session that dies before step 4 must not take them with it.
 
 **The residue is held in the session** and written in step 4: one line per decision, no reasoning, the list you will put under `## Decisions`. Keep it as you go rather than reconstructing it at the end, restate it in every check-in, and revise a line in place when a later answer sharpens it. The residue is the level defined to die with the tree, so holding it costs the same class of loss a pivot already costs.
 

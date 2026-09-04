@@ -16,7 +16,7 @@ Archie ships in **phases you can install separately**. Drop `--skill '*'` and th
 
 | Phase | Skills | Requires |
 | --- | --- | --- |
-| **Archie Planning** | `archie-setup`, `archie-architect`, `archie-scope`, `archie-interview`, `archie-domain-modeling`, `archie-research`, `archie-to-spec`, `archie-design`, `archie-prototype`, `archie-to-tasks` | nothing |
+| **Archie Planning** | `archie-setup`, `archie-architect`, `archie-scope`, `archie-interview`, `archie-domain-modeling`, `archie-standards`, `archie-research`, `archie-to-spec`, `archie-design`, `archie-prototype`, `archie-to-tasks` | nothing |
 | **Archie Implementing** | `archie-implement`, `archie-assist`, `archie-tdd` | Planning, for the Epic tree it consumes |
 | **Archie Reviewing** | `archie-review` | Implementing, for `/archie-tdd` fix rounds and the Tasks it writes |
 
@@ -46,6 +46,7 @@ The conventions are fixed by the framework rather than chosen per repo, so each 
 | [`archie-architect/references/epic-tree.md`](skills/archie-architect/references/epic-tree.md) | The Epic tree on disk, the derived-state table that says which planning step an Epic is at, identity numbering, and the `3.2` / `3.2#1` reference syntax. `/archie-scope` carries [its own copy](skills/archie-scope/references/epic-tree.md), since each skill installs alone |
 | [`archie-domain-modeling/references/CONTEXT-FORMAT.md`](skills/archie-domain-modeling/references/CONTEXT-FORMAT.md) | The `CONTEXT.md` glossary format and the rules on what belongs in it |
 | [`archie-domain-modeling/references/ADR-FORMAT.md`](skills/archie-domain-modeling/references/ADR-FORMAT.md) | The ADR file format, and amend-in-place versus supersede |
+| [`archie-standards/references/STANDARDS-FORMAT.md`](skills/archie-standards/references/STANDARDS-FORMAT.md) | The `STANDARDS.md` format: flat rules under topic headings, each checkable against a diff |
 | [`archie-prototype/references/UI.md`](skills/archie-prototype/references/UI.md) | The UI branch: variants on the real route, the switcher, and pruning to the winner |
 | [`archie-prototype/references/LOGIC.md`](skills/archie-prototype/references/LOGIC.md) | The logic branch: the single-file demo, the portable module, and the walkthroughs |
 | [`archie-to-spec/references/spec-template.md`](skills/archie-to-spec/references/spec-template.md) | Every section of `spec.md`, including the two the design session writes. The rules governing its content are in the skills' own steps |
@@ -54,7 +55,7 @@ Everything else a skill needs — the facts section format, the task file's shap
 
 What genuinely varies per repo is **facts**, not conventions: the package manager, the gate commands, how to start the real app, and the branch and commit conventions. `/archie-setup` records those in a delimited block of `AGENTS.md`; anything it cannot read out of the repo is asked of the user, who gives the value or removes the line, so the block only ever carries real answers. The file is the user's — no skill writes to it beyond that block ([ADR 0015](docs/adr/0015-facts-are-user-confirmed-lines.md)).
 
-`CONTEXT.md` and `docs/adr/` are the **repo's** domain docs, not Archie's. Archie reads and writes them, and so does anything else that keeps a glossary and ADRs at the root. That sharing is deliberate: two competing glossaries in one repo is the failure mode, not two frameworks agreeing on one.
+`CONTEXT.md`, `docs/adr/` and `STANDARDS.md` are the **repo's** domain docs, not Archie's. Archie reads and writes them, and so does anything else that keeps a glossary, ADRs or coding standards at the root. That sharing is deliberate: two competing glossaries in one repo is the failure mode, not two frameworks agreeing on one. `STANDARDS.md` goes one further — it is linked from `AGENTS.md`, so its rules bind any agent in the repo whether or not an Archie skill is running.
 
 The design decisions behind the framework are in [`CONTEXT.md`](CONTEXT.md) and [`docs/adr/`](docs/adr/). A skill contradicting one of those ADRs is wrong.
 
@@ -64,13 +65,13 @@ The design decisions behind the framework are in [`CONTEXT.md`](CONTEXT.md) and 
 node scripts/validate-skills.mjs
 ```
 
-Run from the repo root. It exits non-zero on any failure and prints one line per failure naming the file and the problem. Fourteen self-contained skills and a manifest listing every one of them is exactly the structure where things rot silently, and the failure only shows up later as a skill quietly skipping a step. This is the bundle's only automated gate.
+Run from the repo root. It exits non-zero on any failure and prints one line per failure naming the file and the problem. Fifteen self-contained skills and a manifest listing every one of them is exactly the structure where things rot silently, and the failure only shows up later as a skill quietly skipping a step. This is the bundle's only automated gate.
 
 It asserts that:
 
 - every `SKILL.md` has frontmatter with a `name` and a `description`, and the name matches its directory
-- exactly the four user-only skills carry `disable-model-invocation: true`, and none of the ten model-invoked ones do — the flag makes a skill unreachable by `/archie-architect`, which is the bug that check exists to catch
-- every skill directory is one of the fourteen the spec names
+- exactly the five user-only skills carry `disable-model-invocation: true`, and none of the ten model-invoked ones do — the flag makes a skill unreachable by `/archie-architect`, which is the bug that check exists to catch
+- every skill directory is one of the fifteen the spec names
 - every skill reference in a skill body resolves to a skill in the bundle
 - **no link in a `SKILL.md` leaves the skill's own directory**, since that is what makes each one installable alone
 - every relative link resolves to a file that exists, across the skills and this README
@@ -92,7 +93,11 @@ General-purpose interviewing, and the only skill in the bundle that knows nothin
 
 ### `/archie-domain-modeling`
 
-General-purpose domain modeling, told nothing about Epics or the tree, so it also works on its own when you just want a term pinned down. Two disjoint destinations: a term to the `CONTEXT.md` glossary, a decision clearing the [ADR bar](skills/archie-domain-modeling/references/ADR-FORMAT.md) to `docs/adr/`. It writes as things resolve rather than at the end, because a conversation is not storage. A term conflicting with the glossary, or language too fuzzy or overloaded to enter it, interrupts the session rather than being quietly recorded, and a claim about how something works is checked against the code before it is written down — the one check no other skill makes. A decision that contradicts an existing ADR interrupts too, and the skill that noticed hands it here rather than resolving it, so amend-or-supersede is decided once by whoever writes the file: a sharpening amends its ADR in place, a reversal supersedes it. Both files are created lazily, by the first thing that needs them. The third durability level, the residue in `epic.md`, is `/archie-architect`'s ([ADR 0007](docs/adr/0007-three-durability-levels-for-decisions.md)).
+General-purpose domain modeling, told nothing about Epics or the tree, so it also works on its own when you just want a term pinned down. Two disjoint destinations: a term to the `CONTEXT.md` glossary, a decision clearing the [ADR bar](skills/archie-domain-modeling/references/ADR-FORMAT.md) to `docs/adr/`. It writes as things resolve rather than at the end, because a conversation is not storage. A term conflicting with the glossary, or language too fuzzy or overloaded to enter it, interrupts the session rather than being quietly recorded, and a claim about how something works is checked against the code before it is written down — the one check no other skill makes. A decision that contradicts an existing ADR interrupts too, and the skill that noticed hands it here rather than resolving it, so amend-or-supersede is decided once by whoever writes the file: a sharpening amends its ADR in place, a reversal supersedes it. Both files are created lazily, by the first thing that needs them. The other durability levels — the residue in `epic.md` and the coding standards in `STANDARDS.md` — belong to `/archie-architect` and `/archie-standards` ([ADR 0007](docs/adr/0007-four-durability-levels-for-decisions.md)).
+
+### `/archie-standards`
+
+General-purpose like its sibling, told nothing about Epics or the tree. It records **coding standards** — the user's rules for how code is written, each worded so a reviewer can check a diff against it and answer yes or no — in `STANDARDS.md` at the repo root, following [its format](skills/archie-standards/references/STANDARDS-FORMAT.md). A stated preference is the request: the user saying how they want code written is the instruction to record it, and only edits to *existing* standards wait to be asked for. Where an ADR carries the why, a standard carries the enforceable rule; one decision can produce both, never cross-linked, and the ADR half is the user's to route. A new rule contradicting an existing one interrupts the session before anything is written, because two contradicting rules make the whole file unenforceable. The first standard creates the file and links it from `AGENTS.md`, which is what makes the rules bind any agent in the repo — `/archie-tdd` reads them before writing code, `/archie-review`'s Standards axis enforces them, and an agent running no skill at all still finds them in context. A separate skill from `/archie-domain-modeling` because standards crystallise in any phase, including implementation, where the planning docs are never written ([ADR 0007](docs/adr/0007-four-durability-levels-for-decisions.md)).
 
 ### `/archie-research`
 
