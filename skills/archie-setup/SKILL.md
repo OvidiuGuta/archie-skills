@@ -6,38 +6,35 @@ disable-model-invocation: true
 
 # Set up Archie
 
-The conventions ship inside this bundle, so the only per-repo work is recording the **facts** an agent cannot guess: the gate commands, how to start the real app, and where the good test prior art lives.
+The conventions ship inside this bundle, so the only per-repo work is recording the **facts** an agent cannot guess: the gate commands, how to start the real app, and the branch and commit conventions. Everything else about the repo — the harness behind a test command, the specs new tests should match, the seed practice — is readable from the code, so it is not recorded.
 
 Explore, present, confirm, then write. Nothing reaches disk before the user has seen the draft.
 
 ## 1. Explore
 
-Fill in every fact below from the repo. A fact is settled only when you have **read the command or the path in a file**. Everything else is `unknown` — a real answer, and the one that stops a later skill from trying `npm start` on a repo that has no such script.
+Fill in every fact below from the repo. A fact is settled only when you have **read the command or the value in a file** — anything else becomes a question for the user in step 2.
 
 | Fact | Where it is written |
 | --- | --- |
 | Package manager | the lockfile, `packageManager` in `package.json`, the CI workflow |
-| Lint, typecheck, test, build | `package.json` scripts, `Makefile`, `justfile`, `nx.json` targets, `turbo.json`, `pyproject.toml`, `Cargo.toml`. The CI workflow is the best source of all four: it shows which ones actually run, and how they are scoped in a monorepo |
-| Run the app, and its port | the dev script, `docker-compose.yml`, `Procfile`, the README quickstart; the port in the dev server config, the e2e `baseURL`, or `.env.example` |
-| E2E harness | `playwright.config.*`, `cypress.config.*`, and the directory its specs sit in |
-| Unit and integration test prior art | the existing specs. Pick one file per layer that a new test should be modelled on: recently touched, and asserting real behaviour rather than smoke-checking. Name the file, not its directory |
-| Seed data and test credentials | seed and fixture scripts, `.env.example`, `docker-compose` env, the e2e global-setup file, the README |
+| Lint, typecheck, test, test-e2e, build | `package.json` scripts, `Makefile`, `justfile`, `nx.json` targets, `turbo.json`, `pyproject.toml`, `Cargo.toml`. The CI workflow is the best source of all five: it shows which ones actually run, and how they are scoped in a monorepo |
+| Run the app, and its URL | the dev script, `docker-compose.yml`, `Procfile`, the README quickstart; the port in the dev server config, the e2e `baseURL`, or `.env.example` |
 | Branch convention | `git branch -a`, the merged branches on the remote, and the default branch's name |
 | Commit convention | `git log --oneline -30`, a `commitlint` or `.czrc` config, `CONTRIBUTING.md` |
 
-**`unknown` is a value, not a gap.** A skill that reads one asks the user rather than guessing, and there is no greenfield mode: a fresh repo takes the same path and simply records more `unknown`s. On a greenfield repo the stack is not chosen yet, and choosing it is cross-cutting and hard to reverse — that belongs to the root Epic's scoping session and lands as an ADR, not as a setup output.
+There is no greenfield mode: a fresh repo takes the same path and simply records fewer lines. Choosing the stack there is cross-cutting and hard to reverse — that belongs to the root Epic's scoping session and lands as an ADR, not as a setup output.
 
-Done when every row holds either a value read out of the repo or `unknown`.
+Done when every fact holds either a value read out of the repo or a question for the user.
 
 ## 2. Present and confirm
 
 One message, then wait:
 
 - The drafted facts block, verbatim as it will appear in `AGENTS.md`.
-- Every `unknown`, named, with a direct question. The user knows the port and the test login even when nothing in the repo says so, and this is the cheapest moment to get them.
+- Every fact the repo did not settle, named, with a direct question and two ways to answer: give the value, or say **remove** and the line is left out. The user knows the port and the e2e command even when nothing in the repo says so, and this is the cheapest moment to get them.
 - The ignore file amendment from step 4, if one is needed.
 
-Let the user correct the draft before anything is written.
+Let the user correct the draft before anything is written. Only answered lines reach disk: the block never carries a placeholder, and a removed fact is simply a line the section does not have.
 
 ## 3. Write the facts section
 
@@ -51,22 +48,17 @@ The facts live in a delimited section of `AGENTS.md` at the repo root, which is 
 - **Lint:** `pnpm lint`
 - **Typecheck:** `pnpm typecheck`
 - **Test:** `pnpm test`
+- **Test e2e:** `pnpm e2e`
 - **Build:** `pnpm build`
 - **Run the app:** `pnpm dev`, served on http://localhost:4200
-- **E2E harness:** Playwright, specs in `apps/web-e2e/src/`
-- **Unit test prior art:** `libs/scheduling/src/lib/shift.service.spec.ts`
-- **Integration test prior art:** `apps/api-e2e/src/api/shift.spec.ts`
-- **Seed data and test credentials:** unknown
 - **Branch convention:** `feat/<slug>` off `main`
 - **Commit convention:** conventional commits, e.g. `feat(ui): users can change their avatar`
 <!-- archie:facts:end -->
 ```
 
-One line per fact, each command written exactly as it is run, and prior art naming real files whose style new tests should match. **Replace the whole block between the markers**, so hand-written content in `AGENTS.md` survives untouched. No markers means the section does not exist yet: append it at the end, creating the file if the repo has none.
+One line per fact, each command written exactly as it is run. **Replace the whole block between the markers**, so hand-written content in `AGENTS.md` survives untouched — the file is the user's, and outside the markers nothing is edited. No markers means the section does not exist yet: append it at the end, creating the file if the repo has none.
 
-The section is **living**. Any skill that later finds a fact wrong, or creates a gate the repo lacked, writes the correction back in the same run — so re-running this skill is for a genuine change of stack rather than for filling a gap.
-
-If `CLAUDE.md` exists and does not reach `AGENTS.md`, add an `@AGENTS.md` import line to it, so the facts are in context where the user's agent actually reads.
+Then make sure the facts are in context where the user's agent actually reads: if `CLAUDE.md` is missing, create it containing a single `@AGENTS.md` line; if it exists and does not reach `AGENTS.md`, add that import to it.
 
 ## 4. Keep `.archie/` committed
 
@@ -80,4 +72,4 @@ When the pattern comes from a global excludes file, report it to the user instea
 
 ## 5. Report
 
-One message: the facts recorded, and each remaining `unknown` with the skill that will ask for it.
+One message: the facts recorded, and the lines left out at the user's word.

@@ -27,7 +27,7 @@ Done when you hold one Specified, undesigned leaf and its Spec read end to end.
 
 ## 2. Survey by precedent
 
-Read the code this leaf lands in, and the test prior art this repo already has — the **Integration test prior art** line in `AGENTS.md` names it.
+Read the code this leaf lands in, and the test prior art this repo already has — the integration specs nearest this leaf's area, recently touched and asserting real behaviour rather than smoke-checking. Hold them as the pattern the new tests match.
 
 For each checklist heading below, find the **nearest existing example** in this repo and hold it as the default. That turns every question in step 3 from "how should we build this" into "the repo already does it this way — follow it, or diverge", which is answerable with a letter and puts the burden of a reason where it belongs: on the divergence.
 
@@ -73,7 +73,7 @@ The user reacts in their own words, and you record what the reaction settles lik
 
 A **seam** is where this leaf's integration tests attach. It spans every Task in the leaf, and it is expensive to move once implementation has run against it. Choose under three constraints, in this order:
 
-- **Prefer an existing seam** — the one `AGENTS.md` names as prior art. A new seam is test surface the project has to keep working.
+- **Prefer an existing seam** — one the repo's integration tests already attach to. A new seam is test surface the project has to keep working.
 - **Sit as high as possible.** A high seam survives the refactors underneath it; a low one pins internals the engineer should be choosing.
 - **Use as few as possible.** One is ideal.
 

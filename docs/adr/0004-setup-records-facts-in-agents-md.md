@@ -1,5 +1,7 @@
 # Setup records discovered project facts in AGENTS.md, and conventions ship inside the skills
 
+> The `unknown` value and the living section are superseded by [`0015-facts-are-user-confirmed-lines.md`](0015-facts-are-user-confirmed-lines.md).
+
 `setup-mattpocock-skills` existed to let a repo *choose* its issue tracker, label strings, and domain doc layout, writing those choices into `docs/agents/*.md` for the skills to look up. This framework fixes all of them by design: local markdown under `.archie/`, two labels, four task statuses, one `CONTEXT.md` and one `docs/adr/`. Nothing is left to choose, so those files were answering questions nobody asks any more and have been deleted. The conventions now live as reference files inside the skill bundle rather than as per-repo config. How those files reach each skill is superseded by [`0008-reference-set-fans-out-per-skill.md`](0008-reference-set-fans-out-per-skill.md).
 
 What genuinely varies per repo is the set of **facts** an agent cannot guess: the exact lint, typecheck, test and build commands, how to start the real app, where the good test prior art lives, the package manager, and the branch and commit conventions. `/archie-setup` explores, confirms with the user, and records those in a delimited section of **`AGENTS.md`** rather than a separate file, because `AGENTS.md` is already in every agent's context and needs no indirection.

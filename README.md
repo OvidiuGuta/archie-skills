@@ -51,7 +51,7 @@ The conventions are fixed by the framework rather than chosen per repo, so each 
 
 Everything else a skill needs — the facts section format, the task file's shape, the ADR bar — is a paragraph in the skill that uses it. A framework concept lives in exactly one skill, the one whose job it is: the altitude gate is `/archie-architect`'s, and the skills it composes are told nothing about it ([ADR 0012](docs/adr/0012-a-skill-states-only-its-own-discipline.md)). A Task's contract is one task file and one `spec.md`, so the implementing skills read no framework conventions at all: see [ADR 0010](docs/adr/0010-implementing-is-one-build-one-review-one-fix.md).
 
-What genuinely varies per repo is **facts**, not conventions: the lint, typecheck, test and build commands, how to start the real app, and where the good test prior art lives. `/archie-setup` records those in `AGENTS.md`, writing `unknown` for anything it cannot determine, and any skill that later learns the answer writes it back.
+What genuinely varies per repo is **facts**, not conventions: the package manager, the gate commands, how to start the real app, and the branch and commit conventions. `/archie-setup` records those in a delimited block of `AGENTS.md`; anything it cannot read out of the repo is asked of the user, who gives the value or removes the line, so the block only ever carries real answers. The file is the user's — no skill writes to it beyond that block ([ADR 0015](docs/adr/0015-facts-are-user-confirmed-lines.md)).
 
 `CONTEXT.md` and `docs/adr/` are the **repo's** domain docs, not Archie's. Archie reads and writes them, and so does anything else that keeps a glossary and ADRs at the root. That sharing is deliberate: two competing glossaries in one repo is the failure mode, not two frameworks agreeing on one.
 
@@ -83,7 +83,7 @@ Each skill is documented here by the ticket that builds it, while the knowledge 
 
 ### `/archie-setup`
 
-User-callable. Records this repo's facts in `AGENTS.md` and keeps `.archie/` out of the ignore file so planning is committed. It explores, shows the draft, and writes only once the user has confirmed it; anything it cannot read out of the repo is recorded as `unknown` and asked about rather than guessed at. Re-running rewrites the delimited facts block and leaves the rest of `AGENTS.md` untouched.
+User-callable. Records this repo's facts in `AGENTS.md`, makes sure a `CLAUDE.md` imports them, and keeps `.archie/` out of the ignore file so planning is committed. It explores, shows the draft, and writes only once the user has confirmed it; a fact it cannot read out of the repo is a direct question, answered with a value or with *remove*, so no placeholder is ever written. Re-running rewrites the delimited facts block and leaves the rest of `AGENTS.md` untouched.
 
 ### `/archie-interview`
 
