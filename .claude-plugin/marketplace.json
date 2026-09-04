@@ -4,7 +4,7 @@
     "name": "Ovidiu Guta",
     "url": "https://github.com/OvidiuGuta"
   },
-  "description": "Archie's engineering skill bundle, grouped by the two phases it runs in.",
+  "description": "Archie's engineering skill bundle, grouped by the phases it runs in.",
   "plugins": [
     {
       "name": "archie-planning",
@@ -27,13 +27,21 @@
     {
       "name": "archie-implementing",
       "source": "./",
-      "description": "Implementing: take one Task test-first through review to ready-for-review, or get guided through the hands-on ones. Requires Archie Planning.",
+      "description": "Implementing: build one Task inline or a whole leaf Epic through engineer sub-agents, or get guided through the hands-on ones. Requires Archie Planning.",
       "category": "engineering",
       "skills": [
         "./skills/archie-implement",
         "./skills/archie-assist",
-        "./skills/archie-tdd",
-        "./skills/archie-code-review"
+        "./skills/archie-tdd"
+      ]
+    },
+    {
+      "name": "archie-reviewing",
+      "source": "./",
+      "description": "Reviewing: grade a PR, branch or Epic for mergeability and turn findings into the next fix Task. Requires Archie Implementing.",
+      "category": "engineering",
+      "skills": [
+        "./skills/archie-review"
       ]
     }
   ]

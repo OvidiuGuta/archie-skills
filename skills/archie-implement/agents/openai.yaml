@@ -1,3 +1,3 @@
 interface:
   display_name: "Archie: Implement"
-  short_description: "Take one agent Task to ready-for-review: build, review, fix, test plan"
+  short_description: "Build one Task inline or a whole leaf Epic through engineer sub-agents, ending on a walkthrough"

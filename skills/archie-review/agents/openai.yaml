@@ -1,0 +1,3 @@
+interface:
+  display_name: "Archie: Review"
+  short_description: "Grade a PR, branch or Epic for mergeability on two axes and turn findings into the next fix Task"

@@ -28,6 +28,7 @@ const USER_ONLY_SKILLS = [
   'archie-setup',
   'archie-architect',
   'archie-implement',
+  'archie-review',
   'archie-assist',
 ]
 const MODEL_INVOKED_SKILLS = [
@@ -40,7 +41,6 @@ const MODEL_INVOKED_SKILLS = [
   'archie-research',
   'archie-prototype',
   'archie-tdd',
-  'archie-code-review',
 ]
 const ROSTER = new Set([...USER_ONLY_SKILLS, ...MODEL_INVOKED_SKILLS])
 

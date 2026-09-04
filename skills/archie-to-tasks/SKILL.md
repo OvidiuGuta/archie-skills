@@ -74,7 +74,7 @@ One file per Task at `tasks/NN-<slug>.md` inside the leaf, the `Epic:` reference
 - [ ] {…}
 ```
 
-Every Task starts at `Status: todo`. The implementing skills write `in-progress` and `ready-for-review` from there, and `done` is the user's word alone. Statuses live on Tasks and nowhere else, so no `epic.md` carries one to go stale.
+Every Task starts at `Status: todo`. The implementing skills write `in-progress` and `ready-for-review` from there. In task mode `done` is the user's word; in epic mode `/archie-implement` writes it itself after its criteria check, and stamps the leaf's `epic.md` with `Status: ready-for-review` when the last Task lands — the one status an Epic ever carries.
 
 The numbers are the approved list's order at first slice, and thereafter **identity**. A re-slice never renumbers: a surviving Task keeps the number it has, a new one takes the next unused number in the leaf, and a deleted Task leaves a gap that is never backfilled, because reusing a number would make an old reference resolve to different work. A Task is referenced as `3.2#1` — its Epic, then `#`, then its number.
 

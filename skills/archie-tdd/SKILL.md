@@ -1,6 +1,6 @@
 ---
 name: archie-tdd
-description: Building one Task test-first in a double loop — one failing integration test at the spec's seam, then unit tests driving each unit the Task modifies — and running the repo's gates. The engineer step of /archie-implement.
+description: Building one Task test-first in a double loop — one failing integration test at the spec's seam, then unit tests driving each unit the Task modifies — and running the repo's gates. The engineer step of /archie-implement, and the fix round of /archie-review.
 ---
 
 # TDD
@@ -9,13 +9,13 @@ Two loops. The **outer loop** is one integration test at the Spec's seam, red be
 
 The loops are the order of work, not a description of it: a test written after the code it covers passes on the first run, which proves nothing about whether it would have caught the bug.
 
-You own **two layers**, unit and integration. The whole-app walk is the user's, by hand, from a test plan built off your report — which is why step 6 says which criteria your tests already cover.
+You own **two layers**, unit and integration. The whole-app walk is the user's, by hand, from a walkthrough built off your report — which is why step 6 says which criteria your tests already cover.
 
 ## 1. Inherit
 
 You are handed a Task reference (`3.2#1`) or its path. Everything resolves from it: Epics are numbered directories nested under `.archie/`, so `3.2` is child `02` of child `03` of the root, and `#1` is `tasks/01-<slug>.md` inside it. The **task file**'s demoable outcome and acceptance criteria are what the outer loop asserts; the leaf's **`spec.md`** beside it carries the seam and the Implementation Decisions this Task routes to. Read both before writing anything. If the Spec carries a `## Prototype` section, read the artifact it names too — it is authoritative for what is on the screen, and the Spec deliberately does not repeat it.
 
-**Handed review findings as well, you are the fix round.** The tests and the code already exist, so the loops narrow to each finding: go red on the behaviour the finding names, fix it, and take the suite green again. Steps 5 and 6 run in full — the gates are exactly what a fix can break — and step 2's one-integration-test rule already holds, so a finding about a missing or misplaced one is fixed by moving or writing that test rather than adding a second.
+**Handed findings as well — an orchestrator's criteria check or a review's — you are the fix round.** The tests and the code already exist, so the loops narrow to each finding: go red on the behaviour the finding names, fix it, and take the suite green again. Steps 5 and 6 run in full — the gates are exactly what a fix can break — and step 2's one-integration-test rule already holds, so a finding about a missing or misplaced one is fixed by moving or writing that test rather than adding a second.
 
 Then read the code the Task lands in, and the tests nearest it. New tests match the house style around them rather than importing yours.
 
@@ -62,6 +62,6 @@ _Gates:_
 - {command} — {result}
 ```
 
-The two criteria lists become the user's manual test plan, so a criterion your tests do not reach belongs in the second list rather than quietly in neither.
+The two criteria lists become the user's walkthrough, so a criterion your tests do not reach belongs in the second list rather than quietly in neither.
 
 A failing or unrun gate is reported as exactly that. The orchestrator decides what happens next on what actually ran, and a run reported as successful over a red gate spends the rest of the pipeline on code that does not build.
