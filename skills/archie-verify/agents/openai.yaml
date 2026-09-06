@@ -1,0 +1,3 @@
+interface:
+  display_name: "Archie: Verify"
+  short_description: "Prove a leaf Epic holds at its seam, fixing bugs and reporting gaps"

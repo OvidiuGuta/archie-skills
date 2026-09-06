@@ -33,7 +33,8 @@
       "skills": [
         "./skills/archie-implement",
         "./skills/archie-assist",
-        "./skills/archie-tdd"
+        "./skills/archie-tdd",
+        "./skills/archie-verify"
       ]
     },
     {

@@ -24,6 +24,10 @@ The description of what to build for one Specified Epic. Its own file inside the
 **Task**:
 One unit of buildable work derived from a Spec, and the unit the implementing skills consume — `/archie-implement` when its label says an agent can build it, `/archie-assist` when it needs a person. Referenced as `3.2#1`.
 
+**Closing Task**:
+The last Task of a Specified Epic, and the one that writes the leaf's integration tests at the seam once every other Task has built its units. Marked by its `Integration: this Task` line rather than by its number, so a re-slice adds Tasks to its blocking edges and never dislodges it. A leaf whose Spec marked the seam not-applicable has none, which is how a repo with no integration harness opts out.
+_Avoid_: QA task, E2E task, verification task
+
 **Walkthrough**:
 The report an implementing run ends on: one summary paragraph, then the acceptance criteria no test reaches written as steps through the running app someone can follow without reading the code. There is no browser-driven E2E in the pipeline, so the walkthrough is what stands between a finished run and a criterion nobody checked. Criteria the tests cover stay out of it.
 _Avoid_: test plan
@@ -32,7 +36,7 @@ _Avoid_: test plan
 The mergeability verdict a review ends on, per axis and overall, where overall is the worse of the two: 🟢 mergeable, 🟠 mergeable with reservations, 🔴 needs work. A review's findings list carries only what needs fixing; the grade carries everything else.
 
 **Seam**:
-Where a feature's integration tests attach. Fixed in a Specified Epic's Spec, spanning every Task in that leaf, which is what puts it at altitude for the Spec and leaves each module's internals to the Task that builds it. Chosen by preferring one the repo already uses, sitting as high as possible, and using as few as possible — which is unjudgeable until the module surface underneath it is known, so it is confirmed in the Design session rather than alongside the Spec's what. Once baked in it is expensive to move.
+Where a feature's integration tests attach. Fixed in a Specified Epic's Spec, spanning every Task in that leaf — every Task builds against it and the Closing Task writes the tests on it — which is what puts it at altitude for the Spec and leaves each module's internals to the Task that builds it. Chosen by preferring one the repo already uses, sitting as high as possible, and using as few as possible — which is unjudgeable until the module surface underneath it is known, so it is confirmed in the Design session rather than alongside the Spec's what. Once baked in it is expensive to move.
 _Avoid_: test boundary, integration point, test hook
 
 **Tracer bullet**:

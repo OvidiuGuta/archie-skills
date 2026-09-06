@@ -32,6 +32,14 @@ Two things shape the sequence:
 - **Prefactoring first.** Where the existing code has to move before the feature can be threaded through it cheaply, that move is its own Task, sequenced ahead of the bullets that need it. Prefactoring earns its Task by making the Tasks after it smaller.
 - **Blocking edges.** A Task blocks another when the second genuinely cannot start until the first lands. Edges are the schedule; anything unblocked can run whenever `/archie-implement` reaches it.
 
+### Integration is one closing Task
+
+Ordinary Tasks build their units and **defer integration**: each carries `Integration: deferred to #N`, so the engineer writes unit tests and no seam test. A Task cannot honestly test itself at the seam anyway — the create Task has no delete to tear down with, so the test it writes either leaks state or asserts less than the story does.
+
+The leaf therefore ends on one **closing Task**, blocked by every other Task, whose `Integration:` line reads `this Task`. It covers the whole leaf at the seam, against a feature that is finished. That same line is the router: `/archie-implement` opens `/archie-verify` for it and `/archie-tdd` for everything else. It is a **proposal until step 3**, where the user takes it or leaves it.
+
+A leaf whose Spec marked the seam not-applicable gets no closing Task, and its Tasks carry no `Integration:` line — there is no seam to test, at either end.
+
 Give each Task its label — `ready-for-agent` when an agent builds it end to end, `ready-for-human` when it needs a third-party UI, a secret or an account that only the user can supply.
 
 Then write the acceptance criteria: **observable outcomes, not instructions**, no file paths, no code, so they still read true weeks later. Each one is walked against the running app at the end of its Task's build, so a criterion nobody can watch happen is not one. The criteria are the **demoable outcome decomposed**, which is why step 3 asks about the outcome and not about them: the user judges the outcome here, and every criterion under it gets walked at the end of that Task's own run.
@@ -45,10 +53,12 @@ Present the whole breakdown as a numbered list, each line the Task's title, its 
 ```md
 1. **Store a reset token** — a token row survives a request and expires on schedule. Blocked by: none.
 2. **Request a reset** — a user submits their email and receives a reset link. Blocked by: #1.
+3. **Verify the leaf at the seam** — the Spec's stories hold end to end. Blocked by: #1, #2.
 ```
 
-Then ask, through `/archie-interview`, about the two things the user can judge better than you:
+Then ask, through `/archie-interview`, about the three things the user can judge better than you:
 
+- **The closing Task** — integration pooled at the end of the leaf, or written inside each Task as it is built. Declined, the closing Task and every `Integration:` line go, and `/archie-tdd` writes one seam test per Task as its outer loop.
 - **Granularity** — is any Task hiding a second outcome, and is any pair really one?
 - **Edges** — is anything sequenced that could run free, or free that should be blocked?
 
@@ -67,6 +77,7 @@ One file per Task at `tasks/NN-<slug>.md` inside the leaf, the `Epic:` reference
 **Status:** todo
 **Label:** ready-for-agent
 **Blocked by:** {#2, or "None — can start immediately"}
+**Integration:** deferred to {#N}
 
 **Demoable outcome:** {the one end-to-end behaviour this Task makes work, seen from the outside}
 
@@ -74,9 +85,13 @@ One file per Task at `tasks/NN-<slug>.md` inside the leaf, the `Epic:` reference
 - [ ] {…}
 ```
 
+The closing Task uses that same file: `Integration: this Task`, `Blocked by` every other Task, `ready-for-agent`, its demoable outcome the leaf's Spec holding at the seam, and one criterion saying so. It is a Task like any other: same statuses, same review path.
+
 Every Task starts at `Status: todo`. The implementing skills write `in-progress` and `ready-for-review` from there. In task mode `done` is the user's word; in epic mode `/archie-implement` writes it itself after its criteria check, and stamps the leaf's `epic.md` with `Status: ready-for-review` when the last Task lands — the one status an Epic ever carries.
 
 The numbers are the approved list's order at first slice, and thereafter **identity**. A re-slice never renumbers: a surviving Task keeps the number it has, a new one takes the next unused number in the leaf, and a deleted Task leaves a gap that is never backfilled, because reusing a number would make an old reference resolve to different work. A Task is referenced as `3.2#1` — its Epic, then `#`, then its number.
+
+The closing Task is identified by its `Integration:` line, not by its position, so a re-slice adds the new Tasks to its `Blocked by` and renumbers nothing. It stays last in the schedule wherever its number sits.
 
 Keep file paths and code out of them, so a Task still reads true weeks later when the code around it has moved.
 

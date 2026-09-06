@@ -7,13 +7,15 @@ description: Building a change test-first in a double loop — one failing integ
 
 Two loops. The **outer loop** is one integration test at the seam, red before any implementation exists, and it stays red until the outcome actually works. The **inner loop** is red-green-refactor over each unit the change modifies, inside that outer red.
 
+Not every change gets both: a Task that **defers integration** to its leaf's closing Task runs the inner loop alone (step 2).
+
 The loops are the order of work, not a description of it: a test written after the code it covers passes on the first run, which proves nothing about whether it would have caught the bug.
 
 You own **two layers**, unit and integration. The whole-app walk is the user's, by hand, from a walkthrough built off your report — which is why step 6 says which criteria your tests already cover.
 
 ## 1. Inherit
 
-**Handed a Task reference (`3.2#1`) or its path**, everything resolves from it: Epics are numbered directories nested under `.archie/`, so `3.2` is child `02` of child `03` of the root, and `#1` is `tasks/01-<slug>.md` inside it. The **task file**'s demoable outcome and acceptance criteria are what the outer loop asserts; the leaf's **`spec.md`** beside it carries the seam and the Implementation Decisions this Task routes to. Read both before writing anything. If the Spec carries a `## Prototype` section, read the artifact it names too — it is authoritative for what is on the screen, and the Spec deliberately does not repeat it.
+**Handed a Task reference (`3.2#1`) or its path**, everything resolves from it: Epics are numbered directories nested under `.archie/`, so `3.2` is child `02` of child `03` of the root, and `#1` is `tasks/01-<slug>.md` inside it. The **task file**'s demoable outcome and acceptance criteria are what the outer loop asserts; the leaf's **`spec.md`** beside it carries the seam and the Implementation Decisions this Task routes to. Read both before writing anything, including the task file's `Integration:` line, which says whether the seam is yours. If the Spec carries a `## Prototype` section, read the artifact it names too — it is authoritative for what is on the screen, and the Spec deliberately does not repeat it.
 
 **Handed findings as well — an orchestrator's criteria check or a review's — you are the fix round.** The tests and the code already exist, so the loops narrow to each finding: go red on the behaviour the finding names, fix it, and take the suite green again. Steps 5 and 6 run in full — the gates are exactly what a fix can break — and step 2's one-integration-test rule already holds, so a finding about a missing or misplaced one is fixed by moving or writing that test rather than adding a second.
 
@@ -25,7 +27,7 @@ Then read the code the change lands in, and the tests nearest it. New tests matc
 
 Write **one** integration test at the seam, derived from the acceptance criteria, and run it. One test, at the seam step 1 settled — not a suite, and not at a seam you find more convenient. Once baked in, a seam is expensive to move.
 
-**No seam, no outer loop.** Absent means you can name what is missing: no integration harness in the repo, or a change whose whole effect is what a screen looks like. Then the inner loop runs alone and step 6 reports the outer loop absent with that reason.
+**The outer loop is not always yours**, in two cases that end the same way — the inner loop runs alone, and step 6 says which it was. **Deferred**: the task file's `Integration:` line names the closing Task that covers the whole leaf once the feature is finished, so a seam test written here is work that Task does again with more to test it against. **No seam**: no integration harness in the repo, or a change whose whole effect is what a screen looks like.
 
 Read the failure. **Red for the right reason** means it fails because the behaviour is missing, not because a path is wrong or a fixture is unwired: a test that errors before it reaches its assertion has established nothing.
 
@@ -55,7 +57,7 @@ A gate the repo genuinely does not have is reported as absent and left unrun. A 
 
 ```md
 _Built:_ {the Task reference and title, or the change in a phrase}
-{What you built, in two or three lines: the seam the outer test sits at — or that the outer loop is absent, and why — and the units covered.}
+{What you built, in two or three lines: the seam the outer test sits at — or that the outer loop is deferred or absent, and why — and the units covered.}
 
 _Criteria covered by tests:_
 - {criterion} — {the test that covers it}

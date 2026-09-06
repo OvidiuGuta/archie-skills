@@ -1,14 +1,6 @@
-Architect phase:
-- archie-to-spec is ran imedietly after specify in the same session because the user has nothing more to add
-- prototype should be constructured on a throw-away branch. Also, we don't need the gate anymore since it's on a throwaway branch. Also, present to the user more clearly how he needs to look at the prototype. Also. make sure no tests and don't prune the looses :D. keep it cheep
-- the prototype is almost never suggested. let's make it so it always suggests building a prototype when there is frontend work
+- need a way for the tdd agent to see the 12 code-smells as well as our standards. otherwise there will always be problems in the review. Maybe the 12 smells are the initial standards !!!!!!!!!!!!!!
+- still need a way to make review cheeper especially with fix rounds
+    - maybe when we make the task it we tell make it so the task containes what is needed to make the PR gree
+    - also, the second review pass should be only on the fixes in the fix task instead of re-running the whole thing.
 
-Implementing phase:
-- restructure everything:
-    - /archie-implement can receive aither a task or an epic with sub-tasks. 
-        - if it's a task, it implements it in a /archie-tdd subagent and the "orchestrator" just provides a summary and a manual test plan for the user
-        - if it's an epic, it runs a loop of /archie-tdd subagents and the orchestrator just gives a summary and a test plan to test everything.
-    - /archie-code-review is separate phase at the end, do on an entire chunk of work (branch).
-
-
-also remove disable-model-invocation: true because I can't autocomplete the skills in T3 code
+- I need to try to make the prototype cheeper without loosing quality?! - maybe sub-agents should still be sonet (or lower model) or let the parent model choose but leaning to the lower model.

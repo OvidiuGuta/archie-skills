@@ -57,7 +57,7 @@ It asserts that:
 
 - every `SKILL.md` has frontmatter with a `name` and a `description`, and the name matches its directory
 - no skill carries `disable-model-invocation` — the flag errors out even the user's own autocompleted invocation — and each of the five user-only skills ends its description with the verbatim guard sentence reserving it for explicit user invocation ([ADR 0017](../docs/adr/0017-user-only-skills-gate-by-description-not-flag.md))
-- every skill directory is one of the fifteen the spec names
+- every skill directory is one of the sixteen the spec names
 - every skill reference in a skill body resolves to a skill in the bundle
 - **no link in a `SKILL.md` leaves the skill's own directory**, since that is what makes each one installable alone
 - every relative link resolves to a file that exists, across the skills, the README and these docs

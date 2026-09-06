@@ -9,6 +9,8 @@ One reference — a Task (`3.2#1`) or a leaf Epic (`3.2`) — built test-first. 
 
 A Task reference selects **task mode**: you build it inline and stop dirty for the user to test. An Epic reference selects **epic mode**: you orchestrate an engineer sub-agent per Task, and the engineer writes every line — staying out of the diff is what makes your criteria check honest.
 
+**Which engineer runs a Task is read off its `Integration:` line.** `this Task` is the leaf's closing Task and opens `/archie-verify`, which covers the whole leaf at the seam; anything else opens `/archie-tdd`, whose outer loop that Task deferred. Both report the same shape, so nothing after the dispatch changes.
+
 ## 1. Resolve and gate
 
 Everything resolves from the reference: Epics are numbered directories nested under `.archie/`, so `3.2` is child `02` of child `03` of the root, and `#1` is `tasks/01-<slug>.md` inside it. The leaf's `spec.md` sits beside the `tasks/` folder.
@@ -27,7 +29,7 @@ Done when the reference resolves and every gate has passed.
 
 Set the Task's `Status:` to `in-progress` and record the baseline: `git rev-parse HEAD`.
 
-Invoke `/archie-tdd` **inline, in this conversation** — you are the engineer. **A red gate halts the run**: report the failing command and its output.
+Invoke the Task's engineer **inline, in this conversation** — you are the engineer. **A red gate halts the run**: report the failing command and its output.
 
 Then check every acceptance criterion against `git diff <baseline>` plus the untracked files. A criterion the diff does not meet goes back into the loop until it does or the gap is named.
 
@@ -40,11 +42,12 @@ Run the `ready-for-agent` Tasks in `Blocked by` order, skipping the `done` ones.
 Per Task:
 
 1. Set `Status: in-progress` and record the Task's baseline: `git rev-parse HEAD`.
-2. **Dispatch an engineer as a sub-agent, through the sub-agent (Agent) tool**, with one instruction: run `/archie-tdd` on this Task reference.
+2. **Dispatch an engineer as a sub-agent, through the sub-agent (Agent) tool**, with one instruction: run the Task's engineer skill on this Task reference.
 3. Read the gate results from its report. **A red gate halts the whole run.**
 4. Verify every acceptance criterion yourself against `git diff <task baseline>` plus the untracked files. You read; the engineer writes.
 5. Criteria unmet: **one fix round**. Dispatch the engineer again with exact instructions — the criterion, the file and line, what to change. Unmet after that, halt the run with a short report — what went wrong and a suggested fix — because the user's read is the faster way out of a loop.
-6. Criteria met: set `Status: done`, commit following the repo's commit conventions (default `<reference>: <task title>`), and give a one-line readout — reference, gate results, verdict, commit SHA — before moving on.
+6. A **gap** in a `/archie-verify` report — a user story no Task ever built — halts the run. There is no Task for that behaviour and no criteria to build it against, so a fix round has nothing to bite on. Report what is missing and name `/archie-to-tasks`.
+7. Criteria met: set `Status: done`, commit following the repo's commit conventions (default `<reference>: <task title>`), and give a one-line readout — reference, gate results, verdict, commit SHA — before moving on.
 
 After the last Task, write `Status: ready-for-review` into the leaf's `epic.md`, give the step 4 report, offer to create a PR, and name `/archie-review` as the next phase — it runs in its own session.
 
@@ -62,6 +65,6 @@ _Built:_ {reference} — {title}
 - {…}
 ```
 
-The walkthrough is the criteria the tests cannot reach, written as steps someone follows through the running app without reading the code. Criteria the tests already cover stay out — the suite says so. In epic mode the paragraph covers all Tasks and the walkthrough gets a sub-heading per Task.
+The walkthrough is the criteria the tests cannot reach, written as steps someone follows through the running app without reading the code. Criteria the tests already cover stay out — the suite says so. In epic mode the paragraph covers all Tasks and the walkthrough gets a sub-heading per Task, the closing Task's section written from its `No test reaches` list — the leaf-level walk.
 
 The session stays open after the report: the user's review is theirs to run — code, taste, UI — and their change requests are honored inline or written up as a new Task in the epic, at their word.

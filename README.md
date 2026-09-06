@@ -4,7 +4,7 @@
 
 # Archie
 
-A four-phase way of working with AI agents: **Setup**, **Planning** (HITL), **Implementing** (AFK) and **Reviewing**. Implementing and Reviewing loop until the branch grades mergeable, and Planning restarts the cycle on the next Epic. This repo is Archie's engineering skill bundle — fifteen skills, installable whole or by phase. It replaces mattpocock/skills.
+A four-phase way of working with AI agents: **Setup**, **Planning** (HITL), **Implementing** (AFK) and **Reviewing**. Implementing and Reviewing loop until the branch grades mergeable, and Planning restarts the cycle on the next Epic. This repo is Archie's engineering skill bundle — sixteen skills, installable whole or by phase. It replaces mattpocock/skills.
 
 Planning is a conversation rather than a document. It runs in four steps, each ending on a sign-off so each is its own session, with `/archie-architect` as the router that reads which step an Epic is at off its own files. Implementing builds one Task inline or a whole leaf Epic through engineer sub-agents, and Reviewing grades the branch and turns accepted findings into the next fix Task.
 
@@ -15,7 +15,7 @@ Archie runs at three depths, and the same install runs any of them. Pick one per
 | | **lite** | **medium** | **full** |
 | --- | --- | --- | --- |
 | Plan | `/archie-interview` | + `/archie-domain-modeling` | `/archie-architect` over its four steps |
-| Build | `/archie-tdd` | `/archie-tdd` | `/archie-implement` → `/archie-tdd` |
+| Build | `/archie-tdd` | `/archie-tdd` | `/archie-implement` → `/archie-tdd`, then `/archie-verify` |
 | Review | — | `/archie-review`, Standards axis | `/archie-review`, both axes |
 | Records | `/archie-standards` | + `/archie-setup` | everything |
 
@@ -66,12 +66,13 @@ flowchart LR
 
 ```mermaid
 flowchart LR
-  IM["/archie-implement"] --> TD["/archie-tdd"]
+  IM["/archie-implement"] --> TD["/archie-tdd<br/>units only"]
   TD --> CR["criteria checked<br/>against the diff"]
   CR -- "unmet, one fix round" --> TD
   CR -- "met" --> CM["commit"]
   CM -- "next Task" --> TD
-  CM -- "leaf done" --> T3[/"a commit per Task<br/>leaf at ready-for-review<br/>walkthrough of what no test covers"/]
+  CM -- "closing Task" --> VF["/archie-verify<br/>the leaf at its seam"]
+  VF --> T3[/"a commit per Task<br/>leaf at ready-for-review<br/>walkthrough of what no test covers"/]
 ```
 
 **Reviewing** — grades the branch, and its output is the next phase's input.
@@ -92,7 +93,7 @@ Nothing on disk records which flow a repo is using, and no rule keeps them apart
 npx skills@latest add OvidiuGuta/archie-skills --skill '*'
 ```
 
-Installs all fifteen skills into whichever agents the installer detects. Upgrade with `npx skills@latest update`.
+Installs all sixteen skills into whichever agents the installer detects. Upgrade with `npx skills@latest update`.
 
 Archie also ships in **phases you can install separately**. Drop `--skill '*'` and the installer shows them as groups you can tick whole:
 
@@ -136,6 +137,7 @@ One page each, written by the ticket that built the skill.
 
 - [`/archie-implement`](manual/skills/archie-implement.md) — one Task inline, or a whole leaf Epic autonomously
 - [`/archie-tdd`](manual/skills/archie-tdd.md) — the double loop, and the build half of every flow
+- [`/archie-verify`](manual/skills/archie-verify.md) — the closing Task: the leaf's integration tests at its seam
 - [`/archie-assist`](manual/skills/archie-assist.md) — guide a `ready-for-human` Task and verify the result
 
 **Reviewing**

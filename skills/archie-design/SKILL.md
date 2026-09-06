@@ -71,7 +71,7 @@ The user reacts in their own words, and you record what the reaction settles lik
 
 ### The seam is the one heading with rules
 
-A **seam** is where this leaf's integration tests attach. It spans every Task in the leaf, and it is expensive to move once implementation has run against it. Choose under three constraints, in this order:
+A **seam** is where this leaf's integration tests attach. Every Task builds against it and the leaf's closing Task writes the tests on it, so it spans the whole leaf and is expensive to move once implementation has run. Choose under three constraints, in this order:
 
 - **Prefer an existing seam** — one the repo's integration tests already attach to. A new seam is test surface the project has to keep working.
 - **Sit as high as possible.** A high seam survives the refactors underneath it; a low one pins internals the engineer should be choosing.
