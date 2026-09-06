@@ -21,7 +21,9 @@ You own **two layers**, unit and integration. The whole-app walk is the user's, 
 
 **Handed the change itself — a prompt, or the shared understanding an interview closed on in this session — there is no task file and no `spec.md`.** Write the demoable outcome and the acceptance criteria back as a short list, and stop for the user's word before writing a test. They are the whole contract in this mode, so building against the wrong ones spends the whole run. The seam is the one the repo already uses nearest this change.
 
-Then read the code the change lands in, and the tests nearest it. New tests match the house style around them rather than importing yours. If `AGENTS.md` links a coding-standards file, read it too — its rules bind every line you write. No link means there are no standards.
+Then read the code the change lands in, and the tests nearest it. New tests match the house style around them rather than importing yours.
+
+Read **`STANDARDS.md`** — or whichever coding-standards file `AGENTS.md` links, in a repo Archie did not set up. Its rules bind every line you write, and they are the same rules `/archie-review` grades this change against, so a rule read here is a review round you do not spend. A repo with neither has no standards.
 
 ## 2. Outer loop: go red at the seam
 

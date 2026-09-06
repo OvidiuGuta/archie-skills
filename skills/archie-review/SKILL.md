@@ -7,8 +7,8 @@ description: Grading a PR, the current branch, or an Epic for mergeability on tw
 
 One change graded for mergeability, in two parallel axis sub-agents:
 
-- **Spec** — does the diff do what the leaf's `spec.md` and its task files asked? Runs only when an Epic supplies those contracts.
-- **Standards** — does it follow the repo's conventions, the test rules and the smell baseline? Runs always.
+- **Spec** — does the diff do what the leaf's `spec.md` and its task files asked, including the seam test its `Integration:` line owed? Runs only when an Epic supplies those contracts.
+- **Standards** — does it follow the repo's own `STANDARDS.md` and the test rules? Runs always.
 
 You find and grade; fixing is work you route. Findings become a Task or a briefed engineer, and the working tree leaves the review exactly as it arrived.
 
@@ -36,7 +36,7 @@ Both go out **through the sub-agent (Agent) tool**, so neither pollutes the othe
 
 **The Spec sub-agent's prompt** carries the diff command, the paths to `spec.md` and the task files, and the path to [`references/spec-review.md`](references/spec-review.md).
 
-**The Standards sub-agent's prompt** carries the diff command, the repo's own standards files — the coding-standards file `AGENTS.md` links first, then `AGENTS.md` itself, `CLAUDE.md`, `CONTRIBUTING.md` — and the path to [`references/standards-review.md`](references/standards-review.md), which also carries the test rules, the hard checks and the smell baseline that hold even in a repo that documents nothing.
+**The Standards sub-agent's prompt** carries the diff command, the repo's own standards files — `STANDARDS.md` first, then `AGENTS.md`, `CLAUDE.md`, `CONTRIBUTING.md` — and the path to [`references/standards-review.md`](references/standards-review.md), which carries the test rules and the secrets check that hold whatever the repo documents.
 
 ## 4. Report
 

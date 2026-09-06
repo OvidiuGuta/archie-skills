@@ -5,7 +5,7 @@ description: Prepare a repo for Archie — record its project facts in AGENTS.md
 
 # Set up Archie
 
-The conventions ship inside this bundle, so the only per-repo work is recording the **facts** an agent cannot guess: the gate commands, how to start the real app, and the branch and commit conventions. Everything else about the repo is readable from the code and is not recorded.
+The conventions ship inside this bundle, so the per-repo work is small: record the **facts** an agent cannot guess — the gate commands, how to start the real app, and the branch and commit conventions — and lay down the **baseline standards** the review checks against. Everything else about the repo is readable from the code and is not recorded.
 
 Explore, present, confirm, then write. Nothing reaches disk before the user has seen the draft.
 
@@ -32,6 +32,7 @@ One message, then wait:
 - The drafted facts block, verbatim as it will appear in `AGENTS.md`.
 - Every fact the repo did not settle, named, with a direct question and two ways to answer: give the value, or say **remove** and the line is left out.
 - The ignore file amendment from step 4, if one is needed.
+- That step 5 seeds the baseline standards into `STANDARDS.md`, theirs to edit or delete afterwards.
 
 Let the user correct the draft; only answered lines reach disk.
 
@@ -69,6 +70,10 @@ Silence means the planning tree is already committed. Output names the ignore fi
 
 When the pattern comes from a global excludes file, report it to the user instead — that file is theirs to change.
 
-## 5. Report
+## 5. Seed the standards
 
-One message: the facts recorded, and the lines left out at the user's word.
+Dispatch `/archie-standards` to seed the repo from its baseline. It owns `STANDARDS.md` and the `AGENTS.md` link to it, so it writes both and you write neither — one file, one owner, including where the repo already has standards to merge into.
+
+## 6. Report
+
+One message: the facts recorded, the lines left out at the user's word, and whether the standards were seeded.

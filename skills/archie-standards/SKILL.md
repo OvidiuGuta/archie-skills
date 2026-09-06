@@ -7,11 +7,19 @@ description: Record and maintain the repo's coding standards in STANDARDS.md —
 
 A **coding standard** is a rule of the user's about how code is written, enforceable line by line on a diff: "no `any` in TypeScript". Where an ADR records why something is built the way it is, a standard says whether a line of code is acceptable. You write `STANDARDS.md` and nothing else — a decision that also earns an ADR is the user's to route, not yours.
 
+`STANDARDS.md` is what `/archie-review`'s Standards axis checks and what `/archie-tdd` builds against, so the file is the user's control over the review rather than a list beside it. A rule they delete stops being checked, which is the point.
+
+## Two ways in
+
 **A stated preference is the request.** The user saying how they want code written is the instruction to record it, in the moment it is said — a preference still sitting in the transcript when the session closes is one nobody recorded. An existing standard is reworded, regrouped or deleted only when the user asks.
+
+**Seeding** is the other way in: `/archie-setup` sends you here on a fresh repo, and the user can ask for it on a repo set up before the baseline existed. Lay down [`references/BASELINE.md`](./references/BASELINE.md) — the rules a repo gets on day one — through the same conflict and merge rules below. It is a one-time write, not a sync: nothing re-seeds a file the user has since edited.
 
 ## Write the rule, not the wish
 
 Before a standard enters the file, word it so a reviewer can check a diff against it and answer yes or no. "Prefer clean code" checks nothing; "no `any` in TypeScript" checks itself. A rule that seems to need an example is too fuzzy — sharpen the wording until the example is redundant.
+
+A rule that stays a **judgement call** after that sharpening — Feature Envy is one, and no wording makes it yes-or-no — goes under a judgement-call heading instead. That heading is the exception, not the escape route: reach for it only once the sharpening has genuinely failed.
 
 Read [`references/STANDARDS-FORMAT.md`](./references/STANDARDS-FORMAT.md) for the file's shape.
 

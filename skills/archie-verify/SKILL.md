@@ -17,7 +17,7 @@ You add tests at one seam; behaviour that is missing is a Task's work, not yours
 
 Read the leaf's **`spec.md`** in full — its `User Stories` are the claim you test, and its `Testing Decisions` name the seam and the prior art your tests match. Read every **task file** beside it for the acceptance criteria each Task landed. Then read the repo's existing tests at that seam: they are both the house style and, often, coverage you are about to duplicate.
 
-If `AGENTS.md` links a coding-standards file, read it too — its rules bind every line you write, including what "integration test" means in this repo.
+Read **`STANDARDS.md`** — or whichever coding-standards file `AGENTS.md` links, in a repo Archie did not set up. Its rules bind every line you write, including what "integration test" means in this repo, and they are the same rules `/archie-review` grades this change against. A repo with neither has no standards.
 
 **No seam** — the Spec marked it not-applicable, or there is no integration harness — and this Task should not exist. Say so and stop.
 

@@ -49,7 +49,7 @@ Use it for a feature big enough that you cannot see the whole of it yet. Each ph
 
 ```mermaid
 flowchart LR
-  SU["/archie-setup"] --> F[/"AGENTS.md facts block<br/>CLAUDE.md importing it<br/>.archie/ committed, not ignored"/]
+  SU["/archie-setup"] --> F[/"AGENTS.md facts block<br/>CLAUDE.md importing it<br/>STANDARDS.md seeded from the baseline<br/>.archie/ committed, not ignored"/]
 ```
 
 **Planning** — HITL, one Epic at a time, one step per session. `/archie-architect` is the door: it resolves a reference like `3.2`, reads which step that Epic is at off its own files, announces it, and runs that one.
@@ -101,7 +101,7 @@ Archie also ships in **phases you can install separately**. Drop `--skill '*'` a
 | --- | --- | --- |
 | **Archie Planning** | `archie-setup`, `archie-architect`, `archie-scope`, `archie-interview`, `archie-domain-modeling`, `archie-standards`, `archie-research`, `archie-to-spec`, `archie-design`, `archie-prototype`, `archie-to-tasks` | nothing |
 | **Archie Implementing** | `archie-implement`, `archie-assist`, `archie-tdd` | nothing for `archie-tdd` alone; Planning for the other two, which consume the Epic tree |
-| **Archie Reviewing** | `archie-review` | Implementing, for `/archie-tdd` fix rounds and the Tasks it writes |
+| **Archie Reviewing** | `archie-review` | Implementing, for `/archie-tdd` fix rounds and the Tasks it writes. Planning too, for the `STANDARDS.md` its `/archie-setup` seeds — without it the Standards axis grades against the secrets check and the test rules alone |
 
 The flows are not install groups, because no flow is a phase: lite reaches for `archie-interview` from Planning and `archie-tdd` from Implementing. Install everything and type the flow you want; the phase groups are for a partial install.
 
@@ -115,7 +115,7 @@ One page each, written by the ticket that built the skill.
 
 **Setup and records**
 
-- [`/archie-setup`](manual/skills/archie-setup.md) — records this repo's facts in `AGENTS.md`
+- [`/archie-setup`](manual/skills/archie-setup.md) — records this repo's facts in `AGENTS.md`, and seeds `STANDARDS.md`
 - [`/archie-domain-modeling`](manual/skills/archie-domain-modeling.md) — terms into `CONTEXT.md`, decisions into `docs/adr/`
 - [`/archie-standards`](manual/skills/archie-standards.md) — coding standards into `STANDARDS.md`
 
