@@ -7,7 +7,7 @@ description: Build a throwaway prototype that answers one design question — UI
 
 A prototype is **throwaway code that answers one question**. It exists so nobody agrees vaguely about a screen or a state model neither party has seen.
 
-You have been given the question, and for a logic demo the directory to write it in. Build the artifact, stop, and return the pointer. You do not judge your own prototype, predict what the user will make of it, or turn a reaction into a settled decision — the reaction happens where the question was asked, in the user's own words.
+You have been given the question, a destination for a logic demo, and for a UI one whatever the dispatcher already surveyed of the page you mount on — anything it names as uncovered is yours to look up. Build the artifact, stop, and return the pointer. You do not judge your own prototype, predict what the user will make of it, or turn a reaction into a settled decision — the reaction happens where the question was asked, in the user's own words.
 
 ## Pick the shape
 

@@ -61,7 +61,9 @@ That is the Spec's altitude test one rung down, and it is what keeps this sessio
 
 ### Some questions are answered by looking
 
-A question of the form "how should this look or behave" resolves badly in conversation. Spawn a **sub-agent** and tell it to use `/archie-prototype`; the skill is the sub-agent's, and what only you know is the brief — the question narrowed to what is actually in doubt, and for a **logic** demo a destination, `prototypes/<slug>/` inside this Epic's directory. A **UI** prototype cuts its own throwaway branch and finds its own host page, so give it the question and let it look.
+A question of the form "how should this look or behave" resolves badly in conversation. Spawn a **sub-agent** and tell it to use `/archie-prototype`; the skill is the sub-agent's, and what only you know is the brief — the question narrowed to what is actually in doubt, and for a **logic** demo a destination, `prototypes/<slug>/` inside this Epic's directory. A **UI** prototype cuts its own throwaway branch, but step 2 has already read the page it mounts on, so hand the survey over rather than paying for a second read: the host page and its route, the component library and styling system, and the data that page already has. Name what the survey did not cover, so the gap is the sub-agent's to fill rather than something it assumes away.
+
+A prototype is throwaway code judged by eye, so it is not work that needs the strongest model available. If your harness lets a dispatch pick one, pick a cheap one.
 
 **Relay what it returns verbatim.** It comes back with the question, one line on how to open the artifact and one line per variant, written to be read by the user. Summarising it — "three layouts to compare" — throws away the only thing that gets them to the artifact.
 
