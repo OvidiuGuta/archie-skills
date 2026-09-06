@@ -1,6 +1,0 @@
-- need a way for the tdd agent to see the 12 code-smells as well as our standards. otherwise there will always be problems in the review. Maybe the 12 smells are the initial standards !!!!!!!!!!!!!!
-- still need a way to make review cheeper especially with fix rounds
-    - maybe when we make the task it we tell make it so the task containes what is needed to make the PR gree
-    - also, the second review pass should be only on the fixes in the fix task instead of re-running the whole thing.
-
-- I need to try to make the prototype cheeper without loosing quality?! - maybe sub-agents should still be sonet (or lower model) or let the parent model choose but leaning to the lower model.
