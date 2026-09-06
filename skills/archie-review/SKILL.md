@@ -1,6 +1,6 @@
 ---
 name: archie-review
-description: Grading a PR, the current branch, or an Epic for mergeability on two axes — Spec and Standards — and turning accepted findings into the next fix Task. The review phase, run after /archie-implement. Only for explicit user invocation — never fire it on your own.
+description: Grading a PR, the current branch, or an Epic for mergeability on two axes — Spec and Standards — then fixing the findings the user accepts and verifying that fix, in one round. The review phase, run after /archie-implement. Only for explicit user invocation — never fire it on your own.
 ---
 
 # Review
@@ -10,7 +10,7 @@ One change graded for mergeability, in two parallel axis sub-agents:
 - **Spec** — does the diff do what the leaf's `spec.md` and its task files asked, including the seam test its `Integration:` line owed? Runs only when an Epic supplies those contracts.
 - **Standards** — does it follow the repo's own `STANDARDS.md` and the test rules? Runs always.
 
-You find and grade; fixing is work you route. Findings become a Task or a briefed engineer, and the working tree leaves the review exactly as it arrived.
+Then **one** fix round, in this same session: the user picks the findings, an engineer fixes them, and you verify that fix read-only and re-grade.
 
 ## 1. Resolve the diff
 
@@ -22,21 +22,23 @@ The input is one of three:
 
 Confirm the diff is non-empty before going further: a bad ref or an empty diff fails here, not inside two parallel sub-agents.
 
-## 2. The grade
+## 2. Severity carries the grade
 
-Three tiers, given per axis and overall, where overall is the worse of the two:
+Every finding carries a severity, and each axis's tier is derived from the severities it reported:
 
-- 🟢 **mergeable** — merge as it stands.
-- 🟠 **mergeable with reservations** — findings worth fixing, none of which blocks the merge.
-- 🔴 **needs work** — at least one finding must land before this merges.
+- 🟢 **mergeable** — the axis reported nothing.
+- 🟠 **mergeable with reservations** — every finding it reported is 🟠: worth fixing, and it does not block the merge.
+- 🔴 **needs work** — at least one finding is 🔴: it must land before this merges.
+
+Overall is the worse of the two.
 
 ## 3. Dispatch the axes as sub-agents, in parallel
 
-Both go out **through the sub-agent (Agent) tool**, so neither pollutes the other's context. Without an Epic, only Standards goes out, and the header says the Spec axis was skipped and why. Each briefing file below is the whole of its axis's discipline, so each prompt opens with: **read your briefing file in full before reviewing — it carries your rules and your report format.**
+Both go out **through the sub-agent (Agent) tool**, so neither pollutes the other's context. Without an Epic, only Standards goes out, and the header says the Spec axis was skipped and why. Each briefing file below is the whole of its axis's discipline, so each prompt opens with: **read your briefing file in full before reviewing — it carries your rules, your severities and your report format.**
 
 **The Spec sub-agent's prompt** carries the diff command, the paths to `spec.md` and the task files, and the path to [`references/spec-review.md`](references/spec-review.md).
 
-**The Standards sub-agent's prompt** carries the diff command, the repo's own standards files — `STANDARDS.md` first, then `AGENTS.md`, `CLAUDE.md`, `CONTRIBUTING.md` — and the path to [`references/standards-review.md`](references/standards-review.md), which carries the test rules and the secrets check that hold whatever the repo documents.
+**The Standards sub-agent's prompt** carries the diff command, the repo's own standards files — `STANDARDS.md` first, then `AGENTS.md`, `CLAUDE.md`, `CONTRIBUTING.md` — and the path to [`references/standards-review.md`](references/standards-review.md).
 
 ## 4. Report
 
@@ -45,19 +47,35 @@ _Reviewed:_ {the PR, branch, or Epic} — {diffed against}
 
 **Overall: {emoji} {tier}** · Spec: {emoji} {tier} · Standards: {emoji} {tier}
 
-- [spec] {file:line} — {the finding, and what to fix}
-- [standards] {file:line} — {the same}
+- 🔴 [spec] {file:line} — {the finding, and what to fix}
+- 🟠 [standards] {file:line} — {the same}
 ```
 
-One flat list, severity order, only the findings needing a fix — a 🟢 review is the header and nothing under it. A skipped Spec axis reads `Spec: skipped — no epic`. The report stays in this session; posting anywhere is a step 5 choice.
+One flat list, 🔴 before 🟠 — a 🟢 review is the header and nothing under it. A skipped Spec axis reads `Spec: skipped — no epic`.
 
-## 5. Route the findings
+## 5. Halt and offer the fix round
 
-Ask which findings the user wants acted on — all, a sub-list, or none. Then:
+Stop on the report whatever the grade, and ask which findings the user wants fixed — all, a sub-list, or none.
 
-**With an Epic**: write **one** new Task at `tasks/<next number>-<slug>.md` in the leaf — numbers are identity, so the next number even across deletions — with the selected findings as its acceptance criteria, `Status: todo`, `Label: ready-for-agent`, no `Blocked by`. Name `/archie-implement <reference>` as the next move: the loop is implement → review → fix Task → implement, until the grade reads 🟢.
+**None** ends the review here. With a PR in play, offer instead to post the grade header and the selected findings with `gh pr comment`, worded as the step 4 report.
 
-**Without an Epic**: ask what to do — **fix now**, **comment on the PR**, or something else.
+Done when the user has named the findings in their words, or declined the round.
 
-- **Fix now** — dispatch an engineer sub-agent running `/archie-tdd`, briefed with the selected findings as its criteria: file and line, the expected behaviour, exactly what to fix. Read its gate results, judge the fix diff yourself read-only against the findings it answers, re-issue the grade, and stop dirty offering to commit.
-- **Comment on the PR** — post the grade header and the selected findings with `gh pr comment`, worded as the step 4 report.
+## 6. Fix, once
+
+One engineer sub-agent, dispatched through the sub-agent tool, running `/archie-tdd`, so the fix is driven by a test and re-runs the gates. A finding with no behaviour to drive, like a rename or a missing type, is a fix it makes without a test.
+
+Its brief is **exit criteria**: the complete list of what must be true for the grade to read 🟢, and nothing else. One entry per accepted finding — its `file:line`, the behaviour expected there, and what proves it. Paths and code belong here, unlike a Task's acceptance criteria, because the engineer is repairing a named line rather than building an outcome.
+
+Done when every accepted finding has an entry the engineer can check itself against.
+
+## 7. Verify the fix and re-grade
+
+Read the engineer's gate results, then judge its diff yourself, read-only. You hold the exit criteria, so this is a **verify** pass over them and not a second review:
+
+- **Every accepted finding**, called resolved or surviving, one by one.
+- **The fix diff at the blocker bar** — the secrets check and 🔴 standards breaches, nothing more. A 🟠 the fix introduced belongs to the next review; hunting it here is how one fix round becomes three.
+
+Re-issue the step 4 report with the new grade. If findings survived, name them and stop: there is no second round, because a round the fix could not settle means the contract is the problem and the user's read is the faster way out.
+
+The tree is dirty and stays that way. Offer the commit and stop.

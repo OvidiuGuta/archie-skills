@@ -1,5 +1,7 @@
 # Implementing splits into a build phase and a review phase
 
+_The fix-routing half of Phase 4 below is superseded by [0021](0021-the-review-fixes-what-it-finds.md): the review fixes what the user accepts in its own session, so accepted findings no longer become a Task. Everything else here stands._
+
 Amends [0010](0010-implementing-is-one-build-one-review-one-fix.md): the pipeline it fixed — build → review → one fix round inside one run — is unbundled. Its two-contract rule, the test rules duplication, and the `/archie-assist` split all survive.
 
 `/archie-implement` reviewed every Task the moment it was built, so review context was spent per Task and the user had no say in when it ran. Review is now its own phase, `/archie-review` (renaming `/archie-code-review`), run on a whole branch in its own session — mirroring the normal software cycle, where a PR is reviewed once, not per commit.
