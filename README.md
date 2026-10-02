@@ -146,5 +146,6 @@ One page each, written by the ticket that built the skill.
 
 ## Working on the bundle
 
+- [Connecting a harness to Archie](manual/connecting.md) — the Claude Code and Codex lines, and the OAuth sign-in
 - [Structure and conventions](manual/structure.md) — the layout, the skill-owned references, what varies per repo, and the validation gate
 - [`CONTEXT.md`](CONTEXT.md) and [`docs/adr/`](docs/adr/) — the design decisions behind the framework. A skill contradicting one of those ADRs is wrong

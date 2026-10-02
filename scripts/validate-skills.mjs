@@ -63,6 +63,7 @@ const ARCHIE_MODE_SWITCH =
   'In a folder whose `AGENTS.md` carries `**Archie Project:** KEY`, the tree lives in Archie, so follow its MCP server\'s `guide`.'
 const ARCHIE_MODE_ROLE = /Act as the Agent the Project's map gives `(architect|engineer|reviewer)`/
 const ARCHIE_MODE_ROLES = {
+  'archie-setup': 'architect',
   'archie-architect': 'architect',
   'archie-scope': 'architect',
   'archie-to-spec': 'architect',
@@ -115,10 +116,10 @@ function splitFrontmatter(text) {
 const SKILL_REF = /(^|[^\w./-])\/([a-z][a-z0-9-]*[a-z0-9])(?![\w./-])/g
 const MD_LINK = /\[[^\]]*\]\(([^)\s]+)(?:\s+"[^"]*")?\)/g
 
-const skillRefsIn = (body) => [...body.matchAll(SKILL_REF)].map((m) => m[2])
-
-/** A link inside a fenced code block is an example, not a link. */
+/** A link or a skill reference inside a fenced code block is an example, not a reference. */
 const stripFences = (body) => body.replace(/^```[\s\S]*?^```/gm, '')
+
+const skillRefsIn = (body) => [...stripFences(body).matchAll(SKILL_REF)].map((m) => m[2])
 
 /** Relative link targets only: external, absolute and anchor-only links are not ours to check. */
 function relativeLinksIn(body) {
