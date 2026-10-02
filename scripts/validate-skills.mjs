@@ -73,6 +73,7 @@ const ARCHIE_MODE_ROLES = {
   'archie-tdd': 'engineer',
   'archie-verify': 'engineer',
   'archie-assist': 'engineer',
+  'archie-review': 'reviewer',
 }
 
 const failures = []
