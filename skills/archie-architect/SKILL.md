@@ -1,6 +1,6 @@
 ---
 name: archie-architect
-description: Archie's planning router — read which step an Epic is at, run that one step, report where it now stands. Run it on a loose idea or on an Epic reference like 3.2, as many times as it takes. Only for explicit user invocation — never fire it on your own.
+description: Archie's planning router — read which step an Epic is at, run that one step, report where it now stands. Run it on a loose idea or on an Epic reference like 3.2 or ARC-12, as many times as it takes. Only for explicit user invocation — never fire it on your own.
 ---
 
 # Architect
@@ -15,6 +15,12 @@ You hold no discipline of your own. Every judgement below belongs to the step yo
 
 ## 1. Resolve
 
+### Where the tree lives
+
+In a folder whose `AGENTS.md` carries `**Archie Project:** KEY`, the tree lives in Archie, so follow its MCP server's `guide`. Every reference is a Task key such as `ARC-12`, and a `3.2` or a `3.2#1` is refused with one line saying the folder plans in Archie. Act as the Agent the Project's map gives `architect`, read once from `guide {projectKey}`, on every call of the session. The steps below name the tree's files and markers, and the `guide` says how each is read and written in Archie. A helper you dispatch or invoke is told the mode and the Agent in its brief, and carries no mode text of its own.
+
+Everywhere else the tree lives on disk, as the steps say.
+
 **A loose idea** — no reference, just a subject. There is nothing on disk yet, so the step is **scope**, on a new root Epic.
 
 **An Epic reference** — `3.2`, or a root's slug. Resolve it down the numbered directories under `.archie/` and read the files present. A reference that does not resolve goes back to the user rather than being guessed at.
@@ -23,16 +29,18 @@ No `.archie/` at all is a repo that has never been planned. That is not an error
 
 ## 2. Read the state, name the step
 
-Read it off the files, using the table in `epic-tree.md`. Nothing records this, so nothing about it can be stale:
+Read it off the files, using the table in `epic-tree.md`. Nothing records this, so nothing about it can be stale. In Archie, read it off the Epic's Status instead, as the `guide`'s tree-state table says: each step ends by setting the Status, so the board is the record, and a card the human drags is an instruction to this run:
 
-| What you find | The step |
-| --- | --- |
-| a loose idea, or `epic.md` with no `## Decisions` heading | `/archie-scope` |
-| child `NN-<slug>` directories | none here — name the children's states and ask which to open |
-| `epic.md` carrying `## Decisions`, no children, no `spec.md` | `/archie-to-spec` |
-| `spec.md` carrying `_Not yet designed._` | `/archie-design` |
-| `spec.md` complete, no `tasks/` | `/archie-to-tasks` |
-| `tasks/` populated | none — the leaf is planned; name `/archie-implement` and the Task to start with |
+| What you find | Epic Status in Archie | The step |
+| --- | --- | --- |
+| a loose idea, or `epic.md` with no `## Decisions` heading | `thin`, or no Epic yet | `/archie-scope` |
+| child `NN-<slug>` directories | `scoped`, with `epic` children | none here — name the children's states and ask which to open |
+| `epic.md` carrying `## Decisions`, no children, no `spec.md` | `scoped`, no children | `/archie-to-spec` |
+| `spec.md` carrying `_Not yet designed._` | `specified` | `/archie-design` |
+| `spec.md` complete, no `tasks/` | `designed` | `/archie-to-tasks` |
+| `tasks/` populated | `sliced` | none — the leaf is planned; name `/archie-implement` and the Task to start with |
+
+An Epic past `sliced` is implementing's: `implementing` and `in-review` name `/archie-implement` or `/archie-review` as the Status says, and `done` is done.
 
 **Say the step before you run it**, in one line, so the user can redirect you into a different one:
 
