@@ -69,6 +69,10 @@ const ARCHIE_MODE_ROLES = {
   'archie-to-spec': 'architect',
   'archie-design': 'architect',
   'archie-to-tasks': 'architect',
+  'archie-implement': 'engineer',
+  'archie-tdd': 'engineer',
+  'archie-verify': 'engineer',
+  'archie-assist': 'engineer',
 }
 
 const failures = []
