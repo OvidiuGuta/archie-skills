@@ -15,9 +15,7 @@ Explore, present, confirm, then write. Nothing reaches disk before the user has 
 
 In a folder whose `AGENTS.md` carries `**Archie Project:** KEY`, the tree lives in Archie, so follow its MCP server's `guide`. Every reference is a Task key such as `ARC-12`, and a `3.2` or a `3.2#1` is refused with one line saying the folder plans in Archie. Act as the Agent the Project's map gives `architect`, read once from `guide {projectKey}`, on every call of the session. The steps below name the tree's files and markers, and the `guide` says how each is read and written in Archie. A helper you dispatch or invoke is told the mode and the Agent in its brief, and carries no mode text of its own.
 
-Everywhere else the tree lives on disk, as the steps say.
-
-This is the one skill that writes the line the block reads, so the mode is a question of step 2, never a read. Facts and standards are the repo's in both modes, read from disk by anything that touches the code.
+This is the skill that writes the line the block reads, so here the mode is step 2's question, not a read.
 
 Fill in every fact below from the repo. A fact is settled only when you have **read the command or the value in a file** — anything else becomes a question for the user in step 2.
 
@@ -63,7 +61,7 @@ Codex, in `~/.codex/config.toml`, then `codex mcp login archie`:
 url = "<url>/mcp"
 ```
 
-`<url>` is the deployment's site URL. Sign-in opens the browser on the human's own Archie account, and the manual's connection page carries the rest. Once they report it done, check again, in a new session if the harness only reads its servers at start.
+`<url>` is the deployment's site URL, and the manual's connection page carries the rest. Once they report it done, check again, in a new session if the harness only reads its servers at start.
 
 **Confirm the Project.** Call `guide {projectKey}` with the Key the user gave. It ends with the Project's Role map: show it, with the Agent each Role acts as and whether it is read-only, so a mistyped Key or an unmapped Role is caught now. An unknown Key is refused by the server: report it and ask again, and write nothing until one is confirmed.
 

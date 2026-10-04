@@ -4,4 +4,4 @@ User-callable, and the counterpart for the work an agent cannot do: a `ready-for
 
 ## Archie mode
 
-In a bound folder the Task is one assigned to the human, its body and its leaf's Spec read from Archie, its gates its `blocks` edges and its `assignee`: one assigned to an Agent halts and names `/archie-implement`. It moves the Task to `in-progress` and ends on `in-review`, acting as the `engineer` Agent.
+In a bound folder the Task is one assigned to the human, its gates its `blocks` edges and its `assignee`, one assigned to an Agent halting and naming `/archie-implement`. It ends on `in-review`, acting as the `engineer` Agent.

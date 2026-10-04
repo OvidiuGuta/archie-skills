@@ -4,4 +4,4 @@ The closing Task of a leaf Epic, reached by `/archie-implement` and typeable by 
 
 ## Archie mode
 
-In a bound folder the reference is the leaf's `verification` Task, and the plan is one read: the Spec from the parent Epic's body and every sibling Task's body. It closes that Task itself, setting it to `in-review` before reporting, so the board says the leaf is proved whether or not `/archie-implement` is orchestrating. `STANDARDS.md` is read from disk in both modes. It acts as the `engineer` Agent.
+In a bound folder the reference is the leaf's `verification` Task, read from Archie with its siblings and the Spec. It sets that Task to `in-review` itself before reporting, so a run typed by name still lands on the board. `STANDARDS.md` stays on disk. It acts as the `engineer` Agent.

@@ -4,4 +4,4 @@ User-callable, and the review phase. Takes a PR, the current branch (diffed from
 
 ## Archie mode
 
-In a bound folder the Epic reference is the leaf's key, and a `3.2` is refused with a line saying the folder plans in Archie. The Spec axis takes its contracts from Archie: the `## Spec` section of the leaf's body and its Tasks' bodies, read in one read and handed to the Spec sub-agent as text, with the `verification` Task named as the closing one since the briefing reads `Integration:` lines. The Standards axis is unchanged: `STANDARDS.md` and the repo's other standards files are read from disk in both modes. It acts as the `reviewer` Agent on every call, and the fix round's engineer carries its own block as `engineer`.
+In a bound folder the Epic reference is the leaf's key, and a `3.2` is refused. The Spec sub-agent is handed the Spec and the Task bodies as text, with the `verification` Task named as the closing one since the briefing reads `Integration:` lines. The Standards axis is unchanged: `STANDARDS.md` and the other standards files stay on disk. It acts as the `reviewer` Agent.

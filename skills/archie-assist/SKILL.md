@@ -15,18 +15,16 @@ This is the work no agent can do: signing up for a service, provisioning access,
 
 In a folder whose `AGENTS.md` carries `**Archie Project:** KEY`, the tree lives in Archie, so follow its MCP server's `guide`. Every reference is a Task key such as `ARC-12`, and a `3.2` or a `3.2#1` is refused with one line saying the folder plans in Archie. Act as the Agent the Project's map gives `engineer`, read once from `guide {projectKey}`, on every call of the session. The steps below name the tree's files and markers, and the `guide` says how each is read and written in Archie. A helper you dispatch or invoke is told the mode and the Agent in its brief, and carries no mode text of its own.
 
-Everywhere else the tree lives on disk, as the steps say.
-
 You are handed **one** reference — `3.2#1` or a path. Everything resolves from it: Epics are numbered directories nested under `.archie/`, so `3.2` is child `02` of child `03` of the root, `#1` is `tasks/01-<slug>.md` inside it, and the leaf's `spec.md` sits beside the `tasks/` folder.
 
 No `.archie/` at all is a repo that has never been planned. Say so and name `/archie-architect`, which walks the planning steps from scoping through to Tasks.
 
-Read the task file — its demoable outcome, its acceptance criteria, its `Blocked by` line and its `Label` — and the leaf's `spec.md`. In Archie the Task's body is the task file, the Spec is the `## Spec` section of its parent Epic's body, the edges are its `blocks` edges and the label is its `assignee`.
+Read the task file — its demoable outcome, its acceptance criteria, its `Blocked by` line and its `Label` — and the leaf's `spec.md`. In Archie the edges are its `blocks` edges and the label its `assignee`.
 
 Two gates:
 
 - **The blocking edges are met.** Every Task on `Blocked by` is `done`.
-- **The label is `ready-for-human`.** A `ready-for-agent` Task halts here and names `/archie-implement`. Any other value, and a task file with no `Label` line, halts and names what it found. In Archie, a Task assigned to an Agent halts and names `/archie-implement`.
+- **The label is `ready-for-human`.** A `ready-for-agent` Task halts here and names `/archie-implement`. Any other value, and a task file with no `Label` line, halts and names what it found. In Archie, one assigned to an Agent halts the same way.
 
 Then set `Status:` to `in-progress`.
 

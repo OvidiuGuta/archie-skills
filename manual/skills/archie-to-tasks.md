@@ -4,4 +4,4 @@ Reached by `/archie-architect`, and typeable by name. Cuts a Specified Epic's Sp
 
 ## Archie mode
 
-In a bound folder each Task is a child of the leaf in build order, its body the demoable outcome and the criteria, and the task file's header lines become the Task's own fields: `Blocked by` is its `blocks` edges, `Integration: this Task` is the `verification` Type, and the `ready-for-agent` or `ready-for-human` label is its `assignee`, an Agent or the human. Statuses take the `guide`'s names, `to-do` and `in-review` where the files say `todo` and `ready-for-review`. A leaf at `specified` rather than `designed` halts the run, and the step is done when the Epic's Status is `sliced`. It acts as the `architect` Agent.
+In a bound folder the task file's header lines are the Task's own fields: `Blocked by` is its `blocks` edges, `Integration: this Task` is the `verification` Type, and the label is its `assignee`, an Agent or the human. Statuses take the `guide`'s names, `to-do` and `in-review` where files say `todo` and `ready-for-review`, and a leaf at `specified` rather than `designed` halts the run. It acts as the `architect` Agent.

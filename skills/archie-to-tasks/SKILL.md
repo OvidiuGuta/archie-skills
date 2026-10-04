@@ -17,8 +17,6 @@ You write task files and nothing else. The Spec is settled — both what it buil
 
 In a folder whose `AGENTS.md` carries `**Archie Project:** KEY`, the tree lives in Archie, so follow its MCP server's `guide`. Every reference is a Task key such as `ARC-12`, and a `3.2` or a `3.2#1` is refused with one line saying the folder plans in Archie. Act as the Agent the Project's map gives `architect`, read once from `guide {projectKey}`, on every call of the session. The steps below name the tree's files and markers, and the `guide` says how each is read and written in Archie. A helper you dispatch or invoke is told the mode and the Agent in its brief, and carries no mode text of its own.
 
-Everywhere else the tree lives on disk, as the steps say.
-
 The Epic is the one whose Spec the session just wrote, or the reference the user passed — a root's slug, or `3.2`, which is child `02` of child `03` of the root, resolved down the numbered directories under `.archie/`.
 
 Read its `spec.md` in full, plus any reference the user passed alongside — a research finding, a sibling's code. A **Specified** Epic is the only thing this skill slices: an Epic with children is Split, and its Spec belongs to one of the leaves, so name the children and ask which one. An Epic that already holds a `tasks/` directory is being re-sliced — say what the existing Tasks cover and get the overwrite agreed first.
@@ -46,7 +44,7 @@ The leaf therefore ends on one **closing Task**, blocked by every other Task, wh
 
 A leaf whose Spec marked the seam not-applicable gets no closing Task, and its Tasks carry no `Integration:` line — there is no seam to test, at either end.
 
-Give each Task its label — `ready-for-agent` when an agent builds it end to end, `ready-for-human` when it needs a third-party UI, a secret or an account that only the user can supply. In Archie the label is the Task's `assignee`: an Agent, or the human.
+Give each Task its label — `ready-for-agent` when an agent builds it end to end, `ready-for-human` when it needs a third-party UI, a secret or an account that only the user can supply.
 
 Then write the acceptance criteria: **observable outcomes, not instructions**, no file paths, no code, so they still read true weeks later. Each one is walked against the running app at the end of its Task's build, so a criterion nobody can watch happen is not one. The criteria are the **demoable outcome decomposed**, which is why step 3 asks about the outcome and not about them: the user judges the outcome here, and every criterion under it gets walked at the end of that Task's own run.
 
@@ -93,7 +91,7 @@ One file per Task at `tasks/NN-<slug>.md` inside the leaf, the `Epic:` reference
 
 The closing Task uses that same file: `Integration: this Task`, `Blocked by` every other Task, `ready-for-agent`, its demoable outcome the leaf's Spec holding at the seam, and one criterion saying so. It is a Task like any other: same statuses, same review path.
 
-In Archie each Task is a child of the leaf in build order, its body the demoable outcome and the criteria, so the header lines become the Task's own fields: `Blocked by` is its `blocks` edges, `Integration: this Task` is the `verification` Type, and the label is its `assignee`. The step is done when the Epic's Status is `sliced`.
+In Archie the header lines are the Task's own fields: `Blocked by` is its `blocks` edges, `Integration: this Task` is the `verification` Type, and the label is its `assignee`, an Agent or the human.
 
 Every Task starts at `Status: todo` — `to-do` in Archie. The implementing skills write `in-progress` and `ready-for-review` — `in-review` in Archie — from there. In task mode `done` is the user's word; in epic mode `/archie-implement` writes it itself after its criteria check, and stamps the leaf's `epic.md` with `Status: ready-for-review` when the last Task lands — the one status an Epic ever carries.
 

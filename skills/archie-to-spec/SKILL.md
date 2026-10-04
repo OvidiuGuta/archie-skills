@@ -19,8 +19,6 @@ The only file in the tree you write is `spec.md`, and you write two of its secti
 
 In a folder whose `AGENTS.md` carries `**Archie Project:** KEY`, the tree lives in Archie, so follow its MCP server's `guide`. Every reference is a Task key such as `ARC-12`, and a `3.2` or a `3.2#1` is refused with one line saying the folder plans in Archie. Act as the Agent the Project's map gives `architect`, read once from `guide {projectKey}`, on every call of the session. The steps below name the tree's files and markers, and the `guide` says how each is read and written in Archie. A helper you dispatch or invoke is told the mode and the Agent in its brief, and carries no mode text of its own.
 
-Everywhere else the tree lives on disk, as the steps say.
-
 The Epic is the one the session in context just scoped, or the reference the user passed — a root's slug, or `3.2`, which is child `02` of child `03` of the root, resolved down the numbered directories under `.archie/`.
 
 A **Split** Epic stops the run. Split and Specified are mutually exclusive, so the Spec belongs to one of its leaves: name the children and ask which one. An Epic that already holds a `spec.md` is being re-specified — say what the existing Spec covers, and what state any Tasks are in, and get the overwrite agreed before touching it.
@@ -33,15 +31,15 @@ The answers are already yours. The session settled them question by question, `/
 
 Assemble the Spec's material from what the session produced: the intent and `Decisions` in `epic.md`, the terms and ADRs the session wrote, and the findings under `research/`.
 
-**When the session is not in context** — a fresh `/archie-to-spec 3.2` — read the same material off disk: this Epic's `epic.md`, every ancestor's `epic.md` up the path, `CONTEXT.md`, the ADRs touching this area, the earlier siblings' code, and this Epic's own `research/`. In Archie the same read is the Epic's body, its ancestors' bodies, the Project's terms and ADRs, and the findings linked to this Epic. A gap you can close by reading is not a question; one that genuinely never got answered goes back to the user.
+**When the session is not in context** — a fresh `/archie-to-spec 3.2` — read the same material off disk: this Epic's `epic.md`, every ancestor's `epic.md` up the path, `CONTEXT.md`, the ADRs touching this area, the earlier siblings' code, and this Epic's own `research/`. In Archie the ADRs and the terms are the Project's Notes, and the findings are the Notes linked to this Epic. A gap you can close by reading is not a question; one that genuinely never got answered goes back to the user.
 
-Write in the glossary's vocabulary throughout. Where the synthesis **contradicts an ADR**, hand it to `/archie-domain-modeling` rather than quietly overriding it — whether the contradiction amends or supersedes is that skill's call, not yours. In Archie its brief says the record goes to the Project as the `guide` says, and which Agent writes it.
+Write in the glossary's vocabulary throughout. Where the synthesis **contradicts an ADR**, hand it to `/archie-domain-modeling` rather than quietly overriding it — whether the contradiction amends or supersedes is that skill's call, not yours.
 
 Done when every section of the template has its material, and you can say for each one which part of the session it came from.
 
 ## 3. Write the Spec
 
-Write `spec.md` beside the Epic's `epic.md`, following the template exactly, `Epic:` reference included. In Archie the Spec is the `## Spec` section of the Epic's body, after `## Decisions`, its sections one level down, and the step is done when the Epic's Status is `specified`.
+Write `spec.md` beside the Epic's `epic.md`, following the template exactly, `Epic:` reference included.
 
 `## Implementation Decisions` and `## Testing Decisions` each get the single line `_Not yet designed._` and nothing else, and the template's conditional `## Prototype` heading is omitted — it is `/archie-design`'s to insert. Those two are the **how**, and they are `/archie-design`'s to write.
 

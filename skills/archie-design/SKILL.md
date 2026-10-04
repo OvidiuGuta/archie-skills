@@ -17,11 +17,9 @@ The only thing you write in the tree is two sections of the leaf's existing `spe
 
 In a folder whose `AGENTS.md` carries `**Archie Project:** KEY`, the tree lives in Archie, so follow its MCP server's `guide`. Every reference is a Task key such as `ARC-12`, and a `3.2` or a `3.2#1` is refused with one line saying the folder plans in Archie. Act as the Agent the Project's map gives `architect`, read once from `guide {projectKey}`, on every call of the session. The steps below name the tree's files and markers, and the `guide` says how each is read and written in Archie. A helper you dispatch or invoke is told the mode and the Agent in its brief, and carries no mode text of its own.
 
-Everywhere else the tree lives on disk, as the steps say.
-
 You are handed a reference — a root's slug, or `3.2`, which is child `02` of child `03` of the root, resolved down the numbered directories under `.archie/` — or the leaf the session in context just specified.
 
-Read its `spec.md` in full, plus its `epic.md`, every ancestor's `epic.md` up the path, `CONTEXT.md` and the ADRs touching this area. In Archie the Spec is the `## Spec` section of the Epic's body, and the language and the ADRs are the Project's Notes, found as the `guide` says. The `Problem Statement`, `Solution`, `User Stories` and `Out of Scope` are **settled input**: this session designs against them, it does not reopen them.
+Read its `spec.md` in full, plus its `epic.md`, every ancestor's `epic.md` up the path, `CONTEXT.md` and the ADRs touching this area. In Archie the language and the ADRs are the Project's Notes. The `Problem Statement`, `Solution`, `User Stories` and `Out of Scope` are **settled input**: this session designs against them, it does not reopen them.
 
 Three states stop the run:
 
@@ -29,7 +27,7 @@ Three states stop the run:
 - **No `spec.md`** means this leaf has not been specified. Name `/archie-to-spec` and stop.
 - **`Implementation Decisions` no longer carrying `_Not yet designed._`** means this leaf has already been designed. Say what the existing design covers and get the overwrite agreed before touching it — and if `tasks/` exists, say what state its Tasks are in.
 
-In Archie the three read off the Epic's Status: `scoped` with children is Split, `scoped` without is unspecified, and `designed` or later is designed.
+In Archie the three are the Epic's Status: `scoped` with children is Split, `scoped` without is unspecified, `designed` or later is designed.
 
 Done when you hold one Specified, undesigned leaf and its Spec read end to end.
 
@@ -69,7 +67,7 @@ That is the Spec's altitude test one rung down, and it is what keeps this sessio
 
 ### Some questions are answered by looking
 
-A question of the form "how should this look or behave" resolves badly in conversation. Spawn a **sub-agent** and tell it to use `/archie-prototype`; the skill is the sub-agent's, and what only you know is the brief — the question narrowed to what is actually in doubt, and for a **logic** demo a destination, `prototypes/<slug>/` inside this Epic's directory, or in Archie an html Asset on this Epic by key, attached as the `guide` says by the Agent you name. A **UI** prototype cuts its own throwaway branch, but step 2 has already read the page it mounts on, so hand the survey over rather than paying for a second read: the host page and its route, the component library and styling system, and the data that page already has. Name what the survey did not cover, so the gap is the sub-agent's to fill rather than something it assumes away.
+A question of the form "how should this look or behave" resolves badly in conversation. Spawn a **sub-agent** and tell it to use `/archie-prototype`; the skill is the sub-agent's, and what only you know is the brief — the question narrowed to what is actually in doubt, and for a **logic** demo a destination, `prototypes/<slug>/` inside this Epic's directory, or in Archie an html Asset on this Epic. A **UI** prototype cuts its own throwaway branch, but step 2 has already read the page it mounts on, so hand the survey over rather than paying for a second read: the host page and its route, the component library and styling system, and the data that page already has. Name what the survey did not cover, so the gap is the sub-agent's to fill rather than something it assumes away.
 
 A prototype is throwaway code judged by eye, so it is not work that needs the strongest model available. If your harness lets a dispatch pick one, pick a cheap one.
 
@@ -91,13 +89,13 @@ Judging "as high as possible" needs the structure heading settled first, so ask 
 
 ### Record what settles, the moment it settles
 
-A **new dependency outlives the tree**, so it clears the ADR bar: hand it to `/archie-domain-modeling` — what was added, what it replaces, and why — rather than leaving it as a line in a Spec that dies with the Epic. In Archie its brief says the record goes to the Project as the `guide` says, and which Agent writes it. The same goes for any term this session coins and any decision that reaches past this leaf. Where the design **contradicts an existing ADR**, hand that over too; amending or superseding is that skill's call, not yours. When the user states how they want code written — a **coding standard**, not a decision about this leaf — invoke `/archie-standards`.
+A **new dependency outlives the tree**, so it clears the ADR bar: hand it to `/archie-domain-modeling` — what was added, what it replaces, and why — rather than leaving it as a line in a Spec that dies with the Epic. The same goes for any term this session coins and any decision that reaches past this leaf. Where the design **contradicts an existing ADR**, hand that over too; amending or superseding is that skill's call, not yours. When the user states how they want code written — a **coding standard**, not a decision about this leaf — invoke `/archie-standards`.
 
 Done when the frontier is empty and every heading is settled or excused.
 
 ## 4. Write the sections
 
-Replace `_Not yet designed._` under both `## Implementation Decisions` and `## Testing Decisions` in the existing `spec.md`. Touch nothing else — the what was signed off in its own session — with one exception: if a prototype was built, insert a `## Prototype` section directly above `Implementation Decisions`, written from the sub-agent's second return. In Archie the same replacement lands in the Epic's body, and the step is done when its Status is `designed`.
+Replace `_Not yet designed._` under both `## Implementation Decisions` and `## Testing Decisions` in the existing `spec.md`. Touch nothing else — the what was signed off in its own session — with one exception: if a prototype was built, insert a `## Prototype` section directly above `Implementation Decisions`, written from the sub-agent's second return.
 
 `Implementation Decisions` carries the five headings' answers. `Testing Decisions` carries the seams and the prior art the new tests should match.
 

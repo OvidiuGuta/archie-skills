@@ -17,13 +17,11 @@ You add tests at one seam; behaviour that is missing is a Task's work, not yours
 
 In a folder whose `AGENTS.md` carries `**Archie Project:** KEY`, the tree lives in Archie, so follow its MCP server's `guide`. Every reference is a Task key such as `ARC-12`, and a `3.2` or a `3.2#1` is refused with one line saying the folder plans in Archie. Act as the Agent the Project's map gives `engineer`, read once from `guide {projectKey}`, on every call of the session. The steps below name the tree's files and markers, and the `guide` says how each is read and written in Archie. A helper you dispatch or invoke is told the mode and the Agent in its brief, and carries no mode text of its own.
 
-Everywhere else the tree lives on disk, as the steps say.
-
 **Handed a Task reference (`3.2#1`) or its path**, everything resolves from it: Epics are numbered directories nested under `.archie/`, so `3.2` is child `02` of child `03` of the root, and `#1` is `tasks/01-<slug>.md` inside it.
 
-Read the leaf's **`spec.md`** in full — its `User Stories` are the claim you test, and its `Testing Decisions` name the seam and the prior art your tests match. Read every **task file** beside it for the acceptance criteria each Task landed. In Archie the reference is the leaf's `verification` Task, and the whole plan is one read as the `guide` gives it: the Spec is the `## Spec` section of the parent Epic's body, and every sibling Task's body is its task file. Then read the repo's existing tests at that seam: they are both the house style and, often, coverage you are about to duplicate.
+Read the leaf's **`spec.md`** in full — its `User Stories` are the claim you test, and its `Testing Decisions` name the seam and the prior art your tests match. Read every **task file** beside it for the acceptance criteria each Task landed. In Archie the reference is the leaf's `verification` Task. Then read the repo's existing tests at that seam: they are both the house style and, often, coverage you are about to duplicate.
 
-Read **`STANDARDS.md`** — or whichever coding-standards file `AGENTS.md` links, in a repo Archie did not set up. Its rules bind every line you write, including what "integration test" means in this repo, and they are the same rules `/archie-review` grades this change against. A repo with neither has no standards. The file is the repo's in both modes, read from disk.
+Read **`STANDARDS.md`** — or whichever coding-standards file `AGENTS.md` links, in a repo Archie did not set up. Its rules bind every line you write, including what "integration test" means in this repo, and they are the same rules `/archie-review` grades this change against. A repo with neither has no standards, and the file stays on disk in Archie mode.
 
 **No seam** — the Spec marked it not-applicable, or there is no integration harness — and this Task should not exist. Say so and stop.
 
@@ -54,7 +52,7 @@ Find the repo's lint, typecheck, test and build commands — `AGENTS.md`, the pa
 
 ## 5. Report
 
-In Archie, close the `verification` Task first: set it to `in-review`, so the board says the leaf is proved whether or not an orchestrator is in the room.
+In Archie, set the `verification` Task to `in-review` first: the board says the leaf is proved whether or not an orchestrator is in the room.
 
 ```md
 _Verified:_ {the leaf reference and title}

@@ -19,8 +19,6 @@ You hold no discipline of your own. Every judgement below belongs to the step yo
 
 In a folder whose `AGENTS.md` carries `**Archie Project:** KEY`, the tree lives in Archie, so follow its MCP server's `guide`. Every reference is a Task key such as `ARC-12`, and a `3.2` or a `3.2#1` is refused with one line saying the folder plans in Archie. Act as the Agent the Project's map gives `architect`, read once from `guide {projectKey}`, on every call of the session. The steps below name the tree's files and markers, and the `guide` says how each is read and written in Archie. A helper you dispatch or invoke is told the mode and the Agent in its brief, and carries no mode text of its own.
 
-Everywhere else the tree lives on disk, as the steps say.
-
 **A loose idea** — no reference, just a subject. There is nothing on disk yet, so the step is **scope**, on a new root Epic.
 
 **An Epic reference** — `3.2`, or a root's slug. Resolve it down the numbered directories under `.archie/` and read the files present. A reference that does not resolve goes back to the user rather than being guessed at.
@@ -29,7 +27,7 @@ No `.archie/` at all is a repo that has never been planned. That is not an error
 
 ## 2. Read the state, name the step
 
-Read it off the files, using the table in `epic-tree.md`. Nothing records this, so nothing about it can be stale. In Archie, read it off the Epic's Status instead, as the `guide`'s tree-state table says: each step ends by setting the Status, so the board is the record, and a card the human drags is an instruction to this run:
+Read it off the files, using the table in `epic-tree.md`. Nothing records this, so nothing about it can be stale. In Archie, read it off the Epic's Status, in the middle column, so a card the human drags is an instruction to this run:
 
 | What you find | Epic Status in Archie | The step |
 | --- | --- | --- |
@@ -40,7 +38,7 @@ Read it off the files, using the table in `epic-tree.md`. Nothing records this, 
 | `spec.md` complete, no `tasks/` | `designed` | `/archie-to-tasks` |
 | `tasks/` populated | `sliced` | none — the leaf is planned; name `/archie-implement` and the Task to start with |
 
-An Epic past `sliced` is implementing's: `implementing` and `in-review` name `/archie-implement` or `/archie-review` as the Status says, and `done` is done.
+Past `sliced`, `implementing` names `/archie-implement`, `in-review` names `/archie-review`, and `done` is done.
 
 **Say the step before you run it**, in one line, so the user can redirect you into a different one:
 

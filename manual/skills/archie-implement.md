@@ -4,4 +4,4 @@ User-callable, and the build phase in two modes selected by the reference. **Tas
 
 ## Archie mode
 
-In a bound folder the reference is a Task key or a leaf's key, the leaf's whole plan is one read as the `guide` gives it, and the gates read off the Task's own fields: its `blocks` edges must be `done`, and a Task assigned to the human halts and names `/archie-assist`. Which engineer runs is read off the Task's Type, `verification` opening `/archie-verify`. It moves every Task through its Workflow by the `guide`'s names, `in-review` where files say `ready-for-review`, moves the Epic to `implementing` with the first Task and to `in-review` after the last, and acts as the `engineer` Agent on every call.
+In a bound folder the reference is a Task key or a leaf's key, the gates read off the Task's own fields, `blocks` edges and `assignee`, and a Task assigned to the human halts and names `/archie-assist`. The `verification` Type opens `/archie-verify`. It moves Tasks by the `guide`'s names, `in-review` where files say `ready-for-review`, and moves the Epic to `implementing` with the first Task and to `in-review` after the last. It acts as the `engineer` Agent.

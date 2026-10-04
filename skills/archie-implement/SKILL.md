@@ -17,25 +17,21 @@ A Task reference selects **task mode**: you build it inline and stop dirty for t
 
 In a folder whose `AGENTS.md` carries `**Archie Project:** KEY`, the tree lives in Archie, so follow its MCP server's `guide`. Every reference is a Task key such as `ARC-12`, and a `3.2` or a `3.2#1` is refused with one line saying the folder plans in Archie. Act as the Agent the Project's map gives `engineer`, read once from `guide {projectKey}`, on every call of the session. The steps below name the tree's files and markers, and the `guide` says how each is read and written in Archie. A helper you dispatch or invoke is told the mode and the Agent in its brief, and carries no mode text of its own.
 
-Everywhere else the tree lives on disk, as the steps say.
-
 Everything resolves from the reference: Epics are numbered directories nested under `.archie/`, so `3.2` is child `02` of child `03` of the root, and `#1` is `tasks/01-<slug>.md` inside it. The leaf's `spec.md` sits beside the `tasks/` folder.
 
-No `.archie/` at all is a repo that has never been planned. Say so and name `/archie-architect` rather than inventing work from the reference. An Epic reference must land on a leaf with `tasks/` populated — a Split Epic or an unsliced leaf halts and names `/archie-architect` too.
-
-In Archie a Task's body is the task file, and its leaf's Spec is the `## Spec` section of the parent Epic's body: read the leaf's whole plan in the one read the `guide` gives, Tasks, Statuses and `blocks` edges included. A leaf is sliced when its Status is `sliced` or later.
+No `.archie/` at all is a repo that has never been planned. Say so and name `/archie-architect` rather than inventing work from the reference. An Epic reference must land on a leaf with `tasks/` populated — a Split Epic or an unsliced leaf halts and names `/archie-architect` too. In Archie a leaf is sliced when its Status is `sliced` or later.
 
 Gates before anything runs:
 
 - **The tree is clean enough to read a diff off.** Uncommitted work lands inside every diff this run verifies. Say what is dirty and let the user clear it.
-- **Task mode: the Task is runnable.** Every Task on `Blocked by` is `done`, and the label is `ready-for-agent` — a `ready-for-human` Task halts and names `/archie-assist`; any other value, or no `Label` line, halts and names what it found. In Archie the edges are the Task's `blocks` edges and the label is its `assignee`: a Task assigned to the human halts and names `/archie-assist`.
+- **Task mode: the Task is runnable.** Every Task on `Blocked by` is `done`, and the label is `ready-for-agent` — a `ready-for-human` Task halts and names `/archie-assist`; any other value, or no `Label` line, halts and names what it found. In Archie the edges are its `blocks` edges and the label its `assignee`, the human halting the same way.
 - **Epic mode: the branch is the user's move.** On `main` or `master`, halt and say so. Branching is the user's job, and the run commits, so it starts only where commits belong.
 
 Done when the reference resolves and every gate has passed.
 
 ## 2. Task mode: build inline
 
-Set the Task's `Status:` to `in-progress` and record the baseline: `git rev-parse HEAD`. In Archie the first Task to go `in-progress` moves the Epic to `implementing` as well.
+Set the Task's `Status:` to `in-progress` and record the baseline: `git rev-parse HEAD`. In Archie the first Task to go `in-progress` moves the Epic to `implementing` too.
 
 Invoke the Task's engineer **inline, in this conversation** — you are the engineer. **A red gate halts the run**: report the failing command and its output.
 
@@ -45,7 +41,7 @@ Set `Status:` to `ready-for-review` — `in-review` in Archie — and **stop dir
 
 ## 3. Epic mode: orchestrate
 
-Run the `ready-for-agent` Tasks in `Blocked by` order, skipping the `done` ones. The first unblocked `ready-for-human` Task halts the run and names `/archie-assist` — committed work stays committed. In Archie that is the Tasks assigned to an Agent, in `blocks` order, and the first unblocked Task assigned to the human halts.
+Run the `ready-for-agent` Tasks in `Blocked by` order, skipping the `done` ones. The first unblocked `ready-for-human` Task halts the run and names `/archie-assist` — committed work stays committed. In Archie: Tasks assigned to an Agent, in `blocks` order, halting on the first assigned to the human.
 
 Per Task:
 

@@ -4,4 +4,4 @@ The build half of every flow, running the [double loop](../../docs/adr/0010-impl
 
 ## Archie mode
 
-In a bound folder the contract is the same two things in one place: the Task's body is the task file and the Spec is the `## Spec` section of its parent Epic's body, with a prototype as an html Asset on the Epic. The seam is deferred when the leaf holds a `verification` Task. `STANDARDS.md` is still read from disk, since standards stay in the repo in both modes. It acts as the `engineer` Agent.
+In a bound folder the Task and its leaf's Spec are read from Archie, the seam is deferred when the leaf holds a `verification` Task, and a prototype is an html Asset on the Epic. `STANDARDS.md` stays on disk. It acts as the `engineer` Agent.

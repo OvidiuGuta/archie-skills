@@ -18,13 +18,11 @@ Then **one** fix round, in this same session: the user picks the findings, an en
 
 In a folder whose `AGENTS.md` carries `**Archie Project:** KEY`, the tree lives in Archie, so follow its MCP server's `guide`. Every reference is a Task key such as `ARC-12`, and a `3.2` or a `3.2#1` is refused with one line saying the folder plans in Archie. Act as the Agent the Project's map gives `reviewer`, read once from `guide {projectKey}`, on every call of the session. The steps below name the tree's files and markers, and the `guide` says how each is read and written in Archie. A helper you dispatch or invoke is told the mode and the Agent in its brief, and carries no mode text of its own.
 
-Everywhere else the tree lives on disk, as the steps say.
-
 The input is one of three:
 
 - **A PR** — the diff is `gh pr diff <number>`, measured against the PR's base.
 - **The current branch** — the diff is `git diff $(git merge-base main HEAD)` plus the untracked files `git status --porcelain` lists.
-- **An Epic reference** (`3.2`, resolved down the numbered directories under `.archie/`) — the diff is the branch-or-PR diff above; the Epic adds the contracts, the leaf's `spec.md` and its `tasks/*.md`, which is what turns the Spec axis on. In Archie the reference is the leaf's key, and its contracts are the `## Spec` section of its body and its Tasks' bodies, read in the one read the `guide` gives.
+- **An Epic reference** (`3.2`, resolved down the numbered directories under `.archie/`) — the diff is the branch-or-PR diff above; the Epic adds the contracts, the leaf's `spec.md` and its `tasks/*.md`, which is what turns the Spec axis on. In Archie the reference is the leaf's key.
 
 Confirm the diff is non-empty before going further: a bad ref or an empty diff fails here, not inside two parallel sub-agents.
 
@@ -42,9 +40,9 @@ Overall is the worse of the two.
 
 Both go out **through the sub-agent (Agent) tool**, so neither pollutes the other's context. Without an Epic, only Standards goes out, and the header says the Spec axis was skipped and why. Each briefing file below is the whole of its axis's discipline, so each prompt opens with: **read your briefing file in full before reviewing — it carries your rules, your severities and your report format.**
 
-**The Spec sub-agent's prompt** carries the diff command, the paths to `spec.md` and the task files, and the path to [`references/spec-review.md`](references/spec-review.md). In Archie it carries the Spec and the Task bodies themselves, as you read them, with the `verification` Task named as the closing Task: the briefing reads `Integration:` lines, and that Type is the same contract.
+**The Spec sub-agent's prompt** carries the diff command, the paths to `spec.md` and the task files, and the path to [`references/spec-review.md`](references/spec-review.md). In Archie it carries the Spec and the Task bodies as text, with the `verification` Task named as the closing Task, since the briefing reads `Integration:` lines.
 
-**The Standards sub-agent's prompt** carries the diff command, the repo's own standards files — `STANDARDS.md` first, then `AGENTS.md`, `CLAUDE.md`, `CONTRIBUTING.md` — and the path to [`references/standards-review.md`](references/standards-review.md). Those files are the repo's in both modes, read from disk.
+**The Standards sub-agent's prompt** carries the diff command, the repo's own standards files — `STANDARDS.md` first, then `AGENTS.md`, `CLAUDE.md`, `CONTRIBUTING.md` — and the path to [`references/standards-review.md`](references/standards-review.md). Those files stay on disk in Archie mode.
 
 ## 4. Report
 

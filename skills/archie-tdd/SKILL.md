@@ -19,11 +19,7 @@ You own **two layers**, unit and integration. The whole-app walk is the user's, 
 
 In a folder whose `AGENTS.md` carries `**Archie Project:** KEY`, the tree lives in Archie, so follow its MCP server's `guide`. Every reference is a Task key such as `ARC-12`, and a `3.2` or a `3.2#1` is refused with one line saying the folder plans in Archie. Act as the Agent the Project's map gives `engineer`, read once from `guide {projectKey}`, on every call of the session. The steps below name the tree's files and markers, and the `guide` says how each is read and written in Archie. A helper you dispatch or invoke is told the mode and the Agent in its brief, and carries no mode text of its own.
 
-Everywhere else the tree lives on disk, as the steps say.
-
-**Handed a Task reference (`3.2#1`) or its path**, everything resolves from it: Epics are numbered directories nested under `.archie/`, so `3.2` is child `02` of child `03` of the root, and `#1` is `tasks/01-<slug>.md` inside it. The **task file**'s demoable outcome and acceptance criteria are what the outer loop asserts; the leaf's **`spec.md`** beside it carries the seam and the Implementation Decisions this Task routes to. Read both before writing anything, including the task file's `Integration:` line, which says whether the seam is yours. If the Spec carries a `## Prototype` section, read the artifact it names too — it is authoritative for what is on the screen, and the Spec deliberately does not repeat it.
-
-In Archie the contract is the same two things in one place: the Task's body is the task file, and the Spec is the `## Spec` section of its parent Epic's body. The seam is deferred when the leaf holds a `verification` Task, and a prototype is an html Asset on the Epic.
+**Handed a Task reference (`3.2#1`) or its path**, everything resolves from it: Epics are numbered directories nested under `.archie/`, so `3.2` is child `02` of child `03` of the root, and `#1` is `tasks/01-<slug>.md` inside it. The **task file**'s demoable outcome and acceptance criteria are what the outer loop asserts; the leaf's **`spec.md`** beside it carries the seam and the Implementation Decisions this Task routes to. Read both before writing anything, including the task file's `Integration:` line, which says whether the seam is yours. If the Spec carries a `## Prototype` section, read the artifact it names too — it is authoritative for what is on the screen, and the Spec deliberately does not repeat it. In Archie the seam is deferred when the leaf holds a `verification` Task, and a prototype is an html Asset on the Epic.
 
 **Handed findings as well — an orchestrator's criteria check or a review's — you are the fix round.** The tests and the code already exist, so the loops narrow to each finding: go red on the behaviour the finding names, fix it, and take the suite green again. Steps 5 and 6 run in full — the gates are exactly what a fix can break — and step 2's one-integration-test rule already holds, so a finding about a missing or misplaced one is fixed by moving or writing that test rather than adding a second.
 
@@ -31,7 +27,7 @@ In Archie the contract is the same two things in one place: the Task's body is t
 
 Then read the code the change lands in, and the tests nearest it. New tests match the house style around them rather than importing yours.
 
-Read **`STANDARDS.md`** — or whichever coding-standards file `AGENTS.md` links, in a repo Archie did not set up. Its rules bind every line you write, and they are the same rules `/archie-review` grades this change against, so a rule read here is a review round you do not spend. A repo with neither has no standards. The file is the repo's in both modes, read from disk.
+Read **`STANDARDS.md`** — or whichever coding-standards file `AGENTS.md` links, in a repo Archie did not set up. Its rules bind every line you write, and they are the same rules `/archie-review` grades this change against, so a rule read here is a review round you do not spend. A repo with neither has no standards, and the file stays on disk in Archie mode.
 
 ## 2. Outer loop: go red at the seam
 
