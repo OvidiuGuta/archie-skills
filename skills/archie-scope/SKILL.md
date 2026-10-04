@@ -17,6 +17,10 @@ You settle the **what**. How it gets built is `/archie-design`'s, on a leaf, aft
 
 ## 1. Open the Epic
 
+### Where the tree lives
+
+In a folder whose `AGENTS.md` carries `**Archie Project:** KEY`, the tree lives in Archie, so follow its MCP server's `guide`. Every reference is a Task key such as `ARC-12`, and a `3.2` or a `3.2#1` is refused with one line saying the folder plans in Archie. Act as the Agent the Project's map gives `architect`, read once from `guide {projectKey}`, on every call of the session. The steps below name the tree's files and markers, and the `guide` says how each is read and written in Archie. A helper you dispatch or invoke is told the mode and the Agent in its brief, and carries no mode text of its own.
+
 Nothing about this Epic is written to disk until step 4. The intent is agreed at the moment of least knowledge and the interview reshapes it, so writing it now buys a file that gets rewritten and a directory left behind by a session the user abandons. Hold it in the session instead.
 
 **A loose idea** — no reference, just a subject. Agree a title and a slug. This is the root Epic and carries no number, and its `epic.md` will look like this when step 4 writes it:
@@ -36,7 +40,7 @@ Nothing about this Epic is written to disk until step 4. The intent is agreed at
 2. `02-{slug}` — {one line of intent}
 ```
 
-`## Decisions` is **always written**, because its presence is what marks this Epic as scoped. `Children` appears only on a Split Epic; a Specified Epic has `spec.md` and `tasks/` beside this file instead.
+`## Decisions` is **always written**, because its presence is what marks this Epic as scoped. `Children` appears only on a Split Epic; a Specified Epic has `spec.md` and `tasks/` beside this file instead. In Archie the children are child Epics in build order, so the body carries no `Children` list.
 
 **An Epic reference** (`3.2`, or a root's slug) — resolve it down the numbered directories and open that Epic. A reference that does not resolve stops the session and goes to the user.
 
@@ -50,7 +54,7 @@ An Epic deep in a tree has most of its constraints already settled, in two place
 
 ### What was written down
 
-- **`CONTEXT.md`** — the project's language. Ask in it.
+- **`CONTEXT.md`** — the project's language. Ask in it. In Archie, it and the ADRs are the Project's Notes.
 - **The ADRs touching this area** — read the titles, then the bodies of the ones that bear on this subject. A question an ADR already answers is not a question.
 - **Every ancestor's `epic.md`**, walking the path from the root down to this Epic's parent. Those `Decisions` lines are inherited, **not copied**: they stay where they were written, because copying them onto children would contradict thin children and would need backfilling every time an ancestor settles something after the split. A decision spanning siblings is settled at the parent, so no sibling inherits one it never weighed in on.
 
@@ -100,7 +104,7 @@ The user overrules the gate continuously. When they name a deferred question, it
 
 ### Record what settles, the moment it settles
 
-**The durable levels are written now**, before the next question is asked. Invoke `/archie-domain-modeling` for a **domain term** or a decision **clearing the ADR bar**, and `/archie-standards` when the user states how they want code written — a **coding standard**. Each owns its destinations and knows nothing about this tree. Those are the levels that outlive the tree, so a session that dies before step 4 must not take them with it.
+**The durable levels are written now**, before the next question is asked. Invoke `/archie-domain-modeling` for a **domain term** or a decision **clearing the ADR bar**, and `/archie-standards` when the user states how they want code written — a **coding standard**. Each owns its destinations and knows nothing about this tree. In Archie a term or an ADR goes to the Project, and a standard stays in the repo in both modes. Those are the levels that outlive the tree, so a session that dies before step 4 must not take them with it.
 
 **The residue is held in the session** and written in step 4: one line per decision, no reasoning, the list you will put under `## Decisions`. Keep it as you go rather than reconstructing it at the end, restate it in every check-in, and revise a line in place when a later answer sharpens it. The residue is the level defined to die with the tree, so holding it costs the same class of loss a pivot already costs.
 
@@ -110,11 +114,11 @@ If a residue line will not fit in one line, it needed its reasoning — which me
 
 An at-altitude question about a **fact** — something the user would have to go and read — takes the research exit rather than the user's attention. It runs in a **sub-agent** and comes back as a **pointer**, so the reading never enters this session's context.
 
-Spawn the sub-agent and tell it to use `/archie-research`; the skill is the sub-agent's, and what only you know is the brief: the question in one sentence, what decision is waiting on it, and the destination — `research/<slug>.md` inside this Epic's own directory. One answerable question per sub-agent, since a brief asking three things comes back as three shallow answers.
+Spawn the sub-agent and tell it to use `/archie-research`; the skill is the sub-agent's, and what only you know is the brief: the question in one sentence, what decision is waiting on it, and the destination — `research/<slug>.md` inside this Epic's own directory, or in Archie a Note linked to this Epic. One answerable question per sub-agent, since a brief asking three things comes back as three shallow answers.
 
 Carry on down the frontier while it runs, and ask the waiting question when its pointer lands.
 
-That destination is the one thing that reaches disk before step 4, created lazily by the first finding.
+That destination is the one thing that reaches disk before step 4, created lazily by the first finding. In Archie the first finding opens the Epic at `thin`, so the Note has a key to link to.
 
 ### Check in every eight questions
 
@@ -132,7 +136,7 @@ Done when the frontier is empty. What it leaves behind is either nothing — eve
 
 ## 4. Write the Epic, then recommend
 
-The frontier is empty, so what the Epic is has stopped moving. Write it now, in one go: create `.archie/<path>/` if the research exit did not, and write `epic.md` with the title, the intent as the session actually came to understand it, and `## Decisions` carrying the residue — or `_None at this resolution._` if there is none.
+The frontier is empty, so what the Epic is has stopped moving. Write it now, in one go: create `.archie/<path>/` if the research exit did not, and write `epic.md` with the title, the intent as the session actually came to understand it, and `## Decisions` carrying the residue — or `_None at this resolution._` if there is none. In Archie, open the Epic if the research exit did not, and record its decisions.
 
 An Epic that already had an `epic.md` is updated in the same single write: the intent sharpened if this session sharpened it, `## Decisions` extended with this session's residue. Its existing lines were settled at this resolution too and are not rewritten away.
 

@@ -13,15 +13,21 @@ The only thing you write in the tree is two sections of the leaf's existing `spe
 
 ## 1. Open the leaf
 
+### Where the tree lives
+
+In a folder whose `AGENTS.md` carries `**Archie Project:** KEY`, the tree lives in Archie, so follow its MCP server's `guide`. Every reference is a Task key such as `ARC-12`, and a `3.2` or a `3.2#1` is refused with one line saying the folder plans in Archie. Act as the Agent the Project's map gives `architect`, read once from `guide {projectKey}`, on every call of the session. The steps below name the tree's files and markers, and the `guide` says how each is read and written in Archie. A helper you dispatch or invoke is told the mode and the Agent in its brief, and carries no mode text of its own.
+
 You are handed a reference — a root's slug, or `3.2`, which is child `02` of child `03` of the root, resolved down the numbered directories under `.archie/` — or the leaf the session in context just specified.
 
-Read its `spec.md` in full, plus its `epic.md`, every ancestor's `epic.md` up the path, `CONTEXT.md` and the ADRs touching this area. The `Problem Statement`, `Solution`, `User Stories` and `Out of Scope` are **settled input**: this session designs against them, it does not reopen them.
+Read its `spec.md` in full, plus its `epic.md`, every ancestor's `epic.md` up the path, `CONTEXT.md` and the ADRs touching this area. In Archie the language and the ADRs are the Project's Notes. The `Problem Statement`, `Solution`, `User Stories` and `Out of Scope` are **settled input**: this session designs against them, it does not reopen them.
 
 Three states stop the run:
 
 - **An Epic with children** is Split, so the Spec belongs to one of its leaves. Name the children and ask which one.
 - **No `spec.md`** means this leaf has not been specified. Name `/archie-to-spec` and stop.
 - **`Implementation Decisions` no longer carrying `_Not yet designed._`** means this leaf has already been designed. Say what the existing design covers and get the overwrite agreed before touching it — and if `tasks/` exists, say what state its Tasks are in.
+
+In Archie the three are the Epic's Status: `scoped` with children is Split, `scoped` without is unspecified, `designed` or later is designed.
 
 Done when you hold one Specified, undesigned leaf and its Spec read end to end.
 
@@ -61,7 +67,7 @@ That is the Spec's altitude test one rung down, and it is what keeps this sessio
 
 ### Some questions are answered by looking
 
-A question of the form "how should this look or behave" resolves badly in conversation. Spawn a **sub-agent** and tell it to use `/archie-prototype`; the skill is the sub-agent's, and what only you know is the brief — the question narrowed to what is actually in doubt, and for a **logic** demo a destination, `prototypes/<slug>/` inside this Epic's directory. A **UI** prototype cuts its own throwaway branch, but step 2 has already read the page it mounts on, so hand the survey over rather than paying for a second read: the host page and its route, the component library and styling system, and the data that page already has. Name what the survey did not cover, so the gap is the sub-agent's to fill rather than something it assumes away.
+A question of the form "how should this look or behave" resolves badly in conversation. Spawn a **sub-agent** and tell it to use `/archie-prototype`; the skill is the sub-agent's, and what only you know is the brief — the question narrowed to what is actually in doubt, and for a **logic** demo a destination, `prototypes/<slug>/` inside this Epic's directory, or in Archie an html Asset on this Epic. A **UI** prototype cuts its own throwaway branch, but step 2 has already read the page it mounts on, so hand the survey over rather than paying for a second read: the host page and its route, the component library and styling system, and the data that page already has. Name what the survey did not cover, so the gap is the sub-agent's to fill rather than something it assumes away.
 
 A prototype is throwaway code judged by eye, so it is not work that needs the strongest model available. If your harness lets a dispatch pick one, pick a cheap one.
 

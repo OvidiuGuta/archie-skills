@@ -52,6 +52,30 @@ const MODEL_INVOKED_SKILLS = [
 ]
 const ROSTER = new Set([...USER_ONLY_SKILLS, ...MODEL_INVOKED_SKILLS])
 
+// Archie mode. A skill that touches the tree carries a `Where the tree lives`
+// block whose heading, first sentence and Role line are pinned verbatim, the
+// way the guard sentence is, so the switch cannot drift between copies
+// (ADR 0011). The helpers — interview, research, prototype, domain-modeling,
+// standards — carry no block: the dispatching skill's brief names the mode.
+// Each implementing Task of archie-mcp.5 adds its skills and Roles here.
+const ARCHIE_MODE_HEADING = /^#{2,3} Where the tree lives$/m
+const ARCHIE_MODE_SWITCH =
+  'In a folder whose `AGENTS.md` carries `**Archie Project:** KEY`, the tree lives in Archie, so follow its MCP server\'s `guide`.'
+const ARCHIE_MODE_ROLE = /Act as the Agent the Project's map gives `(architect|engineer|reviewer)`/
+const ARCHIE_MODE_ROLES = {
+  'archie-setup': 'architect',
+  'archie-architect': 'architect',
+  'archie-scope': 'architect',
+  'archie-to-spec': 'architect',
+  'archie-design': 'architect',
+  'archie-to-tasks': 'architect',
+  'archie-implement': 'engineer',
+  'archie-tdd': 'engineer',
+  'archie-verify': 'engineer',
+  'archie-assist': 'engineer',
+  'archie-review': 'reviewer',
+}
+
 const failures = []
 const warnings = []
 const fail = (file, problem) => failures.push(`${rel(file)}: ${problem}`)
@@ -97,10 +121,10 @@ function splitFrontmatter(text) {
 const SKILL_REF = /(^|[^\w./-])\/([a-z][a-z0-9-]*[a-z0-9])(?![\w./-])/g
 const MD_LINK = /\[[^\]]*\]\(([^)\s]+)(?:\s+"[^"]*")?\)/g
 
-const skillRefsIn = (body) => [...body.matchAll(SKILL_REF)].map((m) => m[2])
-
-/** A link inside a fenced code block is an example, not a link. */
+/** A link or a skill reference inside a fenced code block is an example, not a reference. */
 const stripFences = (body) => body.replace(/^```[\s\S]*?^```/gm, '')
+
+const skillRefsIn = (body) => [...stripFences(body).matchAll(SKILL_REF)].map((m) => m[2])
 
 /** Relative link targets only: external, absolute and anchor-only links are not ours to check. */
 function relativeLinksIn(body) {
@@ -171,6 +195,23 @@ for (const dir of skillDirs) {
     fail(skillFile, '`disable-model-invocation` is banned — reserve user-only skills with the guard sentence instead (ADR 0017)')
   } else if (USER_ONLY_SKILLS.includes(dirName) && !description.includes(USER_ONLY_GUARD)) {
     fail(skillFile, `user-only skill's description is missing the guard sentence \`${USER_ONLY_GUARD}\``)
+  }
+
+  // The Archie-mode block: pinned in the skills that touch the tree, and
+  // absent from the helpers, which learn the mode from their brief.
+  const role = ARCHIE_MODE_ROLES[dirName]
+  const hasHeading = ARCHIE_MODE_HEADING.test(body)
+  if (role) {
+    if (!hasHeading) fail(skillFile, 'missing the `Where the tree lives` heading')
+    if (!body.includes(ARCHIE_MODE_SWITCH)) {
+      fail(skillFile, `Archie-mode block is missing its first sentence \`${ARCHIE_MODE_SWITCH}\``)
+    }
+    const found = ARCHIE_MODE_ROLE.exec(body)?.[1]
+    if (found !== role) {
+      fail(skillFile, `Archie-mode block names Role \`${found ?? 'none'}\`, expected \`${role}\``)
+    }
+  } else if (hasHeading) {
+    fail(skillFile, 'carries a `Where the tree lives` block, but is a helper that learns the mode from its brief')
   }
 
   // agents/openai.yaml, for parity with the bundle this one replaces.
