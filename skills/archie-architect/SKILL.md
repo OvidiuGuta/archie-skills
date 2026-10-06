@@ -29,18 +29,18 @@ No `.archie/` at all is a repo that has never been planned. That is not an error
 
 ## 2. Read the state, name the step
 
-Read it off the files, using the table in `epic-tree.md`. Nothing records this, so nothing about it can be stale. In Archie, read it off the Epic's Status, in the middle column, so a card the human drags is an instruction to this run:
+Read it off the files, using the table in `epic-tree.md`. Nothing records this, so nothing about it can be stale:
 
-| What you find | Epic Status in Archie | The step |
-| --- | --- | --- |
-| a loose idea, or `epic.md` with no `## Decisions` heading | `thin`, or no Epic yet | `/archie-scope` |
-| child `NN-<slug>` directories | `scoped`, with `epic` children | none here — name the children's states and ask which to open |
-| `epic.md` carrying `## Decisions`, no children, no `spec.md` | `scoped`, no children | `/archie-to-spec` |
-| `spec.md` carrying `_Not yet designed._` | `specified` | `/archie-design` |
-| `spec.md` complete, no `tasks/` | `designed` | `/archie-to-tasks` |
-| `tasks/` populated | `sliced` | none — the leaf is planned; name `/archie-implement` and the Task to start with |
+| What you find | The step |
+| --- | --- |
+| a loose idea, or `epic.md` with no `## Decisions` heading | `/archie-scope` |
+| child `NN-<slug>` directories | none here — name the children's states and ask which to open |
+| `epic.md` carrying `## Decisions`, no children, no `spec.md` | `/archie-to-spec` |
+| `spec.md` carrying `_Not yet designed._` | `/archie-design` |
+| `spec.md` complete, no `tasks/` | `/archie-to-tasks` |
+| `tasks/` populated | none — the leaf is planned; name `/archie-implement` and the Task to start with |
 
-Past `sliced`, `implementing` names `/archie-implement`, `in-review` names `/archie-review`, and `done` is done.
+In Archie, the step is the skill the Epic's Status names on its `**Next:**` line, whatever that Status is called, so a card the human drags is an instruction to the next run. A line naming one skill per condition, such as "with Epic children, `/archie-scope` each child in build order; with none, `/archie-to-spec`", routes to the skill whose condition holds for this Epic. A skill past planning, such as `/archie-implement` or `/archie-review`, is named rather than run, as the table's last row names `/archie-implement`. When the Status has no `Next:` line, its line names no skill in this bundle, or no condition clearly holds, stop and ask the human which step to run, naming the Status and `/archie-setup`.
 
 **Say the step before you run it**, in one line, so the user can redirect you into a different one:
 
