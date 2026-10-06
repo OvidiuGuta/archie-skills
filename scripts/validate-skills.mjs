@@ -85,8 +85,18 @@ const ARCHIE_MODE_WORK = {
 const RETIRED_BINDING = [
   ['the old first sentence', 'In a folder whose `AGENTS.md` carries `**Archie Project:** KEY`'],
   ['a Role line', "Act as the Agent the Project's map gives"],
+  ['the Role map read', '`guide {projectKey}`'],
 ]
+// The block runs from its heading to the end of the paragraph holding the
+// Agent line. Every copy must read the same once its kind of work is masked,
+// so the sentences between the pinned ones cannot drift either.
+const ARCHIE_MODE_BLOCK = /^#{2,3} Where the tree lives$[\s\S]*?Act as the Agent whose description in the Index fits [\s\S]*?(?=\n\n|(?![\s\S]))/m
+const maskWork = (block) => block.replace(ARCHIE_MODE_WORK_FOUND, 'Act as the Agent whose description in the Index fits **WORK**')
+// `/archie-setup` walks the skills' needs list in its own reference, which is
+// the archie-skills side of the contract the seeded `Next:` lines keep.
+const SETUP_BINDINGS = 'references/bindings.md'
 
+let firstArchieModeBlock = null
 const failures = []
 const warnings = []
 const fail = (file, problem) => failures.push(`${rel(file)}: ${problem}`)
@@ -221,8 +231,21 @@ for (const dir of skillDirs) {
       const found = ARCHIE_MODE_WORK_FOUND.exec(body)?.[1]
       fail(skillFile, `Archie-mode block's Agent line names \`${found ?? 'none'}\`, expected \`${ARCHIE_MODE_AGENT(work)}\``)
     }
+    const block = ARCHIE_MODE_BLOCK.exec(body)?.[0]
+    if (block) {
+      firstArchieModeBlock ??= { skill: dirName, text: maskWork(block) }
+      if (maskWork(block) !== firstArchieModeBlock.text) {
+        fail(skillFile, `Archie-mode block differs from \`${firstArchieModeBlock.skill}\`'s copy beyond its kind of work`)
+      }
+    }
   } else if (hasHeading) {
     fail(skillFile, 'carries a `Where the tree lives` block, but is a helper that learns the mode from its brief')
+  }
+
+  // The link check below fails a link to a missing file, so pinning the link
+  // pins the file too.
+  if (dirName === 'archie-setup' && !relativeLinksIn(body).some((href) => href.replace(/^\.\//, '') === SETUP_BINDINGS)) {
+    fail(skillFile, `does not link \`${SETUP_BINDINGS}\`, so the bindings report has no needs list`)
   }
 
   // agents/openai.yaml, for parity with the bundle this one replaces.

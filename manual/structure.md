@@ -66,5 +66,6 @@ It asserts that:
 - `marketplace.json` lists every skill exactly once, in a phase, with a path the installer will not silently drop
 - every skill ships an `agents/openai.yaml` carrying a `display_name` and a `short_description`
 - every skill has a page under [`manual/skills/`](skills/), linked from the README's index
-- every skill that touches the tree carries the `Where the tree lives` block — heading, first sentence binding the folder by its `origin` remote, and an Agent line naming the skill's kind of work, planning, building or reviewing, all pinned verbatim — and no helper skill carries one
-- no file under `skills/` carries the retired binding: the `AGENTS.md` first sentence or a Role line
+- every skill that touches the tree carries the `Where the tree lives` block — heading, first sentence binding the folder by its `origin` remote, and an Agent line naming the skill's kind of work, planning, building or reviewing, all pinned verbatim — every copy reads the same apart from that kind of work, and no helper skill carries one
+- no file under `skills/` carries the retired binding: the `AGENTS.md` first sentence, a Role line or `guide {projectKey}`
+- `/archie-setup` links its `references/bindings.md`, the needs list the seeded `Next:` lines in Archie are written against
