@@ -65,4 +65,5 @@ It asserts that:
 - `marketplace.json` lists every skill exactly once, in a phase, with a path the installer will not silently drop
 - every skill ships an `agents/openai.yaml` carrying a `display_name` and a `short_description`
 - every skill has a page under [`manual/skills/`](skills/), linked from the README's index
-- every skill that touches the tree carries the `Where the tree lives` block — heading, first sentence and a Role line naming `architect`, `engineer` or `reviewer`, all pinned verbatim — and no helper skill carries one
+- every skill that touches the tree carries the `Where the tree lives` block — heading, first sentence binding the folder by its `origin` remote, and an Agent line naming the skill's kind of work, planning, building or reviewing, all pinned verbatim — and no helper skill carries one
+- no file under `skills/` carries the retired binding: the `AGENTS.md` first sentence or a Role line

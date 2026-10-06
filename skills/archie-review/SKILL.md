@@ -16,7 +16,9 @@ Then **one** fix round, in this same session: the user picks the findings, an en
 
 ### Where the tree lives
 
-In a folder whose `AGENTS.md` carries `**Archie Project:** KEY`, the tree lives in Archie, so follow its MCP server's `guide`. Every reference is a Task key such as `ARC-12`, and a `3.2` or a `3.2#1` is refused with one line saying the folder plans in Archie. Act as the Agent the Project's map gives `reviewer`, read once from `guide {projectKey}`, on every call of the session. The steps below name the tree's files and markers, and the `guide` says how each is read and written in Archie. A helper you dispatch or invoke is told the mode and the Agent in its brief, and carries no mode text of its own.
+The folder plans in Archie when its `origin` remote clearly matches one Project's repo in the Archie MCP server's `guide` Index. Read the remote with `git remote get-url origin`. Two remotes are the same repo when their host and path match, ignoring the scheme, the user and a trailing `.git`, so `git@github.com:me/app.git` matches `https://github.com/me/app`. No `origin`, no match or no Archie connection means the tree lives on files, as the steps below describe. Several matches, or a match you are unsure of, means stopping to ask the human which Project the folder belongs to.
+
+In Archie, follow the `guide`. Every reference is a Task key such as `ARC-12`, and a `3.2` or a `3.2#1` is refused with one line saying the folder plans in Archie. Act as the Agent whose description in the Index fits **reviewing**, or as the Task's assignee when it is an Agent, chosen once for the session. The steps below name the tree's files and markers, and the `guide` says how each is read and written in Archie. Where a step sets a `Status:`, reads or writes a marker, or names a Type, use the Status or Type whose description fits it. When none clearly fits, or several do, stop and ask the human, naming the step you were on and `/archie-setup`, which reports every such gap. A helper you dispatch or invoke is told the mode and the Agent in its brief, and carries no mode text of its own.
 
 The input is one of three:
 
@@ -40,7 +42,7 @@ Overall is the worse of the two.
 
 Both go out **through the sub-agent (Agent) tool**, so neither pollutes the other's context. Without an Epic, only Standards goes out, and the header says the Spec axis was skipped and why. Each briefing file below is the whole of its axis's discipline, so each prompt opens with: **read your briefing file in full before reviewing — it carries your rules, your severities and your report format.**
 
-**The Spec sub-agent's prompt** carries the diff command, the paths to `spec.md` and the task files, and the path to [`references/spec-review.md`](references/spec-review.md). In Archie it carries the Spec and the Task bodies as text, with the `verification` Task named as the closing Task, since the briefing reads `Integration:` lines.
+**The Spec sub-agent's prompt** carries the diff command, the paths to `spec.md` and the task files, and the path to [`references/spec-review.md`](references/spec-review.md). In Archie it carries the Spec and the Task bodies as text, with the leaf's closing Task named as such, since the briefing reads `Integration:` lines.
 
 **The Standards sub-agent's prompt** carries the diff command, the repo's own standards files — `STANDARDS.md` first, then `AGENTS.md`, `CLAUDE.md`, `CONTRIBUTING.md` — and the path to [`references/standards-review.md`](references/standards-review.md). Those files stay on disk in Archie mode.
 

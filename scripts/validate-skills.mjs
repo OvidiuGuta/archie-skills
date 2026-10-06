@@ -53,28 +53,39 @@ const MODEL_INVOKED_SKILLS = [
 const ROSTER = new Set([...USER_ONLY_SKILLS, ...MODEL_INVOKED_SKILLS])
 
 // Archie mode. A skill that touches the tree carries a `Where the tree lives`
-// block whose heading, first sentence and Role line are pinned verbatim, the
+// block whose heading, first sentence and Agent line are pinned verbatim, the
 // way the guard sentence is, so the switch cannot drift between copies
-// (ADR 0011). The helpers — interview, research, prototype, domain-modeling,
-// standards — carry no block: the dispatching skill's brief names the mode.
-// Each implementing Task of archie-mcp.5 adds its skills and Roles here.
+// (ADR 0011). The copies are identical except for the kind of work in the
+// Agent line, which is what the skill picks its Agent by. The helpers —
+// interview, research, prototype, domain-modeling, standards — carry no
+// block: the dispatching skill's brief names the mode.
 const ARCHIE_MODE_HEADING = /^#{2,3} Where the tree lives$/m
 const ARCHIE_MODE_SWITCH =
-  'In a folder whose `AGENTS.md` carries `**Archie Project:** KEY`, the tree lives in Archie, so follow its MCP server\'s `guide`.'
-const ARCHIE_MODE_ROLE = /Act as the Agent the Project's map gives `(architect|engineer|reviewer)`/
-const ARCHIE_MODE_ROLES = {
-  'archie-setup': 'architect',
-  'archie-architect': 'architect',
-  'archie-scope': 'architect',
-  'archie-to-spec': 'architect',
-  'archie-design': 'architect',
-  'archie-to-tasks': 'architect',
-  'archie-implement': 'engineer',
-  'archie-tdd': 'engineer',
-  'archie-verify': 'engineer',
-  'archie-assist': 'engineer',
-  'archie-review': 'reviewer',
+  "The folder plans in Archie when its `origin` remote clearly matches one Project's repo in the Archie MCP server's `guide` Index."
+const ARCHIE_MODE_AGENT = (work) =>
+  `Act as the Agent whose description in the Index fits **${work}**, or as the Task's assignee when it is an Agent, chosen once for the session.`
+const ARCHIE_MODE_WORK_FOUND = /Act as the Agent whose description in the Index fits \*\*([a-z]+)\*\*/
+const ARCHIE_MODE_WORK = {
+  'archie-setup': 'planning',
+  'archie-architect': 'planning',
+  'archie-scope': 'planning',
+  'archie-to-spec': 'planning',
+  'archie-design': 'planning',
+  'archie-to-tasks': 'planning',
+  'archie-implement': 'building',
+  'archie-tdd': 'building',
+  'archie-verify': 'building',
+  'archie-assist': 'building',
+  'archie-review': 'reviewing',
 }
+// The binding the block replaced: a line in `AGENTS.md` naming the Project,
+// and an Agent read off the Project's Role map. Neither exists any more, so
+// any skill file still carrying either is reading something Archie no longer
+// serves.
+const RETIRED_BINDING = [
+  ['the old first sentence', 'In a folder whose `AGENTS.md` carries `**Archie Project:** KEY`'],
+  ['a Role line', "Act as the Agent the Project's map gives"],
+]
 
 const failures = []
 const warnings = []
@@ -199,16 +210,16 @@ for (const dir of skillDirs) {
 
   // The Archie-mode block: pinned in the skills that touch the tree, and
   // absent from the helpers, which learn the mode from their brief.
-  const role = ARCHIE_MODE_ROLES[dirName]
+  const work = ARCHIE_MODE_WORK[dirName]
   const hasHeading = ARCHIE_MODE_HEADING.test(body)
-  if (role) {
+  if (work) {
     if (!hasHeading) fail(skillFile, 'missing the `Where the tree lives` heading')
     if (!body.includes(ARCHIE_MODE_SWITCH)) {
       fail(skillFile, `Archie-mode block is missing its first sentence \`${ARCHIE_MODE_SWITCH}\``)
     }
-    const found = ARCHIE_MODE_ROLE.exec(body)?.[1]
-    if (found !== role) {
-      fail(skillFile, `Archie-mode block names Role \`${found ?? 'none'}\`, expected \`${role}\``)
+    if (!body.includes(ARCHIE_MODE_AGENT(work))) {
+      const found = ARCHIE_MODE_WORK_FOUND.exec(body)?.[1]
+      fail(skillFile, `Archie-mode block's Agent line names \`${found ?? 'none'}\`, expected \`${ARCHIE_MODE_AGENT(work)}\``)
     }
   } else if (hasHeading) {
     fail(skillFile, 'carries a `Where the tree lives` block, but is a helper that learns the mode from its brief')
@@ -265,6 +276,12 @@ for (const file of linkedFiles) {
   for (const target of new Set(relativeLinksIn(body))) {
     const resolved = resolve(dirname(file), target)
     if (!existsSync(resolved)) fail(file, `link \`${target}\` points at a file that does not exist`)
+  }
+
+  if (file.startsWith(SKILLS_DIR + '/')) {
+    for (const [what, text] of RETIRED_BINDING) {
+      if (body.includes(text)) fail(file, `carries ${what} of the retired binding, \`${text}\``)
+    }
   }
 
   // Outside a SKILL.md there is no bundle position to resolve against, so a

@@ -15,13 +15,15 @@ You write task files and nothing else. The Spec is settled — both what it buil
 
 ### Where the tree lives
 
-In a folder whose `AGENTS.md` carries `**Archie Project:** KEY`, the tree lives in Archie, so follow its MCP server's `guide`. Every reference is a Task key such as `ARC-12`, and a `3.2` or a `3.2#1` is refused with one line saying the folder plans in Archie. Act as the Agent the Project's map gives `architect`, read once from `guide {projectKey}`, on every call of the session. The steps below name the tree's files and markers, and the `guide` says how each is read and written in Archie. A helper you dispatch or invoke is told the mode and the Agent in its brief, and carries no mode text of its own.
+The folder plans in Archie when its `origin` remote clearly matches one Project's repo in the Archie MCP server's `guide` Index. Read the remote with `git remote get-url origin`. Two remotes are the same repo when their host and path match, ignoring the scheme, the user and a trailing `.git`, so `git@github.com:me/app.git` matches `https://github.com/me/app`. No `origin`, no match or no Archie connection means the tree lives on files, as the steps below describe. Several matches, or a match you are unsure of, means stopping to ask the human which Project the folder belongs to.
+
+In Archie, follow the `guide`. Every reference is a Task key such as `ARC-12`, and a `3.2` or a `3.2#1` is refused with one line saying the folder plans in Archie. Act as the Agent whose description in the Index fits **planning**, or as the Task's assignee when it is an Agent, chosen once for the session. The steps below name the tree's files and markers, and the `guide` says how each is read and written in Archie. Where a step sets a `Status:`, reads or writes a marker, or names a Type, use the Status or Type whose description fits it. When none clearly fits, or several do, stop and ask the human, naming the step you were on and `/archie-setup`, which reports every such gap. A helper you dispatch or invoke is told the mode and the Agent in its brief, and carries no mode text of its own.
 
 The Epic is the one whose Spec the session just wrote, or the reference the user passed — a root's slug, or `3.2`, which is child `02` of child `03` of the root, resolved down the numbered directories under `.archie/`.
 
 Read its `spec.md` in full, plus any reference the user passed alongside — a research finding, a sibling's code. A **Specified** Epic is the only thing this skill slices: an Epic with children is Split, and its Spec belongs to one of the leaves, so name the children and ask which one. An Epic that already holds a `tasks/` directory is being re-sliced — say what the existing Tasks cover and get the overwrite agreed first.
 
-**A Spec still carrying `_Not yet designed._` halts the run** — in Archie, an Epic whose Status is `specified` rather than `designed`. That leaf has no settled surface — no contract, no structure, no seam — so every Task cut from it would be sliced against an imagined one, which looks exactly like a Task sliced against a real one until it is built. Name `/archie-design` and stop.
+**A Spec still carrying `_Not yet designed._` halts the run**. That leaf has no settled surface — no contract, no structure, no seam — so every Task cut from it would be sliced against an imagined one, which looks exactly like a Task sliced against a real one until it is built. Name `/archie-design` and stop.
 
 Done when you hold one Specified Epic, its Spec read end to end, and the user's call to slice it.
 
@@ -91,9 +93,9 @@ One file per Task at `tasks/NN-<slug>.md` inside the leaf, the `Epic:` reference
 
 The closing Task uses that same file: `Integration: this Task`, `Blocked by` every other Task, `ready-for-agent`, its demoable outcome the leaf's Spec holding at the seam, and one criterion saying so. It is a Task like any other: same statuses, same review path.
 
-In Archie the header lines are the Task's own fields: `Blocked by` is its `blocks` edges, `Integration: this Task` is the `verification` Type, and the label is its `assignee`, an Agent or the human.
+In Archie the header lines are the Task's own fields: `Blocked by` is its `blocks` edges, the `Integration:` line is its Type, and the label is its `assignee`, an Agent or the human.
 
-Every Task starts at `Status: todo` — `to-do` in Archie. The implementing skills write `in-progress` and `ready-for-review` — `in-review` in Archie — from there. In task mode `done` is the user's word; in epic mode `/archie-implement` writes it itself after its criteria check, and stamps the leaf's `epic.md` with `Status: ready-for-review` when the last Task lands — the one status an Epic ever carries.
+Every Task starts at `Status: todo`. The implementing skills write `in-progress` and `ready-for-review` from there. In task mode `done` is the user's word; in epic mode `/archie-implement` writes it itself after its criteria check, and stamps the leaf's `epic.md` with `Status: ready-for-review` when the last Task lands — the one status an Epic ever carries.
 
 The numbers are the approved list's order at first slice, and thereafter **identity**. A re-slice never renumbers: a surviving Task keeps the number it has, a new one takes the next unused number in the leaf, and a deleted Task leaves a gap that is never backfilled, because reusing a number would make an old reference resolve to different work. A Task is referenced as `3.2#1` — its Epic, then `#`, then its number.
 

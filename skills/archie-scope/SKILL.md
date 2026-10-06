@@ -19,7 +19,9 @@ You settle the **what**. How it gets built is `/archie-design`'s, on a leaf, aft
 
 ### Where the tree lives
 
-In a folder whose `AGENTS.md` carries `**Archie Project:** KEY`, the tree lives in Archie, so follow its MCP server's `guide`. Every reference is a Task key such as `ARC-12`, and a `3.2` or a `3.2#1` is refused with one line saying the folder plans in Archie. Act as the Agent the Project's map gives `architect`, read once from `guide {projectKey}`, on every call of the session. The steps below name the tree's files and markers, and the `guide` says how each is read and written in Archie. A helper you dispatch or invoke is told the mode and the Agent in its brief, and carries no mode text of its own.
+The folder plans in Archie when its `origin` remote clearly matches one Project's repo in the Archie MCP server's `guide` Index. Read the remote with `git remote get-url origin`. Two remotes are the same repo when their host and path match, ignoring the scheme, the user and a trailing `.git`, so `git@github.com:me/app.git` matches `https://github.com/me/app`. No `origin`, no match or no Archie connection means the tree lives on files, as the steps below describe. Several matches, or a match you are unsure of, means stopping to ask the human which Project the folder belongs to.
+
+In Archie, follow the `guide`. Every reference is a Task key such as `ARC-12`, and a `3.2` or a `3.2#1` is refused with one line saying the folder plans in Archie. Act as the Agent whose description in the Index fits **planning**, or as the Task's assignee when it is an Agent, chosen once for the session. The steps below name the tree's files and markers, and the `guide` says how each is read and written in Archie. Where a step sets a `Status:`, reads or writes a marker, or names a Type, use the Status or Type whose description fits it. When none clearly fits, or several do, stop and ask the human, naming the step you were on and `/archie-setup`, which reports every such gap. A helper you dispatch or invoke is told the mode and the Agent in its brief, and carries no mode text of its own.
 
 Nothing about this Epic is written to disk until step 4. The intent is agreed at the moment of least knowledge and the interview reshapes it, so writing it now buys a file that gets rewritten and a directory left behind by a session the user abandons. Hold it in the session instead.
 
@@ -118,7 +120,7 @@ Spawn the sub-agent and tell it to use `/archie-research`; the skill is the sub-
 
 Carry on down the frontier while it runs, and ask the waiting question when its pointer lands.
 
-That destination is the one thing that reaches disk before step 4, created lazily by the first finding. In Archie the first finding opens the Epic at `thin`, so the Note has a key to link to.
+That destination is the one thing that reaches disk before step 4, created lazily by the first finding. In Archie the first finding opens the Epic, so the Note has a key to link to.
 
 ### Check in every eight questions
 
