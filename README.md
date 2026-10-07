@@ -62,7 +62,7 @@ flowchart LR
   E --> T2[/"epic.md + spec.md<br/>tasks/NN-slug.md at todo<br/>CONTEXT.md, ADRs, .archie/research/"/]
 ```
 
-**Implementing** — AFK. One Task inline, or the whole leaf as an autonomous loop over its Tasks. Every criterion gets a proof in its Task, driven in the running app where no test reaches it, and an Epic run ends on a draft PR reviewed unattended.
+**Implementing** — AFK. One Task inline, or the whole leaf as an autonomous loop over its Tasks. Every criterion gets a proof in its Task, driven in the running app where no test reaches it, and an Epic run ends on a draft PR reviewed unattended: fixed once, then reviewed a second time, ready only when that second review is 🟢.
 
 ```mermaid
 flowchart LR
@@ -73,7 +73,8 @@ flowchart LR
   CM -- "next Task" --> TD
   CM -- "closing Task" --> VF["/archie-verify<br/>the leaf at its seam"]
   VF --> PR["draft PR"] --> RU["/archie-review<br/>unattended"]
-  RU --> T3[/"a commit per Task, proof in each<br/>PR comments: report, re-grade<br/>ready when 🟢<br/>walkthrough of what no test covers"/]
+  RU --> FX["fix every finding<br/>not wrong, once"] --> RR["second review<br/>grade + score"]
+  RR --> T3[/"a commit per Task, proof in each<br/>PR comments: report + triage, second review<br/>ready when 🟢<br/>walkthrough of what no test covers"/]
 ```
 
 **Reviewing** — grades the branch 🟢 mergeable or 🔴 needs work, where only a 🔴 blocks and a 🟠 is a Suggestion, fixes what the user accepts, and re-grades. One round: findings that survive the fix halt the run. An Epic run already ran it on its PR, so this door is for a PR, a branch, or a second look.

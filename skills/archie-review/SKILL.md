@@ -10,7 +10,7 @@ One change graded for mergeability, in two parallel axis sub-agents:
 - **Spec** — does the diff do what the leaf's `spec.md` and its task files asked, including the seam test its `Integration:` line owed? Runs only when an Epic supplies those contracts.
 - **Standards** — does it follow the repo's own `STANDARDS.md` and the test rules? Runs always.
 
-Every 🔴 they raise is then confirmed by an independent verifier before it reaches the report. A review of a change already reviewed is a **re-review**, and holds to the earlier one. Then **one** fix round, in this same session: the user picks the findings, an engineer fixes them, and you verify that fix read-only and re-grade. Briefed **unattended** by `/archie-implement`, you pick instead — step 9.
+Every 🔴 they raise is then confirmed by an independent verifier before it reaches the report. A review of a change already reviewed is a **re-review**, and holds to the earlier one. Then **one** fix round, in this same session: the user picks the findings, an engineer fixes them, and you verify that fix read-only and re-grade. Briefed **unattended** by `/archie-implement`, you pick instead, and a second review replaces the verify pass — step 9.
 
 ## 1. Resolve the diff
 
@@ -141,27 +141,28 @@ Step 4 does not run here. A 🔴 that survives was confirmed there, and a 🔴 t
 
 Re-issue the step 5 report with the new grade and a Confidence score placed again on what the fix left: a criterion the fix brought under a test no longer weighs on it. If findings survived, name them and stop: there is no second round, because a round the fix could not settle means the contract is the problem and the user's read is the faster way out.
 
-The tree is dirty and stays that way. Offer the commit, and with a PR in play the posting of the report, and stop — unattended, step 9 says how the run ends instead.
+The tree is dirty and stays that way. Offer the commit, and with a PR in play the posting of the report, and stop.
 
 ## 9. Unattended, from `/archie-implement`
 
-An Epic run ends by invoking you inline on its Epic and its draft PR, with nobody there to pick the findings. Three things change:
+An Epic run ends by invoking you inline on its Epic and its draft PR, with nobody there to pick the findings. You own **two passes**, and the run stops after the second whatever its grade: a PR still 🔴 then goes to the user, which is faster than a loop nobody watches.
 
-- **The report goes on the PR.** Post the step 5 report with `gh pr comment` as soon as it is issued. A report with no findings is the only comment, and the review ends there.
-- **You triage in place of step 6.** Drop a finding only when it is **wrong**, a fact you can check: its quoted contract line does not say what the finding claims, the failure it names cannot happen on the path it gives, or it asks for something no contract or standard asks for. Every other finding, 🔴 and 🟠 alike, goes into the step 7 brief, and each drop keeps its one-line reason. Disagreeing with a finding's wording or weight keeps it in. With every finding dropped, skip steps 7 and 8 and grade what is left.
-- **The run ends on a commit and a second comment.** After step 8, commit any fix as `<reference>: review fixes`, push it, and post the final comment:
+1. **First pass.** Run steps 1 to 5. A report with no findings is posted with `gh pr comment` as the only comment, and the review ends there.
+2. **Triage, in place of step 6.** Drop a finding only when it is **wrong**, a fact you can check: its quoted contract line does not say what the finding claims, the failure it names cannot happen on the path it gives, or it asks for something no contract or standard asks for. Every other finding, 🔴 and 🟠 alike, is kept, and each drop keeps its one-line reason. Disagreeing with a finding's wording or weight keeps it in.
+3. **Comment 1.** Post the step 5 report and the triage with `gh pr comment`, an empty list left out:
 
 ```md
-{the step 5 report, re-graded and re-scored}
+{the step 5 report}
 
-**Fixed**
+**To fix**
 - {finding}
-
-**Surviving**
-- {finding} — {why the fix did not settle it}
 
 **Dropped**
 - {finding} — {why it is wrong}
 ```
 
-A list with nothing in it is left out. Surviving findings still end the round. `/archie-implement` resumes from the grade.
+4. **Fix, once.** Run step 7 with every kept finding in the brief, then commit the fix as `<reference>: review fixes` and push it. With every finding dropped there is nothing to fix or commit. Step 8 does not run: the second pass replaces it.
+5. **Second pass, a re-review.** Run steps 1 to 5 again in full. The PR's conversation now carries comment 1, so step 1 finds it: both axes get the re-review brief, the `[pr]` sweep and the blocker check run, and comment 1's drops carry forward as dismissed.
+6. **Comment 2.** Post its step 5 report, with Earlier findings, grade and score, as the run's final word. No triage and no fix round follow it.
+
+Done when the PR carries the final report. `/archie-implement` resumes from that report's grade.

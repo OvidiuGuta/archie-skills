@@ -1,5 +1,7 @@
 # An Epic run ends reviewed, and every criterion is proven
 
+_Amended by [0024](0024-a-review-converges.md): the unattended run no longer ends on a verify pass and a Fixed, Surviving and Dropped comment. After the fix round a full second review runs, holding to the first comment, and its grade alone marks the PR ready._
+
 Amends [0016](0016-implementing-splits-into-build-and-review-phases.md): for an Epic, review is no longer a separate session. Amends [0021](0021-the-review-fixes-what-it-finds.md): an unattended review triages its own findings. Amends [0010](0010-implementing-is-one-build-one-review-one-fix.md): driving the app comes back, narrowly.
 
 Two complaints about epic mode.
