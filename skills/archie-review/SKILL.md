@@ -10,7 +10,7 @@ One change graded for mergeability, in two parallel axis sub-agents:
 - **Spec** — does the diff do what the leaf's `spec.md` and its task files asked, including the seam test its `Integration:` line owed? Runs only when an Epic supplies those contracts.
 - **Standards** — does it follow the repo's own `STANDARDS.md` and the test rules? Runs always.
 
-Every 🔴 they raise is then confirmed by an independent verifier before it reaches the report. A review of a change already reviewed is a **re-review**, and holds to the earlier one. Then **one** fix round, in this same session: the user picks the findings, an engineer fixes them, and you verify that fix read-only and re-grade. Briefed **unattended** by `/archie-implement`, you pick instead, and a second review replaces the verify pass — step 9.
+An independent verifier confirms every 🔴 before it reaches the report, and a **re-review** holds to the review before it. Then **one** fix round, in this same session: the user picks the findings, an engineer fixes them, and you verify that fix read-only and re-grade. Briefed **unattended** by `/archie-implement`, you run two passes instead — step 9.
 
 ## 1. Resolve the diff
 
@@ -37,8 +37,6 @@ A review remembers only what it can read: nothing about one reaches disk. Look f
 
 Found, this is a **re-review**. Its **memory** is the PR, or else that earlier report as text, and its **since diff** is `git diff <commit>` from the last commit the earlier review saw: on a PR, the last commit before the report's date; in the session, the HEAD the report was issued over. Not found, the review runs in full and the step 5 header says it is not a re-review.
 
-Outside step 9 a report goes on the PR only on the user's word. Posting it is how they carry memory into a later session.
-
 ## 2. Only a 🔴 moves the grade
 
 Every finding carries a severity:
@@ -64,15 +62,15 @@ With a PR in play, once both axes return, read the user's comments on it yoursel
 
 ## 4. Check every blocker
 
-Once both axes return, and only when an axis raised a new 🔴, dispatch **one** verifier sub-agent through the sub-agent tool. With none, skip this step.
+Once both axes return with a new 🔴, dispatch **one** verifier sub-agent through the sub-agent tool. With none, skip this step.
 
-**Its prompt** carries the diff command, the path to [`references/blocker-check.md`](references/blocker-check.md) with the same read-in-full opening as the axes, and every 🔴 from both axes as three parts: its **claim** with its `file:line`, its **quoted line**, and its **named failure**. Nothing else from the axes goes in — no Suggestions, and none of their reasoning — because a verifier handed the argument tends to agree with it. In Archie mode, the quoted line's source goes in as text, as it did for the Spec axis. On a re-review it also carries the since-diff command, so a new 🔴 off those lines is dropped.
+**Its prompt** carries the diff command, the path to [`references/blocker-check.md`](references/blocker-check.md) with the same read-in-full opening as the axes, and every new 🔴 from both axes as three parts: its **claim** with its `file:line`, its **quoted line**, and its **named failure**. Nothing else from the axes goes in — no Suggestions, and none of their reasoning — because a verifier handed the argument tends to agree with it. In Archie mode, the quoted line's source goes in as text, as it did for the Spec axis. On a re-review it also carries the since-diff command.
 
-Only a new 🔴 an axis raised goes in. A `[pr]` 🔴 is the user's own word and not the verifier's to drop, and a still-open earlier 🔴 was checked when it was first raised; both stand as they are.
+A `[pr]` 🔴 is the user's own word, and a still-open earlier 🔴 was checked when first raised: both stand without the verifier.
 
-Each 🔴 it **confirms** stays a Blocker. Each it **drops** leaves Blockers and the grade with it, and goes under **Unconfirmed** in the report with the verifier's one-line why — never into Suggestions.
+Each 🔴 it **confirms** stays a Blocker. Each it **drops** leaves Blockers and the grade with it, and is listed only under **Unconfirmed**, with the verifier's one-line why.
 
-Done when every 🔴 has a verdict and the grade is derived from the confirmed ones alone.
+Done when every new 🔴 has a verdict and the grade counts only the confirmed ones.
 
 ## 5. Report
 
@@ -98,7 +96,7 @@ An empty list is left out, so a first review with no findings is the header alon
 
 ### The Confidence score
 
-Every report's header — first review, re-review, and the one re-issued in step 8 — ends on a **Confidence score**: how safe the change is to merge, from 1 to 5, placed by judgement against these bands.
+Every report's header ends on a **Confidence score**: how safe the change is to merge, from 1 to 5, placed by judgement against these bands.
 
 - **5** — safe to merge on the grade alone: every acceptance criterion reached by a test, nothing risky left untested.
 - **4** — safe to merge; one area is worth a skim, named in the reason.
@@ -106,11 +104,9 @@ Every report's header — first review, re-review, and the one re-issued in step
 - **2** — a 🔴 stands and its fix is local.
 - **1** — a 🔴 stands that questions the change itself: a failing test, a missing user story, an approach that will not hold.
 
-A 🟢 review scores 3 to 5 and a 🔴 review 1 or 2, so the score never contradicts the grade. Within that range, weigh what the review could not vouch for: the criteria the Spec axis listed as **Untested**, a skipped Spec axis, which vouches for no criterion at all, and risky code in the diff that no test reaches, which you read off the diff yourself. The bands are guidance for that judgement, not deductions to count.
+A 🟢 review scores 3 to 5 and a 🔴 review 1 or 2. Within that range, weigh the Spec axis's **Untested** list, a skipped Spec axis, and risky code no test reaches, which you read off the diff yourself. The bands guide a judgement; they are not deductions to count. The reason names what placed the score in its band.
 
-The reason is one line naming what placed the score in its band — the untested criteria, the skipped axis, the area worth a skim, or the 🔴 and why its fix is or is not local.
-
-The score gates nothing. The grade alone decides mergeable, attended or unattended; the score tells the user how closely to read before merging.
+The score gates nothing: the grade alone decides mergeable.
 
 Done when the header carries a score inside its grade's range and a reason naming what placed it there.
 
@@ -137,9 +133,7 @@ Read the engineer's gate results, then judge its diff yourself, read-only. You h
 - **Every accepted finding**, called resolved or surviving, one by one.
 - **The fix diff at the blocker bar** — the secrets check and 🔴 standards breaches, nothing more. A 🟠 the fix introduced belongs to the next review; hunting it here is how one fix round becomes three.
 
-Step 4 does not run here. A 🔴 that survives was confirmed there, and a 🔴 the fix introduced is judged on the line you read yourself.
-
-Re-issue the step 5 report with the new grade and a Confidence score placed again on what the fix left: a criterion the fix brought under a test no longer weighs on it. If findings survived, name them and stop: there is no second round, because a round the fix could not settle means the contract is the problem and the user's read is the faster way out.
+Re-issue the step 5 report with the new grade and score. If findings survived, name them and stop: there is no second round, because a round the fix could not settle means the contract is the problem and the user's read is the faster way out.
 
 The tree is dirty and stays that way. Offer the commit, and with a PR in play the posting of the report, and stop.
 
@@ -147,8 +141,8 @@ The tree is dirty and stays that way. Offer the commit, and with a PR in play th
 
 An Epic run ends by invoking you inline on its Epic and its draft PR, with nobody there to pick the findings. You own **two passes**, and the run stops after the second whatever its grade: a PR still 🔴 then goes to the user, which is faster than a loop nobody watches.
 
-1. **First pass.** Run steps 1 to 5. A report with no findings is posted with `gh pr comment` as the only comment, and the review ends there.
-2. **Triage, in place of step 6.** Drop a finding only when it is **wrong**, a fact you can check: its quoted contract line does not say what the finding claims, the failure it names cannot happen on the path it gives, or it asks for something no contract or standard asks for. Every other finding, 🔴 and 🟠 alike, is kept, and each drop keeps its one-line reason. Disagreeing with a finding's wording or weight keeps it in.
+1. **First pass.** Run steps 1 to 5. A report with no findings is posted with `gh pr comment` as the only comment, and the run ends there.
+2. **Triage, in place of step 6.** Drop a finding only when it is **wrong**, a fact you can check: its quoted contract line does not say what the finding claims, the failure it names cannot happen on the path it gives, or it asks for something no contract or standard asks for. Every other finding, 🔴 and 🟠 alike, is kept — disagreeing with its wording or weight keeps it in.
 3. **Comment 1.** Post the step 5 report and the triage with `gh pr comment`, an empty list left out:
 
 ```md
@@ -161,8 +155,8 @@ An Epic run ends by invoking you inline on its Epic and its draft PR, with nobod
 - {finding} — {why it is wrong}
 ```
 
-4. **Fix, once.** Run step 7 with every kept finding in the brief, then commit the fix as `<reference>: review fixes` and push it. With every finding dropped there is nothing to fix or commit. Step 8 does not run: the second pass replaces it.
-5. **Second pass, a re-review.** Run steps 1 to 5 again in full. The PR's conversation now carries comment 1, so step 1 finds it: both axes get the re-review brief, the `[pr]` sweep and the blocker check run, and comment 1's drops carry forward as dismissed.
-6. **Comment 2.** Post its step 5 report, with Earlier findings, grade and score, as the run's final word. No triage and no fix round follow it.
+4. **Fix, once.** Run step 7 with every kept finding in the brief, then commit the fix as `<reference>: review fixes` and push it. With every finding dropped, skip to the second pass. Step 8 does not run: the second pass replaces it.
+5. **Second pass.** Run steps 1 to 5 again. Step 1 finds comment 1, so this is a re-review, and comment 1's drops carry forward as dismissed.
+6. **Comment 2.** Post its step 5 report as the run's final word.
 
 Done when the PR carries the final report. `/archie-implement` resumes from that report's grade.

@@ -9,7 +9,7 @@ A 🔴 is **confirmed** only when all of these hold:
 - the quoted line says what the claim says it does, in the file it is quoted from;
 - the failure happens on the path it names, in this diff, not in code the diff merely touches;
 - what it breaks is a blocker by the bar it was raised under: an acceptance criterion or user story for the Spec axis, or the secrets check, the test rules or a yes-or-no `STANDARDS.md` rule for Standards;
-- on a re-review, when your dispatch names a since diff, the line it sits on is among the lines that diff changed — code an earlier review saw and passed is not newly blocked.
+- when your dispatch names a since diff, the line it sits on is one that diff changed.
 
 Anything short of that is **dropped**, including a 🔴 you cannot settle either way.
 
@@ -23,4 +23,4 @@ One line per 🔴, in the order you were sent them:
 - confirmed | dropped — {file:line} — {one-line why: what you read or ran, and what it showed}
 ```
 
-Every 🔴 gets a verdict, and nothing else is reported: a new problem you notice on the way is not yours to raise.
+A verdict per 🔴 is the whole report.
