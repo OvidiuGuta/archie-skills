@@ -135,7 +135,7 @@ Read the engineer's gate results, then judge its diff yourself, read-only. You h
 
 Re-issue the step 5 report with the new grade and score. If findings survived, name them and stop: there is no second round, because a round the fix could not settle means the contract is the problem and the user's read is the faster way out.
 
-The tree is dirty and stays that way. Offer the commit, and with a PR in play the posting of the report, and stop.
+The tree is dirty and stays that way. Offer the commit, and with a PR in play the posting of the report and, once the fix is committed, `/archie-pr` to refresh the PR's body. Then stop.
 
 ## 9. Unattended, from `/archie-implement`
 
@@ -155,7 +155,7 @@ An Epic run ends by invoking you inline on its Epic and its draft PR, with nobod
 - {finding} — {why it is wrong}
 ```
 
-4. **Fix, once.** Run step 7 with every kept finding in the brief, then commit the fix as `<reference>: review fixes` and push it. With every finding dropped, skip to the second pass. Step 8 does not run: the second pass replaces it.
+4. **Fix, once.** Run step 7 with every kept finding in the brief, then commit the fix as `<reference>: review fixes` and invoke `/archie-pr` on the Epic to push it and refresh the PR's body. With every finding dropped, skip to the second pass. Step 8 does not run: the second pass replaces it.
 5. **Second pass.** Run steps 1 to 5 again. Step 1 finds comment 1, so this is a re-review, and comment 1's drops carry forward as dismissed.
 6. **Comment 2.** Post its step 5 report as the run's final word.
 

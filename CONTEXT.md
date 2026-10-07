@@ -52,10 +52,16 @@ The shape of a Task: a narrow but complete path through every layer, fired end t
 _Avoid_: vertical slice, spike, walking skeleton
 
 **Altitude**:
-Whether a question or a decision has blast radius beyond one part of the thing at hand. At altitude means it is asked and settled now; below altitude means it is left to whoever works that part. Applied question by question, before the interview asks, at two rungs: Scope asks whether it reaches beyond one part of this Epic, and the deferrals cluster into child Epics; Design asks whether it reaches beyond one Task, and what does not is left to the engineer building that Task.
+Whether a question or a decision reaches beyond one part of the thing at hand. At altitude means it is asked and settled now; below altitude means it is left to whoever works that part. Applied question by question, before the interview asks, at two rungs: Scope asks whether it reaches beyond one part of this Epic, and the deferrals cluster into child Epics; Design asks whether it reaches beyond one Task, and what does not is left to the engineer building that Task.
 
 **Residue**:
 An at-altitude decision that does not clear the ADR bar. One line under `## Decisions` in its Epic's own `epic.md`, no reasoning, where child Epics inherit it. Written by the Scope session, and it dies with the tree by design.
+
+**Door**:
+Whether a merged change can be walked back. **Two-way** when reverting the merge undoes it completely; **one-way** when something outlives the revert — a migration, deleted data, a published contract, a message already sent. Every PR body names its Door under Merge Danger.
+
+**Blast Radius**:
+How far a merged change's failure reaches, named in one word on every PR body — `none`, `local`, `module`, `app`, `consumers` — then the concrete ways it would show. A property of a merge, never of a question: whether a decision reaches beyond one part is **Altitude**.
 
 **Coding standard**:
 A rule of the user's about how code is written in a repo, enforceable line by line on a diff. Where an ADR records why something is built the way it is, a standard says whether a line of code is acceptable; one decision can produce both. Lives in `STANDARDS.md` at the repo root, linked from `AGENTS.md`, and edited only at the user's request.

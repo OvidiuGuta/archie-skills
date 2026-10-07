@@ -28,13 +28,14 @@
     {
       "name": "archie-implementing",
       "source": "./",
-      "description": "Implementing: build one Task inline or a whole leaf Epic through engineer sub-agents, or get guided through the hands-on ones. Requires Archie Planning, and Archie Reviewing for the review an Epic run ends on.",
+      "description": "Implementing: build one Task inline or a whole leaf Epic through engineer sub-agents, get guided through the hands-on ones, and write the PR. Requires Archie Planning, and Archie Reviewing for the review an Epic run ends on.",
       "category": "engineering",
       "skills": [
         "./skills/archie-implement",
         "./skills/archie-assist",
         "./skills/archie-tdd",
-        "./skills/archie-verify"
+        "./skills/archie-verify",
+        "./skills/archie-pr"
       ]
     },
     {

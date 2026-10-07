@@ -1,0 +1,3 @@
+interface:
+  display_name: "Archie: PR"
+  short_description: "Write a PR's title and body — Summary, Evidence, Merge Danger — then open it or refresh it"

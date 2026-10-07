@@ -37,6 +37,8 @@ The conventions are fixed by the framework rather than chosen per repo, so each 
 | [`archie-prototype/references/UI.md`](../skills/archie-prototype/references/UI.md) | The UI branch: variants on the real route, the switcher, and pruning to the winner |
 | [`archie-prototype/references/LOGIC.md`](../skills/archie-prototype/references/LOGIC.md) | The logic branch: the single-file demo, the portable module, and the walkthroughs |
 | [`archie-setup/references/bindings.md`](../skills/archie-setup/references/bindings.md) | The rows the skills bind to in Archie: each need, what a fitting description says, and the row `/archie-setup` proposes for a gap |
+| [`archie-pr/references/summary-views.md`](../skills/archie-pr/references/summary-views.md) | Which view a PR's Summary draws for which change, and when to draw it as a diff |
+| [`archie-pr/references/screenshots.md`](../skills/archie-pr/references/screenshots.md) | Where a PR's screenshots live, in Archie, on files and ad-hoc |
 | [`archie-to-spec/references/spec-template.md`](../skills/archie-to-spec/references/spec-template.md) | Every section of `spec.md`, including the two the design session writes. The rules governing its content are in the skills' own steps |
 
 Everything else a skill needs — the facts section format, the task file's shape, the ADR bar — is a paragraph in the skill that uses it. A framework concept lives in exactly one skill, the one whose job it is: the altitude gate is `/archie-architect`'s, and the skills it composes are told nothing about it ([ADR 0012](../docs/adr/0012-a-skill-states-only-its-own-discipline.md)). A Task's contract is one task file and one `spec.md`, so the implementing skills read no framework conventions at all: see [ADR 0010](../docs/adr/0010-implementing-is-one-build-one-review-one-fix.md). In lite there is no task file either, and `/archie-tdd` builds off the contract it was handed ([ADR 0018](../docs/adr/0018-archie-runs-at-three-flows.md)).
@@ -53,13 +55,13 @@ The design decisions behind the framework are in [`CONTEXT.md`](../CONTEXT.md) a
 node scripts/validate-skills.mjs
 ```
 
-Run from the repo root. It exits non-zero on any failure and prints one line per failure naming the file and the problem. Fifteen self-contained skills and a manifest listing every one of them is exactly the structure where things rot silently, and the failure only shows up later as a skill quietly skipping a step. This is the bundle's only automated gate.
+Run from the repo root. It exits non-zero on any failure and prints one line per failure naming the file and the problem. Seventeen self-contained skills and a manifest listing every one of them is exactly the structure where things rot silently, and the failure only shows up later as a skill quietly skipping a step. This is the bundle's only automated gate.
 
 It asserts that:
 
 - every `SKILL.md` has frontmatter with a `name` and a `description`, and the name matches its directory
 - no skill carries `disable-model-invocation` — the flag errors out even the user's own autocompleted invocation — and each of the five user-only skills ends its description with the verbatim guard sentence reserving it for explicit user invocation ([ADR 0017](../docs/adr/0017-user-only-skills-gate-by-description-not-flag.md))
-- every skill directory is one of the sixteen the spec names
+- every skill directory is one of the seventeen the spec names
 - every skill reference in a skill body resolves to a skill in the bundle
 - **no link in a `SKILL.md` leaves the skill's own directory**, since that is what makes each one installable alone
 - every relative link resolves to a file that exists, across the skills, the README and these docs
