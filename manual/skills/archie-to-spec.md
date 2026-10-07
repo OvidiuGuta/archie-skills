@@ -4,4 +4,4 @@ Reached by `/archie-architect`, and typeable by name. Turns the scoping session 
 
 ## Archie mode
 
-In a bound folder the Spec is written into the Epic as the `guide` says, and a session no longer in context is read back from the Epic, the Project's terms and ADRs, and the findings linked to the Epic. Anything that reaches past the Epic goes to the Project's Notes through `/archie-domain-modeling`. It acts as the `architect` Agent.
+In a bound folder the Spec is written into the Epic as the `guide` says, and a session no longer in context is read back from the Epic, the Project's terms and ADRs, and the findings linked to the Epic. Anything that reaches past the Epic goes to the Project's Notes through `/archie-domain-modeling`. It acts as the Agent whose description in the `guide` Index fits planning, or as the Task's assignee when that is an Agent.

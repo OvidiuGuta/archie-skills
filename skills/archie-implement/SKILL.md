@@ -9,17 +9,19 @@ One reference — a Task (`3.2#1`, or its key) or a leaf Epic (`3.2`, or its key
 
 A Task reference selects **task mode**: you build it inline and stop dirty for the user to test. An Epic reference selects **epic mode**: you orchestrate an engineer sub-agent per Task, and the engineer writes every line — staying out of the diff is what makes your criteria check honest.
 
-**Which engineer runs a Task is read off its `Integration:` line** — in Archie, off its Type. `this Task`, or the `verification` Type, is the leaf's closing Task and opens `/archie-verify`, which covers the whole leaf at the seam; anything else opens `/archie-tdd`, whose outer loop that Task deferred. Both report the same shape, so nothing after the dispatch changes.
+**Which engineer runs a Task is read off its `Integration:` line** — in Archie, off its Type. `this Task` is the leaf's closing Task and opens `/archie-verify`, which covers the whole leaf at the seam; anything else opens `/archie-tdd`, whose outer loop that Task deferred. Both report the same shape, so nothing after the dispatch changes.
 
 ## 1. Resolve and gate
 
 ### Where the tree lives
 
-In a folder whose `AGENTS.md` carries `**Archie Project:** KEY`, the tree lives in Archie, so follow its MCP server's `guide`. Every reference is a Task key such as `ARC-12`, and a `3.2` or a `3.2#1` is refused with one line saying the folder plans in Archie. Act as the Agent the Project's map gives `engineer`, read once from `guide {projectKey}`, on every call of the session. The steps below name the tree's files and markers, and the `guide` says how each is read and written in Archie. A helper you dispatch or invoke is told the mode and the Agent in its brief, and carries no mode text of its own.
+The folder plans in Archie when its `origin` remote clearly matches one Project's repo in the Archie MCP server's `guide` Index. Compare host and path only, so `git@github.com:me/app.git` matches `https://github.com/me/app`. No `origin`, no match or no Archie connection means the tree lives on files, as the steps below describe. Several matches, or an unclear one, means asking the human which Project this is.
+
+In Archie, every reference is a Task key such as `ARC-12`; refuse a `3.2` or a `3.2#1` with one line saying the folder plans in Archie. Act as the Agent whose description in the Index fits **building**, or as the Task's assignee when it is an Agent, chosen once for the session. The steps below name the tree's files and markers, and the `guide` says how each is read and written in Archie. A Status, marker or Type a step names is the Status or Type whose description fits it; when none clearly fits, or several do, stop and ask the human, naming the step and `/archie-setup`. Brief any helper you dispatch or invoke with the mode and the Agent.
 
 Everything resolves from the reference: Epics are numbered directories nested under `.archie/`, so `3.2` is child `02` of child `03` of the root, and `#1` is `tasks/01-<slug>.md` inside it. The leaf's `spec.md` sits beside the `tasks/` folder.
 
-No `.archie/` at all is a repo that has never been planned. Say so and name `/archie-architect` rather than inventing work from the reference. An Epic reference must land on a leaf with `tasks/` populated — a Split Epic or an unsliced leaf halts and names `/archie-architect` too. In Archie a leaf is sliced when its Status is `sliced` or later.
+No `.archie/` at all is a repo that has never been planned. Say so and name `/archie-architect` rather than inventing work from the reference. An Epic reference must land on a leaf with `tasks/` populated — a Split Epic or an unsliced leaf halts and names `/archie-architect` too.
 
 Gates before anything runs:
 
@@ -31,13 +33,13 @@ Done when the reference resolves and every gate has passed.
 
 ## 2. Task mode: build inline
 
-Set the Task's `Status:` to `in-progress` and record the baseline: `git rev-parse HEAD`. In Archie the first Task to go `in-progress` moves the Epic to `implementing` too.
+Set the Task's `Status:` to `in-progress` and record the baseline: `git rev-parse HEAD`. In Archie the first Task to go `in-progress` moves the Epic on to being implemented too.
 
 Invoke the Task's engineer **inline, in this conversation** — you are the engineer. **A red gate halts the run**: report the failing command and its output.
 
 Then check every acceptance criterion against `git diff <baseline>` plus the untracked files. A criterion the diff does not meet goes back into the loop until it does or the gap is named.
 
-Set `Status:` to `ready-for-review` — `in-review` in Archie — and **stop dirty** — the user tests from the working tree. Give the step 4 report, then offer to complete: at the user's word, set `done` and commit following the repo's commit conventions.
+Set `Status:` to `ready-for-review` and **stop dirty** — the user tests from the working tree. Give the step 4 report, then offer to complete: at the user's word, set `done` and commit following the repo's commit conventions.
 
 ## 3. Epic mode: orchestrate
 
@@ -53,7 +55,7 @@ Per Task:
 6. A **gap** in a `/archie-verify` report — a user story no Task ever built — halts the run. There is no Task for that behaviour and no criteria to build it against, so a fix round has nothing to bite on. Report what is missing and name `/archie-to-tasks`.
 7. Criteria met: set `Status: done`, commit following the repo's commit conventions (default `<reference>: <task title>`), and give a one-line readout — reference, gate results, verdict, commit SHA — before moving on.
 
-After the last Task, write `Status: ready-for-review` into the leaf's `epic.md` — in Archie, set the Epic to `in-review` — give the step 4 report, offer to create a PR, and name `/archie-review` as the next phase — it runs in its own session.
+After the last Task, write `Status: ready-for-review` into the leaf's `epic.md`, give the step 4 report, offer to create a PR, and name `/archie-review` as the next phase — it runs in its own session.
 
 ## 4. Summary and walkthrough
 

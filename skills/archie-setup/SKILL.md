@@ -1,23 +1,25 @@
 ---
 name: archie-setup
-description: Prepare a repo for Archie — choose whether the folder plans on files or in Archie, record its project facts in AGENTS.md and keep `.archie/` committed. Only for explicit user invocation — never fire it on your own.
+description: Prepare a repo for Archie — record its project facts in AGENTS.md, seed its standards and keep `.archie/` committed, and report how the skills bind to its Archie flows. Only for explicit user invocation — never fire it on your own.
 ---
 
 # Set up Archie
 
-The conventions ship inside this bundle, so the per-repo work is small: choose the **mode** — the planning tree on files, or in Archie — record the **facts** an agent cannot guess — the gate commands, how to start the real app, and the branch and commit conventions — and lay down the **baseline standards** the review checks against. Everything else about the repo is readable from the code and is not recorded.
+The conventions ship inside this bundle, so the per-repo work is small: show the **mode** the folder's remote gives it — the planning tree on files, or in Archie — record the **facts** an agent cannot guess — the gate commands, how to start the real app, and the branch and commit conventions — and lay down the **baseline standards** the review checks against. In Archie, it also reports how every skill step **binds** to a row of the human's flows. Everything else about the repo is readable from the code and is not recorded.
 
-Explore, present, confirm, then write. Nothing reaches disk before the user has seen the draft.
+Explore, present, confirm, then write. Nothing reaches disk before the user has seen the draft, and nothing is ever written in Archie: the rows are the human's to create in Settings.
 
 ## 1. Explore
 
 ### Where the tree lives
 
-In a folder whose `AGENTS.md` carries `**Archie Project:** KEY`, the tree lives in Archie, so follow its MCP server's `guide`. Every reference is a Task key such as `ARC-12`, and a `3.2` or a `3.2#1` is refused with one line saying the folder plans in Archie. Act as the Agent the Project's map gives `architect`, read once from `guide {projectKey}`, on every call of the session. The steps below name the tree's files and markers, and the `guide` says how each is read and written in Archie. A helper you dispatch or invoke is told the mode and the Agent in its brief, and carries no mode text of its own.
+The folder plans in Archie when its `origin` remote clearly matches one Project's repo in the Archie MCP server's `guide` Index. Compare host and path only, so `git@github.com:me/app.git` matches `https://github.com/me/app`. No `origin`, no match or no Archie connection means the tree lives on files, as the steps below describe. Several matches, or an unclear one, means asking the human which Project this is.
 
-This is the skill that writes the line the block reads, so here the mode is step 2's question, not a read.
+In Archie, every reference is a Task key such as `ARC-12`; refuse a `3.2` or a `3.2#1` with one line saying the folder plans in Archie. Act as the Agent whose description in the Index fits **planning**, or as the Task's assignee when it is an Agent, chosen once for the session. The steps below name the tree's files and markers, and the `guide` says how each is read and written in Archie. A Status, marker or Type a step names is the Status or Type whose description fits it; when none clearly fits, or several do, stop and ask the human, naming the step and `/archie-setup`. Brief any helper you dispatch or invoke with the mode and the Agent.
 
-Fill in every fact below from the repo. A fact is settled only when you have **read the command or the value in a file** — anything else becomes a question for the user in step 2.
+Keep what decided the mode for step 3: the Project the remote matched, an `origin` no Project names, no `origin`, or no Archie server connected.
+
+Fill in every fact below from the repo. A fact is settled only when you have **read the command or the value in a file** — anything else becomes a question for the user in step 3.
 
 | Fact | Where it is written |
 | --- | --- |
@@ -29,25 +31,31 @@ Fill in every fact below from the repo. A fact is settled only when you have **r
 
 A greenfield repo takes the same path and simply records fewer lines — choosing its stack belongs to the root Epic's scoping session, not here.
 
-Done when every fact holds either a value read out of the repo or a question for the user.
+Done when the mode and its reason are known, and every fact holds either a value read out of the repo or a question for the user.
 
-## 2. Present and confirm
+## 2. Archie mode: check how the flows bind
+
+Files mode skips this step.
+
+Walk every need in [`references/bindings.md`](./references/bindings.md) against the `guide` Index, as it describes.
+
+Done when every need in `bindings.md` names its row or carries a proposal.
+
+## 3. Present and confirm
 
 One message, then wait:
 
-- **The mode:** does this folder plan on files, or in Archie? Archie needs the Project's Key, made in the web app along with its Agents and Role map; ask for it in the same message. A folder already carrying the binding line keeps its answer unless the user changes it.
-- The drafted facts block, verbatim as it will appear in `AGENTS.md`, the binding line first when the mode is Archie.
+- **The mode, and what decided it.** In Archie, the Project's Key and name, and the remote that matched it. On files, the reason: no `origin`; an `origin` no Project names, which the human binds by adding it to the Project's repos in the web app and re-running setup; or no Archie server connected, with the lines below.
+- In Archie, the bindings report from step 2.
+- The drafted facts section, verbatim as it will appear in `AGENTS.md`.
 - Every fact the repo did not settle, named, with a direct question and two ways to answer: give the value, or say **remove** and the line is left out.
+- An old `**Archie Project:**` line or old `archie:facts` markers in `AGENTS.md`, named, with the question whether to remove them.
 - The ignore file amendment from step 5, if one is needed, in files mode.
 - That step 6 seeds the baseline standards into `STANDARDS.md`, theirs to edit or delete afterwards.
 
 Let the user correct the draft; only answered lines reach disk.
 
-## 3. Archie mode: connect, then confirm the Project
-
-Files mode skips this step.
-
-**Connect the harness.** When no Archie MCP server is connected in this session, nothing below can run, so give the user the steps inline and wait. Claude Code:
+**Connecting a harness.** When the user wants Archie and no Archie MCP server is connected, give them the lines inline. Claude Code:
 
 ```sh
 claude mcp add --transport http archie <url>/mcp
@@ -61,18 +69,13 @@ Codex, in `~/.codex/config.toml`, then `codex mcp login archie`:
 url = "<url>/mcp"
 ```
 
-`<url>` is the deployment's site URL, and the manual's connection page carries the rest. Once they report it done, check again, in a new session if the harness only reads its servers at start.
-
-**Confirm the Project.** Call `guide {projectKey}` with the Key the user gave. It ends with the Project's Role map: show it, with the Agent each Role acts as and whether it is read-only, so a mistyped Key or an unmapped Role is caught now. An unknown Key is refused by the server: report it and ask again, and write nothing until one is confirmed.
-
-Done when the server answered for the Key and the user has seen the map.
+`<url>` is the deployment's site URL, and the manual's connection page carries the rest. Once they report it done, run setup again, in a new session if the harness only reads its servers at start.
 
 ## 4. Write the facts section
 
-The facts live in a delimited section of `AGENTS.md` at the repo root:
+The facts live in a plain `## Project facts` section of `AGENTS.md` at the repo root:
 
 ```md
-<!-- archie:facts:start -->
 ## Project facts
 
 - **Package manager:** pnpm
@@ -84,19 +87,9 @@ The facts live in a delimited section of `AGENTS.md` at the repo root:
 - **Run the app:** `pnpm dev`, served on http://localhost:4200
 - **Branch convention:** `feat/<slug>` off `main`
 - **Commit convention:** conventional commits, e.g. `feat(ui): users can change their avatar`
-<!-- archie:facts:end -->
 ```
 
-One line per fact, each command written exactly as it is run. In Archie mode the block opens with the binding line, above the heading:
-
-```md
-<!-- archie:facts:start -->
-**Archie Project:** ARC
-
-## Project facts
-```
-
-Files mode leaves the line out, and a re-run on files mode drops it. **Replace the whole block between the markers** and touch nothing outside them — the file is the user's, and an existing `.archie/`, `docs/adr/` or `CONTEXT.md` is theirs to move or delete, never imported or removed here. No markers means the section does not exist yet: append it at the end, creating the file if the repo has none.
+One line per fact, each command written exactly as it is run. **Find the section by its heading and replace it whole**: it runs from `## Project facts` to the next heading at its level or above, an old end marker, or the end of the file, whichever comes first. Touch nothing outside it — the file is the user's, and an existing `.archie/`, `docs/adr/` or `CONTEXT.md` is theirs to move or delete, never imported or removed here. An old binding line or old markers go only when the user agreed in step 3. No heading means the section does not exist yet: append it at the end, creating the file if the repo has none.
 
 If `CLAUDE.md` is missing, create it containing a single `@AGENTS.md` line; if it exists and does not reach `AGENTS.md`, add that import — so the facts are in context where the user's agent actually reads.
 
@@ -118,4 +111,4 @@ Dispatch `/archie-standards` to seed the repo from its baseline. It owns `STANDA
 
 ## 7. Report
 
-One message: the mode, the facts recorded, the lines left out at the user's word, and whether the standards were seeded. In Archie mode, name `/archie-architect` with the Project's Key as the next move.
+One message: the mode and what decided it, the facts recorded, the lines left out at the user's word, and whether the standards were seeded. In Archie mode, add every gap or several still open, rechecked by re-running setup once the human creates the rows, and name `/archie-architect` as the next move.

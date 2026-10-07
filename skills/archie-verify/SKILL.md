@@ -15,11 +15,13 @@ You add tests at one seam; behaviour that is missing is a Task's work, not yours
 
 ### Where the tree lives
 
-In a folder whose `AGENTS.md` carries `**Archie Project:** KEY`, the tree lives in Archie, so follow its MCP server's `guide`. Every reference is a Task key such as `ARC-12`, and a `3.2` or a `3.2#1` is refused with one line saying the folder plans in Archie. Act as the Agent the Project's map gives `engineer`, read once from `guide {projectKey}`, on every call of the session. The steps below name the tree's files and markers, and the `guide` says how each is read and written in Archie. A helper you dispatch or invoke is told the mode and the Agent in its brief, and carries no mode text of its own.
+The folder plans in Archie when its `origin` remote clearly matches one Project's repo in the Archie MCP server's `guide` Index. Compare host and path only, so `git@github.com:me/app.git` matches `https://github.com/me/app`. No `origin`, no match or no Archie connection means the tree lives on files, as the steps below describe. Several matches, or an unclear one, means asking the human which Project this is.
+
+In Archie, every reference is a Task key such as `ARC-12`; refuse a `3.2` or a `3.2#1` with one line saying the folder plans in Archie. Act as the Agent whose description in the Index fits **building**, or as the Task's assignee when it is an Agent, chosen once for the session. The steps below name the tree's files and markers, and the `guide` says how each is read and written in Archie. A Status, marker or Type a step names is the Status or Type whose description fits it; when none clearly fits, or several do, stop and ask the human, naming the step and `/archie-setup`. Brief any helper you dispatch or invoke with the mode and the Agent.
 
 **Handed a Task reference (`3.2#1`) or its path**, everything resolves from it: Epics are numbered directories nested under `.archie/`, so `3.2` is child `02` of child `03` of the root, and `#1` is `tasks/01-<slug>.md` inside it.
 
-Read the leaf's **`spec.md`** in full — its `User Stories` are the claim you test, and its `Testing Decisions` name the seam and the prior art your tests match. Read every **task file** beside it for the acceptance criteria each Task landed. In Archie the reference is the leaf's `verification` Task. Then read the repo's existing tests at that seam: they are both the house style and, often, coverage you are about to duplicate.
+Read the leaf's **`spec.md`** in full — its `User Stories` are the claim you test, and its `Testing Decisions` name the seam and the prior art your tests match. Read every **task file** beside it for the acceptance criteria each Task landed. In Archie the reference is the leaf's closing Task. Then read the repo's existing tests at that seam: they are both the house style and, often, coverage you are about to duplicate.
 
 Read **`STANDARDS.md`** — or whichever coding-standards file `AGENTS.md` links, in a repo Archie did not set up. Its rules bind every line you write, including what "integration test" means in this repo, and they are the same rules `/archie-review` grades this change against. A repo with neither has no standards, and the file stays on disk in Archie mode.
 
@@ -52,7 +54,7 @@ Find the repo's lint, typecheck, test and build commands — `AGENTS.md`, the pa
 
 ## 5. Report
 
-In Archie, set the `verification` Task to `in-review` first: the board says the leaf is proved whether or not an orchestrator is in the room.
+In Archie, set the closing Task's `Status:` to `ready-for-review` first: the board says the leaf is proved whether or not an orchestrator is in the room.
 
 ```md
 _Verified:_ {the leaf reference and title}

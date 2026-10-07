@@ -13,7 +13,9 @@ This is the work no agent can do: signing up for a service, provisioning access,
 
 ### Where the tree lives
 
-In a folder whose `AGENTS.md` carries `**Archie Project:** KEY`, the tree lives in Archie, so follow its MCP server's `guide`. Every reference is a Task key such as `ARC-12`, and a `3.2` or a `3.2#1` is refused with one line saying the folder plans in Archie. Act as the Agent the Project's map gives `engineer`, read once from `guide {projectKey}`, on every call of the session. The steps below name the tree's files and markers, and the `guide` says how each is read and written in Archie. A helper you dispatch or invoke is told the mode and the Agent in its brief, and carries no mode text of its own.
+The folder plans in Archie when its `origin` remote clearly matches one Project's repo in the Archie MCP server's `guide` Index. Compare host and path only, so `git@github.com:me/app.git` matches `https://github.com/me/app`. No `origin`, no match or no Archie connection means the tree lives on files, as the steps below describe. Several matches, or an unclear one, means asking the human which Project this is.
+
+In Archie, every reference is a Task key such as `ARC-12`; refuse a `3.2` or a `3.2#1` with one line saying the folder plans in Archie. Act as the Agent whose description in the Index fits **building**, or as the Task's assignee when it is an Agent, chosen once for the session. The steps below name the tree's files and markers, and the `guide` says how each is read and written in Archie. A Status, marker or Type a step names is the Status or Type whose description fits it; when none clearly fits, or several do, stop and ask the human, naming the step and `/archie-setup`. Brief any helper you dispatch or invoke with the mode and the Agent.
 
 You are handed **one** reference — `3.2#1` or a path. Everything resolves from it: Epics are numbered directories nested under `.archie/`, so `3.2` is child `02` of child `03` of the root, `#1` is `tasks/01-<slug>.md` inside it, and the leaf's `spec.md` sits beside the `tasks/` folder.
 
@@ -58,7 +60,7 @@ A criterion unverified because a step did not take is **one trip back to step 3 
 
 ## 5. Set the status and report once
 
-Set `Status:` to `ready-for-review` — `in-review` in Archie. `done` is the user's word and only the user writes it.
+Set `Status:` to `ready-for-review`. `done` is the user's word and only the user writes it.
 
 ```md
 _Assisted:_ {Task reference} — {Task title}

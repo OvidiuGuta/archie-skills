@@ -4,4 +4,4 @@ Reached by `/archie-architect`, and typeable by name. The **how**-step: the last
 
 ## Archie mode
 
-In a bound folder the leaf's stop states are its Status: `scoped` with children is Split, `scoped` without is unspecified, `designed` or later is designed. A logic prototype is an html Asset on the Epic rather than a file under `prototypes/`, and a coding standard still goes to `STANDARDS.md` in the repo (ADR-0064 in the archie repo). It acts as the `architect` Agent.
+In a bound folder the leaf's stop states are read off its Status, by the description that fits each. A logic prototype is an html Asset on the Epic rather than a file under `prototypes/`, and a coding standard still goes to `STANDARDS.md` in the repo (ADR-0064 in the archie repo). It acts as the Agent whose description in the `guide` Index fits planning, or as the Task's assignee when that is an Agent.

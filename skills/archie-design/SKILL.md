@@ -15,7 +15,9 @@ The only thing you write in the tree is two sections of the leaf's existing `spe
 
 ### Where the tree lives
 
-In a folder whose `AGENTS.md` carries `**Archie Project:** KEY`, the tree lives in Archie, so follow its MCP server's `guide`. Every reference is a Task key such as `ARC-12`, and a `3.2` or a `3.2#1` is refused with one line saying the folder plans in Archie. Act as the Agent the Project's map gives `architect`, read once from `guide {projectKey}`, on every call of the session. The steps below name the tree's files and markers, and the `guide` says how each is read and written in Archie. A helper you dispatch or invoke is told the mode and the Agent in its brief, and carries no mode text of its own.
+The folder plans in Archie when its `origin` remote clearly matches one Project's repo in the Archie MCP server's `guide` Index. Compare host and path only, so `git@github.com:me/app.git` matches `https://github.com/me/app`. No `origin`, no match or no Archie connection means the tree lives on files, as the steps below describe. Several matches, or an unclear one, means asking the human which Project this is.
+
+In Archie, every reference is a Task key such as `ARC-12`; refuse a `3.2` or a `3.2#1` with one line saying the folder plans in Archie. Act as the Agent whose description in the Index fits **planning**, or as the Task's assignee when it is an Agent, chosen once for the session. The steps below name the tree's files and markers, and the `guide` says how each is read and written in Archie. A Status, marker or Type a step names is the Status or Type whose description fits it; when none clearly fits, or several do, stop and ask the human, naming the step and `/archie-setup`. Brief any helper you dispatch or invoke with the mode and the Agent.
 
 You are handed a reference — a root's slug, or `3.2`, which is child `02` of child `03` of the root, resolved down the numbered directories under `.archie/` — or the leaf the session in context just specified.
 
@@ -26,8 +28,6 @@ Three states stop the run:
 - **An Epic with children** is Split, so the Spec belongs to one of its leaves. Name the children and ask which one.
 - **No `spec.md`** means this leaf has not been specified. Name `/archie-to-spec` and stop.
 - **`Implementation Decisions` no longer carrying `_Not yet designed._`** means this leaf has already been designed. Say what the existing design covers and get the overwrite agreed before touching it — and if `tasks/` exists, say what state its Tasks are in.
-
-In Archie the three are the Epic's Status: `scoped` with children is Split, `scoped` without is unspecified, `designed` or later is designed.
 
 Done when you hold one Specified, undesigned leaf and its Spec read end to end.
 
