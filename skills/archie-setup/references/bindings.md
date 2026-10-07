@@ -1,6 +1,6 @@
 # How the skills bind
 
-Every skill finds its row in the human's flows by description, never by name. These are the rows the skills need, what a row's description says for a need to bind to it, and what setup proposes when none does.
+Every skill finds its row in the human's flows by description, never by name.
 
 ## Binding
 
@@ -10,7 +10,7 @@ Each need ends as one of three:
 - **Gap**: no row fits. Propose one.
 - **Several**: more than one row fits. Propose the one that should win, keeping its name, with its description sharpened so the others no longer read as fitting, and name the others.
 
-A Status binds through its `**Next:**` line, and a skill named on several Statuses' lines binds to each, since one step can move an Epic on from more than one Status. A Status need is therefore a gap or binds. Beside the needs, flag any Status whose `Next:` line names a skill outside this bundle, since `/archie-architect` stops on an Epic there.
+A Status need binds to every Status whose `**Next:**` line names its skill, so it is never several. Also flag any Status whose `Next:` line names a skill outside this bundle: `/archie-architect` stops there.
 
 ## The needs
 
@@ -24,7 +24,7 @@ A Status binds through its `**Next:**` line, and a skill named on several Status
 
 ### Statuses, from `get_workflow`
 
-Read `get_workflow {name}` for the Workflow the Index names beside the Epic Type and the Task Type bound above. When either Type is a gap, its Workflow's needs are reported unchecked, since there is no Workflow to read.
+Read `get_workflow {name}` for the Workflow the Index names beside the Epic Type and the Task Type bound above, so a flow with no Tasks yet is checked too. When either Type is a gap, its Workflow's needs are reported unchecked, since there is no Workflow to read.
 
 | Need: a Status whose `Next:` line names | Read in the Workflow of | Proposed name, Workflow and group |
 | --- | --- | --- |

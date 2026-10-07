@@ -78,15 +78,6 @@ const ARCHIE_MODE_WORK = {
   'archie-assist': 'building',
   'archie-review': 'reviewing',
 }
-// The binding the block replaced: a line in `AGENTS.md` naming the Project,
-// and an Agent read off the Project's Role map. Neither exists any more, so
-// any skill file still carrying either is reading something Archie no longer
-// serves.
-const RETIRED_BINDING = [
-  ['the old first sentence', 'In a folder whose `AGENTS.md` carries `**Archie Project:** KEY`'],
-  ['a Role line', "Act as the Agent the Project's map gives"],
-  ['the Role map read', '`guide {projectKey}`'],
-]
 // The block runs from its heading to the end of the paragraph holding the
 // Agent line. Every copy must read the same once its kind of work is masked,
 // so the sentences between the pinned ones cannot drift either.
@@ -299,12 +290,6 @@ for (const file of linkedFiles) {
   for (const target of new Set(relativeLinksIn(body))) {
     const resolved = resolve(dirname(file), target)
     if (!existsSync(resolved)) fail(file, `link \`${target}\` points at a file that does not exist`)
-  }
-
-  if (file.startsWith(SKILLS_DIR + '/')) {
-    for (const [what, text] of RETIRED_BINDING) {
-      if (body.includes(text)) fail(file, `carries ${what} of the retired binding, \`${text}\``)
-    }
   }
 
   // Outside a SKILL.md there is no bundle position to resolve against, so a

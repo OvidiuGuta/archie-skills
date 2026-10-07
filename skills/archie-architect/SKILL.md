@@ -17,9 +17,9 @@ You hold no discipline of your own. Every judgement below belongs to the step yo
 
 ### Where the tree lives
 
-The folder plans in Archie when its `origin` remote clearly matches one Project's repo in the Archie MCP server's `guide` Index. Read the remote with `git remote get-url origin`. Two remotes are the same repo when their host and path match, ignoring the scheme, the user and a trailing `.git`, so `git@github.com:me/app.git` matches `https://github.com/me/app`. No `origin`, no match or no Archie connection means the tree lives on files, as the steps below describe. Several matches, or a match you are unsure of, means stopping to ask the human which Project the folder belongs to.
+The folder plans in Archie when its `origin` remote clearly matches one Project's repo in the Archie MCP server's `guide` Index. Compare host and path only, so `git@github.com:me/app.git` matches `https://github.com/me/app`. No `origin`, no match or no Archie connection means the tree lives on files, as the steps below describe. Several matches, or an unclear one, means asking the human which Project this is.
 
-In Archie, follow the `guide`. Every reference is a Task key such as `ARC-12`, and a `3.2` or a `3.2#1` is refused with one line saying the folder plans in Archie. Act as the Agent whose description in the Index fits **planning**, or as the Task's assignee when it is an Agent, chosen once for the session. The steps below name the tree's files and markers, and the `guide` says how each is read and written in Archie. Where a step sets a `Status:`, reads or writes a marker, or names a Type, use the Status or Type whose description fits it. When none clearly fits, or several do, stop and ask the human, naming the step you were on and `/archie-setup`, which reports every such gap. A helper you dispatch or invoke is told the mode and the Agent in its brief, and carries no mode text of its own.
+In Archie, every reference is a Task key such as `ARC-12`; refuse a `3.2` or a `3.2#1` with one line saying the folder plans in Archie. Act as the Agent whose description in the Index fits **planning**, or as the Task's assignee when it is an Agent, chosen once for the session. The steps below name the tree's files and markers, and the `guide` says how each is read and written in Archie. A Status, marker or Type a step names is the Status or Type whose description fits it; when none clearly fits, or several do, stop and ask the human, naming the step and `/archie-setup`. Brief any helper you dispatch or invoke with the mode and the Agent.
 
 **A loose idea** — no reference, just a subject. There is nothing on disk yet, so the step is **scope**, on a new root Epic.
 
@@ -40,7 +40,7 @@ Read it off the files, using the table in `epic-tree.md`. Nothing records this, 
 | `spec.md` complete, no `tasks/` | `/archie-to-tasks` |
 | `tasks/` populated | none — the leaf is planned; name `/archie-implement` and the Task to start with |
 
-In Archie, the step is the skill the Epic's Status names on its `**Next:**` line, whatever that Status is called, so a card the human drags is an instruction to the next run. A line naming one skill per condition, such as "with Epic children, `/archie-scope` each child in build order; with none, `/archie-to-spec`", routes to the skill whose condition holds for this Epic. A skill past planning, such as `/archie-implement` or `/archie-review`, is named rather than run, as the table's last row names `/archie-implement`. When the Status has no `Next:` line, its line names no skill in this bundle, or no condition clearly holds, stop and ask the human which step to run, naming the Status and `/archie-setup`.
+In Archie, the step is the skill the Epic's Status names on its `**Next:**` line, so a card the human drags is an instruction to the next run. A skill past planning, such as `/archie-implement`, is named rather than run. When the Status has no `Next:` line, or its line names no skill in this bundle that clearly applies, stop and ask the human which step to run, naming the Status and `/archie-setup`.
 
 **Say the step before you run it**, in one line, so the user can redirect you into a different one:
 
