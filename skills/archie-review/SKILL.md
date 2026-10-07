@@ -10,7 +10,7 @@ One change graded for mergeability, in two parallel axis sub-agents:
 - **Spec** — does the diff do what the leaf's `spec.md` and its task files asked, including the seam test its `Integration:` line owed? Runs only when an Epic supplies those contracts.
 - **Standards** — does it follow the repo's own `STANDARDS.md` and the test rules? Runs always.
 
-Every 🔴 they raise is then confirmed by an independent verifier before it reaches the report. Then **one** fix round, in this same session: the user picks the findings, an engineer fixes them, and you verify that fix read-only and re-grade. Briefed **unattended** by `/archie-implement`, you pick instead — step 9.
+Every 🔴 they raise is then confirmed by an independent verifier before it reaches the report. A review of a change already reviewed is a **re-review**, and holds to the earlier one. Then **one** fix round, in this same session: the user picks the findings, an engineer fixes them, and you verify that fix read-only and re-grade. Briefed **unattended** by `/archie-implement`, you pick instead — step 9.
 
 ## 1. Resolve the diff
 
@@ -27,6 +27,17 @@ The input is one of three:
 - **An Epic reference** (`3.2`, resolved down the numbered directories under `.archie/`) — the diff is the branch-or-PR diff above; the Epic adds the contracts, the leaf's `spec.md` and its `tasks/*.md`, which is what turns the Spec axis on. In Archie the reference is the leaf's key.
 
 Confirm the diff is non-empty before going further: a bad ref or an empty diff fails here, not inside two parallel sub-agents.
+
+### The earlier review
+
+A review remembers only what it can read: nothing about one reaches disk. Look for an earlier review of this change, in order:
+
+- **On the PR** — the input PR, or the branch's open PR (`gh pr view --json number`): a review report or a GitHub review in its conversation, read with `gh pr view <number> --json comments,reviews,commits`.
+- **In this session** — a report this review issued earlier in the conversation.
+
+Found, this is a **re-review**. Its **memory** is the PR, or else that earlier report as text, and its **since diff** is `git diff <commit>` from the last commit the earlier review saw: on a PR, the last commit before the report's date; in the session, the HEAD the report was issued over. Not found, the review runs in full and the step 5 header says it is not a re-review.
+
+Outside step 9 a report goes on the PR only on the user's word. Posting it is how they carry memory into a later session.
 
 ## 2. Only a 🔴 moves the grade
 
@@ -45,11 +56,19 @@ Both go out **through the sub-agent (Agent) tool**, so neither pollutes the othe
 
 **The Standards sub-agent's prompt** carries the diff command, the repo's own standards files — `STANDARDS.md` first, then `AGENTS.md`, `CLAUDE.md`, `CONTRIBUTING.md` — and the path to [`references/standards-review.md`](references/standards-review.md). Those files stay on disk in Archie mode.
 
+**On a re-review, both prompts also carry** the memory, the since-diff command and the path to [`references/re-review.md`](references/re-review.md), read in full the same way. With the Spec axis skipped, the Standards axis carries forward every earlier finding.
+
+### The `[pr]` sweep
+
+With a PR in play, once both axes return, read the user's comments on it yourself — general and inline, leaving out the review reports posted there. Each that is still open in its thread and that no axis finding or carried-forward finding answers becomes a `[pr]` finding, quoting the comment: 🔴 when it asks for a change, 🟠 when it asks a question or remarks. On a re-review, carry earlier `[pr]` findings forward the way the axes carry theirs.
+
 ## 4. Check every blocker
 
-Once both axes return, and only when at least one 🔴 came back, dispatch **one** verifier sub-agent through the sub-agent tool. With no 🔴, skip this step.
+Once both axes return, and only when an axis raised a new 🔴, dispatch **one** verifier sub-agent through the sub-agent tool. With none, skip this step.
 
-**Its prompt** carries the diff command, the path to [`references/blocker-check.md`](references/blocker-check.md) with the same read-in-full opening as the axes, and every 🔴 from both axes as three parts: its **claim** with its `file:line`, its **quoted line**, and its **named failure**. Nothing else from the axes goes in — no Suggestions, and none of their reasoning — because a verifier handed the argument tends to agree with it. In Archie mode, the quoted line's source goes in as text, as it did for the Spec axis.
+**Its prompt** carries the diff command, the path to [`references/blocker-check.md`](references/blocker-check.md) with the same read-in-full opening as the axes, and every 🔴 from both axes as three parts: its **claim** with its `file:line`, its **quoted line**, and its **named failure**. Nothing else from the axes goes in — no Suggestions, and none of their reasoning — because a verifier handed the argument tends to agree with it. In Archie mode, the quoted line's source goes in as text, as it did for the Spec axis. On a re-review it also carries the since-diff command, so a new 🔴 off those lines is dropped.
+
+Only a new 🔴 an axis raised goes in. A `[pr]` 🔴 is the user's own word and not the verifier's to drop, and a still-open earlier 🔴 was checked when it was first raised; both stand as they are.
 
 Each 🔴 it **confirms** stays a Blocker. Each it **drops** leaves Blockers and the grade with it, and goes under **Unconfirmed** in the report with the verifier's one-line why — never into Suggestions.
 
@@ -58,21 +77,24 @@ Done when every 🔴 has a verdict and the grade is derived from the confirmed o
 ## 5. Report
 
 ```md
-_Reviewed:_ {the PR, branch, or Epic} — {diffed against}
+_Reviewed:_ {the PR, branch, or Epic} — {diffed against}, {re-review of {the PR conversation | the earlier report in this session} | not a re-review}
 
 **Overall: {🟢 mergeable | 🔴 needs work}** · Spec: {🟢 | 🔴} · Standards: {🟢 | 🔴}
 
 **Blockers**
-- 🔴 [spec|standards] {file:line} — {the finding, and what to fix}
+- 🔴 [spec|standards|pr] {file:line} — {the finding, and what to fix}
 
 **Suggestions**
-- 🟠 [spec|standards] {file:line} — {the same}
+- 🟠 [spec|standards|pr] {file:line} — {the same}
+
+**Earlier findings**
+- {finding, in its original wording} — resolved | still open | dismissed: {why}
 
 **Unconfirmed**
 - [spec|standards] {file:line} — {the 🔴 as its axis wrote it} — dropped: {the verifier's why}
 ```
 
-An empty list is left out, so a review with no findings is the header alone. Unconfirmed lines are not findings: nothing in steps 6 to 9 picks, fixes or triages them. A skipped Spec axis reads `Spec: skipped — no epic`.
+An empty list is left out, so a first review with no findings is the header alone, and Earlier findings appears only on a re-review. A still-open earlier finding is a finding at its original severity — a 🔴 one holds the grade at 🔴 — while resolved and dismissed ones, and Unconfirmed lines, are not findings: nothing in steps 6 to 9 picks, fixes or triages them. A skipped Spec axis reads `Spec: skipped — no epic`.
 
 ## 6. Halt and offer the fix round
 
@@ -101,7 +123,7 @@ Step 4 does not run here. A 🔴 that survives was confirmed there, and a 🔴 t
 
 Re-issue the step 5 report with the new grade. If findings survived, name them and stop: there is no second round, because a round the fix could not settle means the contract is the problem and the user's read is the faster way out.
 
-The tree is dirty and stays that way. Offer the commit and stop — unattended, step 9 says how the run ends instead.
+The tree is dirty and stays that way. Offer the commit, and with a PR in play the posting of the report, and stop — unattended, step 9 says how the run ends instead.
 
 ## 9. Unattended, from `/archie-implement`
 
