@@ -1,5 +1,7 @@
 # `STANDARDS.md` is the review's control surface
 
+_Amended by [0024](0024-a-review-converges.md): the grade has two tiers, so judgement calls are Suggestions rather than capped at `mergeable with reservations`, and a Standards 🔴 is only the secrets check, the test rules, or a clear breach of a yes-or-no rule._
+
 Supersedes the baseline half of the Standards review brief established in [0010](0010-implementing-is-one-build-one-review-one-fix.md), and extends the fourth durability level of [0007](0007-four-durability-levels-for-decisions.md) from a list beside the review into the review's rule set.
 
 `skills/archie-review/references/standards-review.md` carried three rule sets that held "even in a repo that documents nothing": the test rules, five hard checks, and twelve Fowler smells. Only the reviewer ever read that file. `/archie-tdd` and `/archie-verify` build against `STANDARDS.md` and the house style, so an escape hatch with no justifying comment or a swallowed error was invisible while it was being written and blocking once it was reviewed — a round trip through the whole implement → review → fix Task loop for a rule the engineer would have followed had it known it.

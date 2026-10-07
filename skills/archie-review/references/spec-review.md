@@ -11,7 +11,7 @@ A finding carries two things, and a candidate that cannot carry both is not repo
 - **The contract line** it breaks, quoted from the Spec or a task file.
 - **The failure**, named concretely: the input or path through the diff, and what happens there instead of what was asked.
 
-Criteria are outcomes observed against a running app, and you are reading a diff — so **the tests are your instrument**. Read the leaf's tests and run the suite: a criterion covered by a test that passes is satisfied, and your silence is the whole of your report on it. A criterion whose test fails is your strongest finding. You are read-only: run commands, write no files, update no snapshots.
+Criteria are outcomes observed against a running app, and you are reading a diff — so **the tests are your instrument**. Read the leaf's tests and run the suite: a criterion covered by a test that passes is satisfied, and your silence is the whole of your report on it. A criterion whose test fails is your strongest finding. A criterion **no test reaches** is judged by reading the diff, and is a finding only when that reading carries the evidence above. You are read-only: run commands, write no files, update no snapshots.
 
 ## What to report
 
@@ -23,10 +23,17 @@ Where a criterion is too ambiguous to judge, report it 🟠 with the reading you
 
 ## Severity and report format
 
-Mark each finding **🔴** when it must land before this merges, **🟠** when it is worth fixing and does not block. Name the file and line on every one, 🔴 first:
+Mark each finding **🔴** when it must land before this merges, **🟠** — a Suggestion — when it is worth fixing and does not block. Only a 🔴 moves the grade. Name the file and line on every one, 🔴 first:
 
 ```md
 - 🔴 {file:line} — {the finding, the contract line it breaks, and what to fix}
 ```
 
-What passed is silence, so a diff that meets its contract reports nothing at all. Under 300 words.
+Below your findings, list every criterion no test reaches, whether or not it is also a finding. The review weighs this list in its Confidence score; it carries no severity:
+
+```md
+**Untested**
+- {the criterion, quoted from its task file} — {task file}
+```
+
+What passed under a test is silence, so a diff whose criteria are all tested and met reports nothing at all. Under 300 words.

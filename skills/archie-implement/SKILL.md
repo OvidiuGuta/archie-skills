@@ -90,8 +90,8 @@ After the last Task:
 
 1. Write `Status: ready-for-review` into the leaf's `epic.md`.
 2. Push the branch and open a **draft** PR, `gh pr create --draft`, its title following the repo's PR conventions and its body the step 6 summary paragraph.
-3. Invoke `/archie-review` **inline, in this conversation**, on the Epic and the PR, briefed **unattended** — inline because it dispatches sub-agents of its own. Its unattended step owns everything up to its final PR comment.
-4. Grade 🟢: mark the PR ready, `gh pr ready`. Anything else leaves it a draft for the user.
+3. Invoke `/archie-review` **inline, in this conversation**, on the Epic and the PR, briefed **unattended** — inline because it dispatches sub-agents of its own. Its unattended step owns both of its passes: the first report and its triage, one fix round, and a second review posted as the final PR comment.
+4. Read the grade and the Confidence score off that final report — the second review's, or the first's when it found nothing. Grade 🟢: mark the PR ready, `gh pr ready`. Anything else leaves it a draft for the user. The score gates nothing.
 
 Done when the final report is on the PR and the PR's state matches its grade.
 
@@ -104,7 +104,7 @@ _Built:_ {reference} — {title}
 
 {One paragraph: what exists now that did not before, and where it shows.}
 
-_PR:_ {link} — {grade}, {ready or draft}
+_PR:_ {link} — {grade}, Confidence {n}/5, {ready or draft}
 
 ### Walkthrough
 - ✅ {a step through the running app} — driven
