@@ -23,7 +23,7 @@ Where a criterion is too ambiguous to judge, report it 🟠 with the reading you
 
 ## Severity and report format
 
-Mark each finding **🔴** when it must land before this merges, **🟠** when it is worth fixing and does not block. Name the file and line on every one, 🔴 first:
+Mark each finding **🔴** when it must land before this merges, **🟠** — a Suggestion — when it is worth fixing and does not block. Only a 🔴 moves the grade. Name the file and line on every one, 🔴 first:
 
 ```md
 - 🔴 {file:line} — {the finding, the contract line it breaks, and what to fix}

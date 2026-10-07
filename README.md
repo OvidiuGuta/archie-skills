@@ -76,14 +76,14 @@ flowchart LR
   RU --> T3[/"a commit per Task, proof in each<br/>PR comments: report, re-grade<br/>ready when 🟢<br/>walkthrough of what no test covers"/]
 ```
 
-**Reviewing** — grades the branch, fixes what the user accepts, and re-grades. One round: findings that survive the fix halt the run. An Epic run already ran it on its PR, so this door is for a PR, a branch, or a second look.
+**Reviewing** — grades the branch 🟢 mergeable or 🔴 needs work, where only a 🔴 blocks and a 🟠 is a Suggestion, fixes what the user accepts, and re-grades. One round: findings that survive the fix halt the run. An Epic run already ran it on its PR, so this door is for a PR, a branch, or a second look.
 
 ```mermaid
 flowchart LR
   RV["/archie-review"] --> S1["Spec axis"] --> G["grade"]
   RV --> S2["Standards axis"] --> G
   G -- "🟢" --> T5[/"mergeable branch —<br/>scope the next Epic"/]
-  G -- "🔴 🟠" --> FX["/archie-tdd<br/>one fix round"] --> VR["verify + re-grade"] --> T5
+  G -- "🔴" --> FX["/archie-tdd<br/>one fix round"] --> VR["verify + re-grade"] --> T5
 ```
 
 Nothing on disk records which flow a repo is using, and no rule keeps them apart. A lite chore committed onto an in-flight Epic branch turns up in that Epic's Spec axis as behaviour nobody asked for — cheap, and you know what you did. See [ADR 0018](docs/adr/0018-archie-runs-at-three-flows.md).

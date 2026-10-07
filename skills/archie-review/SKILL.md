@@ -28,15 +28,14 @@ The input is one of three:
 
 Confirm the diff is non-empty before going further: a bad ref or an empty diff fails here, not inside two parallel sub-agents.
 
-## 2. Severity carries the grade
+## 2. Only a 🔴 moves the grade
 
-Every finding carries a severity, and each axis's tier is derived from the severities it reported:
+Every finding carries a severity:
 
-- 🟢 **mergeable** — the axis reported nothing.
-- 🟠 **mergeable with reservations** — every finding it reported is 🟠: worth fixing, and it does not block the merge.
-- 🔴 **needs work** — at least one finding is 🔴: it must land before this merges.
+- 🔴 **Blocker** — it must land before this merges.
+- 🟠 **Suggestion** — worth fixing, reported, and never part of the grade.
 
-Overall is the worse of the two.
+The **grade** has two tiers, per axis and overall: 🟢 **mergeable** when no 🔴 stands, 🔴 **needs work** otherwise. Overall is 🔴 when either axis is.
 
 ## 3. Dispatch the axes as sub-agents, in parallel
 
@@ -51,13 +50,16 @@ Both go out **through the sub-agent (Agent) tool**, so neither pollutes the othe
 ```md
 _Reviewed:_ {the PR, branch, or Epic} — {diffed against}
 
-**Overall: {emoji} {tier}** · Spec: {emoji} {tier} · Standards: {emoji} {tier}
+**Overall: {🟢 mergeable | 🔴 needs work}** · Spec: {🟢 | 🔴} · Standards: {🟢 | 🔴}
 
-- 🔴 [spec] {file:line} — {the finding, and what to fix}
-- 🟠 [standards] {file:line} — {the same}
+**Blockers**
+- 🔴 [spec|standards] {file:line} — {the finding, and what to fix}
+
+**Suggestions**
+- 🟠 [spec|standards] {file:line} — {the same}
 ```
 
-One flat list, 🔴 before 🟠 — a 🟢 review is the header and nothing under it. A skipped Spec axis reads `Spec: skipped — no epic`.
+An empty list is left out, so a review with no findings is the header alone. A skipped Spec axis reads `Spec: skipped — no epic`.
 
 ## 5. Halt and offer the fix round
 
@@ -71,7 +73,7 @@ Done when the user has named the findings in their words, or declined the round.
 
 One engineer sub-agent, dispatched through the sub-agent tool, running `/archie-tdd`, so the fix is driven by a test and re-runs the gates. A finding with no behaviour to drive, like a rename or a missing type, is a fix it makes without a test.
 
-Its brief is **exit criteria**: the complete list of what must be true for the grade to read 🟢, and nothing else. One entry per accepted finding — its `file:line`, the behaviour expected there, and what proves it. Paths and code belong here, unlike a Task's acceptance criteria, because the engineer is repairing a named line rather than building an outcome.
+Its brief is **exit criteria**: the complete list of what must be true once the fix lands, and nothing else. One entry per accepted finding — its `file:line`, the behaviour expected there, and what proves it. Paths and code belong here, unlike a Task's acceptance criteria, because the engineer is repairing a named line rather than building an outcome.
 
 Done when every accepted finding has an entry the engineer can check itself against.
 
@@ -90,7 +92,7 @@ The tree is dirty and stays that way. Offer the commit and stop — unattended, 
 
 An Epic run ends by invoking you inline on its Epic and its draft PR, with nobody there to pick the findings. Three things change:
 
-- **The report goes on the PR.** Post the step 4 report with `gh pr comment` as soon as it is issued. A 🟢 report is the only comment, and the review ends there.
+- **The report goes on the PR.** Post the step 4 report with `gh pr comment` as soon as it is issued. A report with no findings is the only comment, and the review ends there.
 - **You triage in place of step 5.** Drop a finding only when it is **wrong**, a fact you can check: its quoted contract line does not say what the finding claims, the failure it names cannot happen on the path it gives, or it asks for something no contract or standard asks for. Every other finding, 🔴 and 🟠 alike, goes into the step 6 brief, and each drop keeps its one-line reason. Disagreeing with a finding's wording or weight keeps it in. With every finding dropped, skip steps 6 and 7 and grade what is left.
 - **The run ends on a commit and a second comment.** After step 7, commit any fix as `<reference>: review fixes`, push it, and post the final comment:
 
