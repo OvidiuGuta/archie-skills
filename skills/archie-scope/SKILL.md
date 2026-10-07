@@ -86,9 +86,9 @@ Fill it before asking anything: name every question this Epic raises — from th
 
 ### The gate
 
-> **Does this answer's blast radius reach beyond one part of this Epic?**
+> **Does this answer reach beyond one part of this Epic?**
 
-**At altitude** means the blast radius does reach past one part: settle it here, now. **Below altitude** means it lives inside one part, so it is deferred to the moment that part is worked on — a bet on strictly greater knowledge later, since by then that part's earlier siblings are built and their code is there to read.
+**At altitude** means the answer does reach past one part: settle it here, now. **Below altitude** means it lives inside one part, so it is deferred to the moment that part is worked on — a bet on strictly greater knowledge later, since by then that part's earlier siblings are built and their code is there to read.
 
 **The gate is enforced, not advisory.** A question that fails it is deferred the moment it occurs to you, never asked because the conversation happened to be nearby. Asking below altitude is how a session about a whole application ends up specifying one screen's layout, which is the waterfall Archie exists to replace. Sessions terminate on their own because cross-cutting decisions at any resolution are few, while local ones are many.
 

@@ -4,7 +4,7 @@
 
 # Archie
 
-A four-phase way of working with AI agents: **Setup**, **Planning** (HITL), **Implementing** (AFK) and **Reviewing**. Implementing and Reviewing loop until the branch grades mergeable, and Planning restarts the cycle on the next Epic. This repo is Archie's engineering skill bundle — sixteen skills, installable whole or by phase. It replaces mattpocock/skills.
+A four-phase way of working with AI agents: **Setup**, **Planning** (HITL), **Implementing** (AFK) and **Reviewing**. Implementing and Reviewing loop until the branch grades mergeable, and Planning restarts the cycle on the next Epic. This repo is Archie's engineering skill bundle — seventeen skills, installable whole or by phase. It replaces mattpocock/skills.
 
 Planning is a conversation rather than a document. It runs in four steps, each ending on a sign-off, in one or two sessions, with `/archie-architect` as the router that reads which step an Epic is at off its own files. Implementing builds one Task inline or a whole leaf Epic through engineer sub-agents, proving every acceptance criterion; an Epic run ends on a draft PR it reviews unattended. Reviewing grades a branch, fixes the findings the user accepts, and re-grades in the same session.
 
@@ -95,14 +95,14 @@ Nothing on disk records which flow a repo is using, and no rule keeps them apart
 npx skills@latest add OvidiuGuta/archie-skills --skill '*'
 ```
 
-Installs all sixteen skills into whichever agents the installer detects. Upgrade with `npx skills@latest update`.
+Installs all seventeen skills into whichever agents the installer detects. Upgrade with `npx skills@latest update`.
 
 Archie also ships in **phases you can install separately**. Drop `--skill '*'` and the installer shows them as groups you can tick whole:
 
 | Phase | Skills | Requires |
 | --- | --- | --- |
 | **Archie Planning** | `archie-setup`, `archie-architect`, `archie-scope`, `archie-interview`, `archie-domain-modeling`, `archie-standards`, `archie-research`, `archie-to-spec`, `archie-design`, `archie-prototype`, `archie-to-tasks` | nothing |
-| **Archie Implementing** | `archie-implement`, `archie-assist`, `archie-tdd`, `archie-verify` | nothing for `archie-tdd` alone; Planning for the others, which consume the Epic tree; Reviewing for the review an Epic run ends on |
+| **Archie Implementing** | `archie-implement`, `archie-assist`, `archie-tdd`, `archie-verify`, `archie-pr` | nothing for `archie-tdd` alone; Planning for the others, which consume the Epic tree; Reviewing for the review an Epic run ends on |
 | **Archie Reviewing** | `archie-review` | Implementing, for the `/archie-tdd` engineer it dispatches to fix what it finds. Planning too, for the `STANDARDS.md` its `/archie-setup` seeds — without it the Standards axis grades against the secrets check and the test rules alone |
 
 The flows are not install groups, because no flow is a phase: lite reaches for `archie-interview` from Planning and `archie-tdd` from Implementing. Install everything and type the flow you want; the phase groups are for a partial install.
@@ -141,6 +141,7 @@ One page each, written by the ticket that built the skill.
 - [`/archie-tdd`](manual/skills/archie-tdd.md) — the double loop, and the build half of every flow
 - [`/archie-verify`](manual/skills/archie-verify.md) — the closing Task: the leaf's integration tests at its seam
 - [`/archie-assist`](manual/skills/archie-assist.md) — guide a `ready-for-human` Task and verify the result
+- [`/archie-pr`](manual/skills/archie-pr.md) — write a PR's title and body, and refresh it after every fix round
 
 **Reviewing**
 
