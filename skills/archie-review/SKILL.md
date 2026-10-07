@@ -1,6 +1,6 @@
 ---
 name: archie-review
-description: Grading a PR, the current branch, or an Epic for mergeability on two axes — Spec and Standards — then fixing the findings the user accepts and verifying that fix, in one round. The review phase, run after /archie-implement. Only for explicit user invocation — never fire it on your own.
+description: Grading a PR, the current branch, or an Epic for mergeability on two axes — Spec and Standards — then fixing the findings the user accepts and verifying that fix, in one round. The review phase; /archie-implement also runs it unattended on the PR an Epic run opens. Only for explicit user invocation — never fire it on your own.
 ---
 
 # Review
@@ -10,7 +10,7 @@ One change graded for mergeability, in two parallel axis sub-agents:
 - **Spec** — does the diff do what the leaf's `spec.md` and its task files asked, including the seam test its `Integration:` line owed? Runs only when an Epic supplies those contracts.
 - **Standards** — does it follow the repo's own `STANDARDS.md` and the test rules? Runs always.
 
-Then **one** fix round, in this same session: the user picks the findings, an engineer fixes them, and you verify that fix read-only and re-grade.
+Then **one** fix round, in this same session: the user picks the findings, an engineer fixes them, and you verify that fix read-only and re-grade. Briefed **unattended** by `/archie-implement`, you pick instead — step 8.
 
 ## 1. Resolve the diff
 
@@ -61,7 +61,7 @@ One flat list, 🔴 before 🟠 — a 🟢 review is the header and nothing unde
 
 ## 5. Halt and offer the fix round
 
-Stop on the report whatever the grade, and ask which findings the user wants fixed — all, a sub-list, or none.
+Unattended, step 8 replaces this step. Otherwise stop on the report whatever the grade, and ask which findings the user wants fixed — all, a sub-list, or none.
 
 **None** ends the review here. With a PR in play, offer instead to post the grade header and the selected findings with `gh pr comment`, worded as the step 4 report.
 
@@ -84,4 +84,27 @@ Read the engineer's gate results, then judge its diff yourself, read-only. You h
 
 Re-issue the step 4 report with the new grade. If findings survived, name them and stop: there is no second round, because a round the fix could not settle means the contract is the problem and the user's read is the faster way out.
 
-The tree is dirty and stays that way. Offer the commit and stop.
+The tree is dirty and stays that way. Offer the commit and stop — unattended, step 8 says how the run ends instead.
+
+## 8. Unattended, from `/archie-implement`
+
+An Epic run ends by invoking you inline on its Epic and its draft PR, with nobody there to pick the findings. Three things change:
+
+- **The report goes on the PR.** Post the step 4 report with `gh pr comment` as soon as it is issued. A 🟢 report is the only comment, and the review ends there.
+- **You triage in place of step 5.** Drop a finding only when it is **wrong**, a fact you can check: its quoted contract line does not say what the finding claims, the failure it names cannot happen on the path it gives, or it asks for something no contract or standard asks for. Every other finding, 🔴 and 🟠 alike, goes into the step 6 brief, and each drop keeps its one-line reason. Disagreeing with a finding's wording or weight keeps it in. With every finding dropped, skip steps 6 and 7 and grade what is left.
+- **The run ends on a commit and a second comment.** After step 7, commit any fix as `<reference>: review fixes`, push it, and post the final comment:
+
+```md
+{the step 4 report, re-graded}
+
+**Fixed**
+- {finding}
+
+**Surviving**
+- {finding} — {why the fix did not settle it}
+
+**Dropped**
+- {finding} — {why it is wrong}
+```
+
+A list with nothing in it is left out. Surviving findings still end the round. `/archie-implement` resumes from the grade.

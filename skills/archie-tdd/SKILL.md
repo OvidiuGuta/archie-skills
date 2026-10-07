@@ -11,7 +11,7 @@ Not every change gets both: a Task that **defers integration** to its leaf's clo
 
 The loops are the order of work, not a description of it: a test written after the code it covers passes on the first run, which proves nothing about whether it would have caught the bug.
 
-You own **two layers**, unit and integration. The whole-app walk is the user's, by hand, from a walkthrough built off your report — which is why step 6 says which criteria your tests already cover.
+You own **two layers**, unit and integration. The whole-app walk is someone else's, from a walkthrough built off your report — which is why step 6 says which criteria your tests already cover.
 
 ## 1. Inherit
 
