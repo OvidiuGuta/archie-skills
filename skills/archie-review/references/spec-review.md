@@ -16,7 +16,7 @@ Criteria are outcomes observed against a running app, and you are reading a diff
 ## What to report
 
 - **Missing, partial, or wrongly built** — a requirement or acceptance criterion the diff does not meet, or meets in a way that looks built but is built wrong.
-- **Behaviour reaching past this Task** — name the Task whose territory the diff invades, or the user-visible behaviour no story asked for. Guards, helpers and error paths a story implies are the diff doing its job.
+- **Behaviour reaching past this Task** — name the Task whose territory the diff invades, read off the `Builds:` lines, or the user-visible behaviour no story asked for. Guards, helpers and error paths a story implies are the diff doing its job.
 - **A seam test the diff owed and does not have** — read each task file's `Integration:` line. `deferred to #N` puts the seam in the leaf's closing Task, so an ordinary Task's diff owes none and its absence is correct. `this Task` is that closing Task: its diff must cover the leaf's user stories at the seam, and a story left uncovered is a finding. No `Integration:` line means the Spec marked the seam not-applicable and nothing is owed.
 
 Where a criterion is too ambiguous to judge, report it 🟠 with the reading you reviewed against. It is a note about the contract rather than a defect in the diff, so it never blocks a merge.

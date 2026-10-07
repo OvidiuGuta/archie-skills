@@ -8,7 +8,7 @@ So an interview step now carries its own synthesis to the end, and the four step
 
 ## One step deep, and no further
 
-The chain crosses one boundary at most. A scope session ending on **specify** offers the Spec and stops, because `/archie-design` is a fresh interview that has to read the real code first. A design session offers the Tasks and stops, because `/archie-implement` runs AFK.
+The chain crosses one boundary at most. A scope session ending on **specify** offers the Spec and stops, because `/archie-design` is a fresh interview that has to read the real code first. A design session offers the Tasks and stops, because `/archie-implement` runs AFK. *(Amended by [0022](0022-planning-commits-on-the-call.md): after a specify, scope now offers the design inline too, with a recommendation either way.)*
 
 What 0013 was right about survives: two interviews in one window is the waterfall re-entering through the front door. What it claimed and this drops is that a **sign-off** is the natural boundary — a chained session ends on one too. `/archie-architect`'s rule is therefore **one interview per invocation**.
 

@@ -5,7 +5,7 @@ description: Writing one Epic's spec.md by synthesising the scoping session that
 
 # To spec
 
-The scoping session reached shared understanding of **what** this Epic covers; this turns that understanding into `spec.md`. It asks **nothing**: every answer it needs has already been given, and the how is `/archie-design`'s, in its own session, writing into the file this one creates.
+The scoping session reached shared understanding of **what** this Epic covers; this turns that understanding into `spec.md`. It asks **nothing**: every answer it needs has already been given, and the how is `/archie-design`'s, writing into the file this one creates.
 
 Read [`references/spec-template.md`](./references/spec-template.md) first. It fixes every section of the file.
 
@@ -31,9 +31,9 @@ Done when you hold one Epic that carries an `epic.md`, no child directories, and
 
 The answers are already yours. The session settled them question by question, `/archie-domain-modeling` wrote the durable ones down, and `/archie-research` returned the rest. Asking again spends the user's attention on things they have already decided, and it is the one thing this skill must not do. This step has no checkpoint at all.
 
-Assemble the Spec's material from what the session produced: the intent and `Decisions` in `epic.md`, the terms and ADRs the session wrote, and the findings under `research/`.
+Assemble the Spec's material from what the session produced: the intent and `Decisions` in `epic.md`, the terms and ADRs the session wrote, and the findings it pointed at in `.archie/research/`.
 
-**When the session is not in context** — a fresh `/archie-to-spec 3.2` — read the same material off disk: this Epic's `epic.md`, every ancestor's `epic.md` up the path, `CONTEXT.md`, the ADRs touching this area, the earlier siblings' code, and this Epic's own `research/`. In Archie the ADRs and the terms are the Project's Notes, and the findings are the Notes linked to this Epic. A gap you can close by reading is not a question; one that genuinely never got answered goes back to the user.
+**When the session is not in context** — a fresh `/archie-to-spec 3.2` — read the same material off disk: this Epic's `epic.md`, every ancestor's `epic.md` up the path, `CONTEXT.md`, the ADRs touching this area, the earlier siblings' code, and the findings its `## Research` lists. In Archie the ADRs and the terms are the Project's Notes, and the findings are the Notes linked to this Epic. A gap you can close by reading is not a question; one that genuinely never got answered goes back to the user.
 
 Write in the glossary's vocabulary throughout. Where the synthesis **contradicts an ADR**, hand it to `/archie-domain-modeling` rather than quietly overriding it — whether the contradiction amends or supersedes is that skill's call, not yours.
 
