@@ -6,7 +6,7 @@
 
 A four-phase way of working with AI agents: **Setup**, **Planning** (HITL), **Implementing** (AFK) and **Reviewing**. Implementing and Reviewing loop until the branch grades mergeable, and Planning restarts the cycle on the next Epic. This repo is Archie's engineering skill bundle — sixteen skills, installable whole or by phase. It replaces mattpocock/skills.
 
-Planning is a conversation rather than a document. It runs in four steps, each ending on a sign-off so each is its own session, with `/archie-architect` as the router that reads which step an Epic is at off its own files. Implementing builds one Task inline or a whole leaf Epic through engineer sub-agents, and Reviewing grades the branch, fixes the findings the user accepts, and re-grades in the same session.
+Planning is a conversation rather than a document. It runs in four steps, each ending on a sign-off, in one or two sessions, with `/archie-architect` as the router that reads which step an Epic is at off its own files. Implementing builds one Task inline or a whole leaf Epic through engineer sub-agents, and Reviewing grades the branch, fixes the findings the user accepts, and re-grades in the same session.
 
 ## Flows
 
@@ -52,14 +52,14 @@ flowchart LR
   SU["/archie-setup"] --> F[/"AGENTS.md facts block<br/>CLAUDE.md importing it<br/>STANDARDS.md seeded from the baseline<br/>.archie/ committed, not ignored"/]
 ```
 
-**Planning** — HITL, one Epic at a time, one step per session. `/archie-architect` is the door: it resolves a reference like `3.2`, reads which step that Epic is at off its own files, announces it, and runs that one.
+**Planning** — HITL, one Epic at a time, one interview per session unless the work is clear enough to design inline. `/archie-architect` is the door: it resolves a reference like `3.2`, reads which step that Epic is at off its own files, announces it, and runs that one.
 
 ```mermaid
 flowchart LR
   AR["/archie-architect"] --> A["/archie-scope"]
   A -- "split" --> T1[/"thin children in .archie/,<br/>scoped later"/]
   A -- "specify" --> B["/archie-to-spec"] --> C["/archie-design"] --> E["/archie-to-tasks"]
-  E --> T2[/"epic.md + spec.md<br/>tasks/NN-slug.md at todo<br/>CONTEXT.md, ADRs, research/"/]
+  E --> T2[/"epic.md + spec.md<br/>tasks/NN-slug.md at todo<br/>CONTEXT.md, ADRs, .archie/research/"/]
 ```
 
 **Implementing** — AFK. One Task inline, or the whole leaf as an autonomous loop over its Tasks.

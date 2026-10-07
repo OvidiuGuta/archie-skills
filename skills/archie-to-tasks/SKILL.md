@@ -50,7 +50,9 @@ Give each Task its label — `ready-for-agent` when an agent builds it end to en
 
 Then write the acceptance criteria: **observable outcomes, not instructions**, no file paths, no code, so they still read true weeks later. Each one is walked against the running app at the end of its Task's build, so a criterion nobody can watch happen is not one. The criteria are the **demoable outcome decomposed**, which is why step 3 asks about the outcome and not about them: the user judges the outcome here, and every criterion under it gets walked at the end of that Task's own run.
 
-Done when every user story is covered by a Task, every Task names one outcome, and every Task carries its edges, its label and its criteria.
+Then route each Task to the design: its `Builds:` line names the `Implementation Decisions` it builds — the contract, the model, the module — in the Spec's own words. That line is the slice of the Spec its engineer reads first; the decisions themselves stay in the Spec, where every Task touching one reads the same text.
+
+Done when every user story is covered by a Task, every Task names one outcome, and every Task carries its edges, its label, its `Builds` line and its criteria.
 
 ## 3. Quiz the user on the breakdown
 
@@ -84,6 +86,7 @@ One file per Task at `tasks/NN-<slug>.md` inside the leaf, the `Epic:` reference
 **Label:** ready-for-agent
 **Blocked by:** {#2, or "None — can start immediately"}
 **Integration:** deferred to {#N}
+**Builds:** {the Implementation Decisions this Task builds, in the Spec's words}
 
 **Demoable outcome:** {the one end-to-end behaviour this Task makes work, seen from the outside}
 
@@ -91,9 +94,9 @@ One file per Task at `tasks/NN-<slug>.md` inside the leaf, the `Epic:` reference
 - [ ] {…}
 ```
 
-The closing Task uses that same file: `Integration: this Task`, `Blocked by` every other Task, `ready-for-agent`, its demoable outcome the leaf's Spec holding at the seam, and one criterion saying so. It is a Task like any other: same statuses, same review path.
+The closing Task uses that same file: `Integration: this Task`, `Blocked by` every other Task, `ready-for-agent`, its demoable outcome the leaf's Spec holding at the seam, its `Builds:` line the seam, and one criterion saying so. It is a Task like any other: same statuses, same review path.
 
-In Archie the header lines are the Task's own fields: `Blocked by` is its `blocks` edges, the `Integration:` line is its Type, and the label is its `assignee`, an Agent or the human.
+In Archie the header lines are the Task's own fields: `Blocked by` is its `blocks` edges, the `Integration:` line is its Type, and the label is its `assignee`, an Agent or the human. The `Builds:` line stays in the body.
 
 Every Task starts at `Status: todo`. The implementing skills write `in-progress` and `ready-for-review` from there. In task mode `done` is the user's word; in epic mode `/archie-implement` writes it itself after its criteria check, and stamps the leaf's `epic.md` with `Status: ready-for-review` when the last Task lands — the one status an Epic ever carries.
 
@@ -105,8 +108,8 @@ Keep file paths and code out of them, so a Task still reads true weeks later whe
 
 A `ready-for-human` Task states the outcome and what the user must supply; its steps are derived at guide time, when the third-party UI is whatever it is that day.
 
-Done when every approved Task has a file, each with a `Status`, a `Label`, its `Blocked by` line and its criteria checklist.
+Done when every approved Task has a file, each with a `Status`, a `Label`, its `Blocked by` and `Builds` lines and its criteria checklist.
 
 ## 5. Hand off
 
-Report the leaf's path, the Task count, and the first Task by reference (`3.2#1`, or its key in Archie). Name `/archie-implement` as the next move and stop. The Epic is now sliced, and everything after this runs AFK.
+In Archie, move the Epic to the Status whose description fits an Epic ready to build. Report the leaf's path, the Task count, and the first Task by reference (`3.2#1`, or its key in Archie). Name `/archie-implement` as the next move and stop. The Epic is now sliced, and everything after this runs AFK.

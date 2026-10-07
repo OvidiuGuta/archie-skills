@@ -28,12 +28,13 @@ Read `get_workflow {name}` for the Workflow the Index names beside the Epic Type
 
 | Need: a Status whose `Next:` line names | Read in the Workflow of | Proposed name, Workflow and group |
 | --- | --- | --- |
-| `/archie-scope` | the Epic Type | Thin, Epic, `to-do` |
-| `/archie-to-spec` | the Epic Type | Scoped, Epic, `in-progress` |
-| `/archie-design` | the Epic Type | Specified, Epic, `in-progress` |
-| `/archie-to-tasks` | the Epic Type | Designed, Epic, `in-progress` |
-| `/archie-implement` | the Epic Type or the Task Type | Sliced, Epic, `in-progress` |
-| `/archie-review` | the Epic Type or the Task Type | In review, Task, `in-progress` |
+| `/archie-scope`, `/archie-to-spec`, `/archie-design` and `/archie-to-tasks`, one per condition | the Epic Type | Planning, Epic, `to-do` |
+| `/archie-implement`, on an Epic with Tasks and none started | the Epic Type | Ready, Epic, `to-do` |
+| `/archie-implement`, on an Epic being built | the Epic Type | In progress, Epic, `in-progress` |
+| `/archie-review` | the Epic Type | In review, Epic, `in-progress` |
+| `/archie-review` | the Task Type | In review, Task, `in-progress` |
+
+The planning steps share one Status, because the step is read off what the Epic holds, as on files: the planning Status's `Next:` line names a skill per condition, and `/archie-architect` runs the one whose condition holds. A Split Epic's planning ends at its split, so it waits in In progress while its children are worked, and the router names those children rather than reading its `Next:` line. Done is the human's word, so it binds to no need.
 
 ### Labels, from the Index
 
@@ -59,7 +60,7 @@ Each proposal carries:
 - **Description**: a one-line summary first, since the Index shows only that line, then what the row is for in the words of its need above. A Status's description ends on its `Next:` line, on a line of its own:
 
 ```md
-**Next:** `/archie-design` designs it, then sets the Status whose description fits a designed Epic.
+**Next:** `/archie-scope` when the Epic has no recorded decisions · `/archie-to-spec` when it has decisions and no Spec · `/archie-design` when its Spec is undesigned · `/archie-to-tasks` when it has no Tasks.
 ```
 
 ## The report

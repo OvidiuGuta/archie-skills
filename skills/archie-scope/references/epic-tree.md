@@ -7,22 +7,23 @@ How the planning tree lives on disk, how its parts are named and referenced, and
 One directory per Epic, nested under `.archie/`. The filesystem is the tree, so there are no parent pointers to maintain and no orphans.
 
 ```
-.archie/new-web-app/            root Epic, unnumbered
-├── epic.md
-├── 01-auth/                     Split Epic
-│   ├── epic.md
-│   └── 01-password-reset/       Specified Epic, a leaf
-│       ├── epic.md
-│       ├── spec.md
-│       └── tasks/
-│           └── 01-request-a-reset.md
-└── 02-billing/                  thin Epic
+.archie/
+├── research/                    findings from `/archie-research`, one file per question, any Epic's
+└── new-web-app/                 root Epic, unnumbered
     ├── epic.md
-    ├── research/                 findings from `/archie-research`, one file per question
-    └── prototypes/               single-file logic demos from `/archie-prototype`
+    ├── 01-auth/                 Split Epic
+    │   ├── epic.md
+    │   └── 01-password-reset/   Specified Epic, a leaf
+    │       ├── epic.md
+    │       ├── spec.md
+    │       ├── prototypes/      single-file logic demos from `/archie-prototype`
+    │       └── tasks/
+    │           └── 01-request-a-reset.md
+    └── 02-billing/              thin Epic
+        └── epic.md
 ```
 
-Everything about a leaf sits inside the leaf, so a Task, its Spec and its Epic are reachable from one path with no pointer to resolve.
+Everything about a leaf sits inside the leaf, so a Task, its Spec and its Epic are reachable from one path with no pointer to resolve. Research is the exception: it is written mid-scope, before the Epic exists, so findings live flat in `.archie/research/<slug>.md` and an Epic points at the ones it relied on from a `## Research` list in its `epic.md`. `research` is therefore never a root Epic's slug.
 
 `.archie/` is **committed**, so work resumes on another machine, and **disposable**: the user removes a root Epic's tree whenever they pivot, mid-Epic included. Nothing is archived and there is no close ritual — `git log` keeps every version, so removal costs findability rather than content. Anything meant to outlive the tree reaches `CONTEXT.md` or `docs/adr/` during the session that decided it.
 
@@ -48,9 +49,9 @@ Neither can go stale, because the step that resolves the state is the step that 
 
 **Split and Specified are mutually exclusive.** An Epic carries child Epics or exactly one Spec, never both, so every Specified Epic is a leaf and listing leaves answers "what is left to build". Glue work therefore cannot hide at a parent: it becomes an explicit final child, which makes it schedulable and reviewable.
 
-An Epic's directory and its `epic.md` are created **once**, when its scoping session's frontier empties — the intent and the decisions stop moving before they are written. The one exception is a session artifact: a `research/` finding or a logic prototype needs somewhere to go mid-session, so the first artifact creates the directory lazily and nothing else goes in it.
+An Epic's directory and its `epic.md` are created **once**, on the user's call to split or specify at the end of its scoping session — the intent and the decisions have stopped moving, and the user has decided this is work rather than an idea being tested. A session ending on neither call leaves no Epic behind.
 
-Only `NN-<slug>` directories are children. `research/` and `prototypes/` are session artifacts, and an Epic carrying them is still thin.
+Only `NN-<slug>` directories are children. `prototypes/` is a session artifact of the design step, not a child.
 
 `prototypes/` holds only what has nowhere else to live: a logic demo is one self-contained HTML file, so it goes here. A **UI** prototype is mounted on the real route in the app source, because variants are only judgeable against the real header, sidebar and data — it lives on its own throwaway `prototype/<slug>` branch, and it is not a session artifact under `.archie/`.
 

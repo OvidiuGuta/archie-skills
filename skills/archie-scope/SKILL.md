@@ -5,7 +5,7 @@ description: Reaching shared understanding of what one Epic covers — inherit, 
 
 # Scope
 
-One Epic, one session. Reach shared understanding of **what** it covers by interviewing, record the durable decisions as they settle, and end on a recommendation: **split** this Epic into children, or **specify** it. The Epic's own file is written once, at that recommendation, and the call is the user's.
+One Epic, one session. Reach shared understanding of **what** it covers by interviewing, record the durable decisions as they settle, and end on a recommendation: **split** this Epic into children, or **specify** it. The call is the user's, and the Epic's own file is written once, on it.
 
 Read [`references/epic-tree.md`](./references/epic-tree.md) first. It fixes the tree on disk, how an Epic's state is read off its own files, identity numbering and the reference syntax.
 
@@ -23,9 +23,9 @@ The folder plans in Archie when its `origin` remote clearly matches one Project'
 
 In Archie, every reference is a Task key such as `ARC-12`; refuse a `3.2` or a `3.2#1` with one line saying the folder plans in Archie. Act as the Agent whose description in the Index fits **planning**, or as the Task's assignee when it is an Agent, chosen once for the session. The steps below name the tree's files and markers, and the `guide` says how each is read and written in Archie. A Status, marker or Type a step names is the Status or Type whose description fits it; when none clearly fits, or several do, stop and ask the human, naming the step and `/archie-setup`. Brief any helper you dispatch or invoke with the mode and the Agent.
 
-Nothing about this Epic is written to disk until step 4. The intent is agreed at the moment of least knowledge and the interview reshapes it, so writing it now buys a file that gets rewritten and a directory left behind by a session the user abandons. Hold it in the session instead.
+Nothing about this Epic is written to disk until the user's call in step 4: a session can be an idea being tested or a question being asked, and it becomes work only when the user says so. Hold the Epic in the session until then.
 
-**A loose idea** — no reference, just a subject. Agree a title and a slug. This is the root Epic and carries no number, and its `epic.md` will look like this when step 4 writes it:
+**A loose idea** — no reference, just a subject. Agree a title and a slug — any slug but `research`, which `.archie/research/` holds. This is the root Epic and carries no number, and its `epic.md` will look like this when the call writes it:
 
 ```md
 # {Title}
@@ -36,13 +36,17 @@ Nothing about this Epic is written to disk until step 4. The intent is agreed at
 
 - {One at-altitude decision settled at this resolution, in one line.}
 
+## Research
+
+- `.archie/research/{slug}.md` — {the question it answered}
+
 ## Children
 
 1. `01-{slug}` — {one line of intent}
 2. `02-{slug}` — {one line of intent}
 ```
 
-`## Decisions` is **always written**, because its presence is what marks this Epic as scoped. `Children` appears only on a Split Epic; a Specified Epic has `spec.md` and `tasks/` beside this file instead. In Archie the children are child Epics in build order, so the body carries no `Children` list.
+`## Decisions` is **always written**, because its presence is what marks this Epic as scoped. `Research` appears only when the session took the research exit. `Children` appears only on a Split Epic; a Specified Epic has `spec.md` and `tasks/` beside this file instead. In Archie the children are child Epics in build order, so the body carries no `Children` list.
 
 **An Epic reference** (`3.2`, or a root's slug) — resolve it down the numbered directories and open that Epic. A reference that does not resolve stops the session and goes to the user.
 
@@ -106,9 +110,9 @@ The user overrules the gate continuously. When they name a deferred question, it
 
 ### Record what settles, the moment it settles
 
-**The durable levels are written now**, before the next question is asked. Invoke `/archie-domain-modeling` for a **domain term** or a decision **clearing the ADR bar**, and `/archie-standards` when the user states how they want code written — a **coding standard**. Each owns its destinations and knows nothing about this tree. In Archie a term or an ADR goes to the Project, and a standard stays in the repo in both modes. Those are the levels that outlive the tree, so a session that dies before step 4 must not take them with it.
+**The durable levels are written now**, before the next question is asked. Invoke `/archie-domain-modeling` for a **domain term** or a decision **clearing the ADR bar**, and `/archie-standards` when the user states how they want code written — a **coding standard**. Each owns its destinations and knows nothing about this tree. In Archie a term or an ADR goes to the Project, and a standard stays in the repo in both modes. Those are the levels that outlive the tree, so a session that dies before the call, or ends on neither, must not take them with it.
 
-**The residue is held in the session** and written in step 4: one line per decision, no reasoning, the list you will put under `## Decisions`. Keep it as you go rather than reconstructing it at the end, restate it in every check-in, and revise a line in place when a later answer sharpens it. The residue is the level defined to die with the tree, so holding it costs the same class of loss a pivot already costs.
+**The residue is held in the session** and written on the call in step 4: one line per decision, no reasoning, the list you will put under `## Decisions`. Keep it as you go rather than reconstructing it at the end, restate it in every check-in, and revise a line in place when a later answer sharpens it. The residue is the level defined to die with the tree, so holding it costs the same class of loss a pivot already costs.
 
 If a residue line will not fit in one line, it needed its reasoning — which means it was an ADR, and it goes to `/archie-domain-modeling` now. That test is what keeps `epic.md` from growing into a spec.
 
@@ -116,11 +120,11 @@ If a residue line will not fit in one line, it needed its reasoning — which me
 
 An at-altitude question about a **fact** — something the user would have to go and read — takes the research exit rather than the user's attention. It runs in a **sub-agent** and comes back as a **pointer**, so the reading never enters this session's context.
 
-Spawn the sub-agent and tell it to use `/archie-research`; the skill is the sub-agent's, and what only you know is the brief: the question in one sentence, what decision is waiting on it, and the destination — `research/<slug>.md` inside this Epic's own directory, or in Archie a Note linked to this Epic. One answerable question per sub-agent, since a brief asking three things comes back as three shallow answers.
+Spawn the sub-agent and tell it to use `/archie-research`; the skill is the sub-agent's, and what only you know is the brief: the question in one sentence, what decision is waiting on it, and the destination — `.archie/research/<slug>.md`, or in Archie a Note on the Project. One answerable question per sub-agent, since a brief asking three things comes back as three shallow answers.
 
 Carry on down the frontier while it runs, and ask the waiting question when its pointer lands.
 
-That destination is the one thing that reaches disk before step 4, created lazily by the first finding. In Archie the first finding opens the Epic, so the Note has a key to link to.
+The destination sits outside the tree, so a finding reaches disk without creating the Epic. Hold each pointer with the residue, for the call to write.
 
 ### Check in every eight questions
 
@@ -136,18 +140,14 @@ The lean is either **split** or **specify**, read off the deferrals as they stan
 
 Done when the frontier is empty. What it leaves behind is either nothing — every question at this resolution settled — or the deferrals, which cluster in step 4.
 
-## 4. Write the Epic, then recommend
+## 4. Recommend, then write on the call
 
-The frontier is empty, so what the Epic is has stopped moving. Write it now, in one go: create `.archie/<path>/` if the research exit did not, and write `epic.md` with the title, the intent as the session actually came to understand it, and `## Decisions` carrying the residue — or `_None at this resolution._` if there is none. In Archie, open the Epic if the research exit did not, and record its decisions.
-
-An Epic that already had an `epic.md` is updated in the same single write: the intent sharpened if this session sharpened it, `## Decisions` extended with this session's residue. Its existing lines were settled at this resolution too and are not rewritten away.
-
-That write and the recommendation land in the same turn, so the recommendation **is** the diff — the user reads what was settled and what you propose doing about it together, rather than approving a recommendation about files that already changed under them.
-
-Then cluster the deferrals — each cluster named, with the deferred questions under it — and read the recommendation off them, giving the reasoning with it:
+The frontier is empty, so what the Epic is has stopped moving. Cluster the deferrals — each cluster named, with the deferred questions under it — and read the recommendation off them, giving the reasoning with it:
 
 - **An empty frontier and no deferrals** — recommend **specify**. Everything at this resolution is settled and there is nothing left to sharpen — run the size backstop first, so a leaf too big to build as one is sliced before you propose it.
 - **Deferrals in clusters** — recommend **split**, one child per cluster, in the build order you would suggest, with a line on why each is a child rather than a question you should have asked.
+
+In the same turn, show what the call will write: the intent as the session actually came to understand it, the residue that becomes `## Decisions` — or `_None at this resolution._` — and the findings that become `## Research`. The user decides on the Epic they are about to get.
 
 Then close the turn by saying shared understanding is reached, inviting anything still open, and naming what you will do otherwise — the child Epics on a split, the Spec on a specify:
 
@@ -157,22 +157,38 @@ That's shared understanding as I have it. Anything still open, or shall I write 
 
 **Going deeper is the user's call, always** — they may specify an Epic you wanted to split, split one you wanted to specify, merge two of your clusters or add a child you missed. Do that, do not argue it twice.
 
-The floor is open, so the answer is not a yes. Three shapes carry consequences:
+The floor is open, so the answer is not a yes. Four shapes carry consequences:
 
 - **A reopened deferral** rejoins the frontier and gets asked next. It can move the recommendation from split to specify or back, so read the recommendation again once it settles.
 - **A redirect** to a different step is obeyed. Where it drops work that already exists, say what it drops before running it.
+- **No call** — the session was an idea being tested, and the user is done with it. Write nothing, name what the session kept — terms, ADRs, standards, findings — and stop.
 - **Anything else** — a question, a correction, a change of mind about a cluster — is followed as asked.
 
-On the user's call to **split**, that is step 5. On their call to **specify**, invoke `/archie-to-spec` **inline, in this session**: it asks nothing, its whole input is the conversation that just happened, and a fresh window would read that off files instead. You still write no `spec.md` yourself.
+### Write on the call
+
+On **split** or **specify**, write the Epic in one go: create `.archie/<path>/` and write `epic.md` with the title, the intent, `## Decisions`, and `## Research` when the session has findings. In Archie, open the Epic, record its decisions and link its findings' Notes to it.
+
+An Epic that already had an `epic.md` is updated in the same single write: the intent sharpened if this session sharpened it, `## Decisions` extended with this session's residue. Its existing lines were settled at this resolution too and are not rewritten away.
+
+On **split**, that write carries the `Children` section and step 5 creates them. On **specify**, give it the Status whose description fits an Epic in planning, then invoke `/archie-to-spec` **inline, in this session**: it asks nothing, its whole input is the conversation that just happened, and a fresh window would read that off files instead. You still write no `spec.md` yourself. When it reports, that is step 6.
 
 ## 5. Split, if that is the call
 
 A child is created **thin**: its directory and its position in the parent's list follow `epic-tree.md`, its `epic.md` holds the title and one or two lines of intent, and it has **no `## Decisions` heading** — not even an empty one, which would make it indistinguishable from a scoped Epic. Nothing else goes in it: no decisions, no questions, no notes toward its own session. It gets its own scoping session later, and everything you could write into it now is something that session will know better.
 
-The parent's `epic.md`, written a step ago without one, gains its `Children` section here.
+In Archie, every child takes the Status whose description fits an Epic in planning and is blocked by the sibling before it in build order, so only the first can be opened; the parent takes the Status whose description fits an Epic in progress, since its planning ends here.
 
 The deferred questions themselves are **not** copied down: they shaped the child's intent, and its own interview will raise the live ones with the siblings' code to read.
 
 Done when every cluster has a directory, an `epic.md` and a position in the parent's list.
 
 Then report the tree as it now stands, name `/archie-architect` on the first child as the next session, and stop. The chain ends here.
+
+## 6. Offer the design, after a specify
+
+The Epic is Specified and undesigned, and `/archie-design` is a second interview that reads the real code first. Whether it earns a fresh window depends on how heavy this one has become, which nothing inside the session can measure — so offer both, recommend one, and let the user's answer be the guard:
+
+- **Design here** — recommend it when the interview was short, a handful of questions, the call was specify from the start, and the design headings — data, contract, structure, dependencies, seam — look answerable by precedent this session has already read.
+- **A fresh window** — recommend it otherwise: a long interview, research read in, or a leaf whose code nobody in this session has looked at.
+
+On **here**, invoke `/archie-design` **inline, in this session**; it chains `/archie-to-tasks` itself. On **a fresh window**, name `/archie-architect` on this Epic as the next session and stop.
