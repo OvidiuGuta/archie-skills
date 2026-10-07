@@ -79,7 +79,7 @@ Done when every 🔴 has a verdict and the grade is derived from the confirmed o
 ```md
 _Reviewed:_ {the PR, branch, or Epic} — {diffed against}, {re-review of {the PR conversation | the earlier report in this session} | not a re-review}
 
-**Overall: {🟢 mergeable | 🔴 needs work}** · Spec: {🟢 | 🔴} · Standards: {🟢 | 🔴}
+**Overall: {🟢 mergeable | 🔴 needs work}** · Spec: {🟢 | 🔴} · Standards: {🟢 | 🔴} · **Confidence: {n}/5** — {one-line reason}
 
 **Blockers**
 - 🔴 [spec|standards|pr] {file:line} — {the finding, and what to fix}
@@ -95,6 +95,24 @@ _Reviewed:_ {the PR, branch, or Epic} — {diffed against}, {re-review of {the P
 ```
 
 An empty list is left out, so a first review with no findings is the header alone, and Earlier findings appears only on a re-review. A still-open earlier finding is a finding at its original severity — a 🔴 one holds the grade at 🔴 — while resolved and dismissed ones, and Unconfirmed lines, are not findings: nothing in steps 6 to 9 picks, fixes or triages them. A skipped Spec axis reads `Spec: skipped — no epic`.
+
+### The Confidence score
+
+Every report's header — first review, re-review, and the one re-issued in step 8 — ends on a **Confidence score**: how safe the change is to merge, from 1 to 5, placed by judgement against these bands.
+
+- **5** — safe to merge on the grade alone: every acceptance criterion reached by a test, nothing risky left untested.
+- **4** — safe to merge; one area is worth a skim, named in the reason.
+- **3** — mergeable, but read it first: something the review could not vouch for — criteria no test covers, a skipped Spec axis, risky code (auth, data, money, migrations, concurrency) touched without a test reaching it.
+- **2** — a 🔴 stands and its fix is local.
+- **1** — a 🔴 stands that questions the change itself: a failing test, a missing user story, an approach that will not hold.
+
+A 🟢 review scores 3 to 5 and a 🔴 review 1 or 2, so the score never contradicts the grade. Within that range, weigh what the review could not vouch for: the criteria the Spec axis listed as **Untested**, a skipped Spec axis, which vouches for no criterion at all, and risky code in the diff that no test reaches, which you read off the diff yourself. The bands are guidance for that judgement, not deductions to count.
+
+The reason is one line naming what placed the score in its band — the untested criteria, the skipped axis, the area worth a skim, or the 🔴 and why its fix is or is not local.
+
+The score gates nothing. The grade alone decides mergeable, attended or unattended; the score tells the user how closely to read before merging.
+
+Done when the header carries a score inside its grade's range and a reason naming what placed it there.
 
 ## 6. Halt and offer the fix round
 
@@ -121,7 +139,7 @@ Read the engineer's gate results, then judge its diff yourself, read-only. You h
 
 Step 4 does not run here. A 🔴 that survives was confirmed there, and a 🔴 the fix introduced is judged on the line you read yourself.
 
-Re-issue the step 5 report with the new grade. If findings survived, name them and stop: there is no second round, because a round the fix could not settle means the contract is the problem and the user's read is the faster way out.
+Re-issue the step 5 report with the new grade and a Confidence score placed again on what the fix left: a criterion the fix brought under a test no longer weighs on it. If findings survived, name them and stop: there is no second round, because a round the fix could not settle means the contract is the problem and the user's read is the faster way out.
 
 The tree is dirty and stays that way. Offer the commit, and with a PR in play the posting of the report, and stop — unattended, step 9 says how the run ends instead.
 
@@ -134,7 +152,7 @@ An Epic run ends by invoking you inline on its Epic and its draft PR, with nobod
 - **The run ends on a commit and a second comment.** After step 8, commit any fix as `<reference>: review fixes`, push it, and post the final comment:
 
 ```md
-{the step 5 report, re-graded}
+{the step 5 report, re-graded and re-scored}
 
 **Fixed**
 - {finding}

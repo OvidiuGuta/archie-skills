@@ -11,7 +11,7 @@ A finding carries two things, and a candidate that cannot carry both is not repo
 - **The contract line** it breaks, quoted from the Spec or a task file.
 - **The failure**, named concretely: the input or path through the diff, and what happens there instead of what was asked.
 
-Criteria are outcomes observed against a running app, and you are reading a diff — so **the tests are your instrument**. Read the leaf's tests and run the suite: a criterion covered by a test that passes is satisfied, and your silence is the whole of your report on it. A criterion whose test fails is your strongest finding. You are read-only: run commands, write no files, update no snapshots.
+Criteria are outcomes observed against a running app, and you are reading a diff — so **the tests are your instrument**. Read the leaf's tests and run the suite: a criterion covered by a test that passes is satisfied, and your silence is the whole of your report on it. A criterion whose test fails is your strongest finding. A criterion **no test reaches** is judged by reading the diff, a finding only when that reading carries the evidence above, and listed under **Untested** either way: the review weighs it in its Confidence score. You are read-only: run commands, write no files, update no snapshots.
 
 ## What to report
 
@@ -29,4 +29,11 @@ Mark each finding **🔴** when it must land before this merges, **🟠** — a 
 - 🔴 {file:line} — {the finding, the contract line it breaks, and what to fix}
 ```
 
-What passed is silence, so a diff that meets its contract reports nothing at all. Under 300 words.
+Below your findings, list every criterion no test reaches. These are not findings and carry no severity:
+
+```md
+**Untested**
+- {the criterion, quoted from its task file} — {task file}
+```
+
+What passed under a test is silence, so a diff whose criteria are all tested and met reports nothing at all. Under 300 words.
