@@ -33,7 +33,15 @@ The report an implementing run ends on: one summary paragraph, then the acceptan
 _Avoid_: test plan
 
 **Grade**:
-The mergeability verdict a review ends on, per axis and overall, where overall is the worse of the two: 🟢 mergeable, 🟠 mergeable with reservations, 🔴 needs work. A review's findings list carries only what needs fixing; the grade carries everything else.
+The mergeability verdict a review ends on, per axis and overall, where overall is the worse of the two: 🟢 mergeable when no 🔴 finding stands, 🔴 needs work otherwise. Suggestions never move it.
+
+**Suggestion**:
+A 🟠 review finding: worth fixing, shown in the report, and never part of the grade.
+_Avoid_: nit, nitpick, reservation
+
+**Confidence score**:
+A review's 1-5 judgement of how safe the change is to merge, placed against written bands and capped at 2 while a 🔴 stands. Says what the grade cannot.
+_Avoid_: merge score, readiness score, effort score
 
 **Seam**:
 Where a feature's integration tests attach. Fixed in a Specified Epic's Spec, spanning every Task in that leaf — every Task builds against it and the Closing Task writes the tests on it — which is what puts it at altitude for the Spec and leaves each module's internals to the Task that builds it. Chosen by preferring one the repo already uses, sitting as high as possible, and using as few as possible — which is unjudgeable until the module surface underneath it is known, so it is confirmed in the Design session rather than alongside the Spec's what. Once baked in it is expensive to move.
