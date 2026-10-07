@@ -19,7 +19,7 @@ In Archie, every reference is a Task key such as `ARC-12`; refuse a `3.2` or a `
 
 Read off the repo and the caller:
 
-- **The PR.** `gh pr view --json number,baseRefName` on the branch. One open means a **refresh**; none means an **open**, against `main` unless the caller names a base.
+- **The PR.** The branch's open PR means a **refresh**; none means an **open**, against `main` unless the caller names a base.
 - **The reference**, when the caller names a Task or Epic. Epics are numbered directories under `.archie/`, so `3.2` is child `02` of child `03` of the root, and its Tasks are `tasks/NN-<slug>.md` inside it. No reference makes this an **ad-hoc** PR.
 - **The language.** The terms in `CONTEXT.md` — in Archie, the Project's term Notes. Name things the way the glossary does.
 
@@ -32,21 +32,15 @@ Evidence is a **before and after**, collected before any is produced:
 - **Proof** — each Task's `## Proof` section names the test behind every criterion, and the app walk behind the rest.
 - **The session** — test runs, gate output and screenshots already in this conversation.
 
-For what is missing, run the repo's test gate for the after. For the before, run the new or changed tests against the base: `git worktree add` at the base, copy those test files in, run them, and remove the worktree. A test that passes on the base proved nothing, so leave it out of Evidence.
+For what is missing, run the repo's test gate for the after, and the new or changed tests against the base for the before. A test that passes on the base proved nothing, so leave it out of Evidence.
 
-**Screenshots** prove a visual change best, and need a home the PR can link:
-
-- **In Archie** — upload each as an Asset on the Task it proves, or on the Epic for a leaf-wide outcome, and link the Asset.
-- **On files** — commit each into the leaf's directory under `.archie/`, as `screenshots/<task-number>-<slug>.png`, push, and link `https://github.com/<owner>/<repo>/blob/<sha>/<path>?raw=true`, pinned to that commit.
-- **Ad-hoc** — there is no leaf to hold them, so Evidence carries test runs and output alone.
-
-A screenshot that lives only in the conversation, with no file behind it, becomes one line saying what the screen showed.
+Screenshots prove a visual change best. With any to link, read [`references/screenshots.md`](references/screenshots.md) for where each one lives.
 
 Done when every change in the diff that can carry evidence has a before and an after, or a line saying why it has none.
 
 ## 3. Write the title and body
 
-**The title** follows the repo's PR conventions: the `## Project facts` line in `AGENTS.md`, else the shape of the last merged titles (`gh pr list --state merged --limit 10`).
+**The title** follows the repo's PR conventions: the `## Project facts` line in `AGENTS.md`, else the shape of the last merged titles.
 
 **The body** is this template:
 
@@ -75,36 +69,7 @@ Prose stays brief: a line of text beside each visual, and no preamble.
 
 ### Summary
 
-The **smallest view** that makes the change clear. Usually one view, at most two, picked by what the change is:
-
-- **Logic or an algorithm** — pseudocode.
-- **Runtime control flow** — a call tree.
-- **UI structure** — a component tree, with the state and module boundaries that matter.
-- **File responsibility or a broad refactor** — a shallow file tree, one comment per entry.
-- **Interaction or data flow between parts** — Mermaid.
-
-When the shape already exists and the point is what changed, draw it as a `diff` block in the same view — `+` for added lines, `-` for removed, the rest as context:
-
-```diff
- submitForm
-   createSession
-     persistPrompt
-+    expandSkillMention
-     launchAgent
--  navigateToSession
-+  navigateToSession
-+    subscribeToEvents
-```
-
-Show the whole block when most of it is new, when cutting context would hide ownership or order, or when the reader needs a copyable target shape. A Mermaid view stays small:
-
-```mermaid
-flowchart LR
-  Form -- submit --> Sessions -- launch --> Agent
-  Agent -- events --> Timeline
-```
-
-Keep only the calls, files, props, states and boundaries the point needs.
+Read [`references/summary-views.md`](references/summary-views.md) before drawing it: it says which view fits which change.
 
 ### Evidence
 
@@ -120,9 +85,6 @@ Done when every section is filled from the diff and the evidence, and nothing in
 
 ## 4. Publish
 
-Push the branch, then write the body to a file and:
-
-- **Open** — `gh pr create --title "…" --body-file <file> --base <base>`, with `--draft` when the caller asked for one.
-- **Refresh** — `gh pr edit <number> --title "…" --body-file <file>`.
+Push the branch, then open the PR — a draft when the caller asked for one — or rewrite the open one's title and body.
 
 Done when the PR shows the new title and body, and you have given the caller its link.
