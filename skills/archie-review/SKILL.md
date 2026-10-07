@@ -10,7 +10,7 @@ One change graded for mergeability, in two parallel axis sub-agents:
 - **Spec** — does the diff do what the leaf's `spec.md` and its task files asked, including the seam test its `Integration:` line owed? Runs only when an Epic supplies those contracts.
 - **Standards** — does it follow the repo's own `STANDARDS.md` and the test rules? Runs always.
 
-Then **one** fix round, in this same session: the user picks the findings, an engineer fixes them, and you verify that fix read-only and re-grade. Briefed **unattended** by `/archie-implement`, you pick instead — step 8.
+Every 🔴 they raise is then confirmed by an independent verifier before it reaches the report. Then **one** fix round, in this same session: the user picks the findings, an engineer fixes them, and you verify that fix read-only and re-grade. Briefed **unattended** by `/archie-implement`, you pick instead — step 9.
 
 ## 1. Resolve the diff
 
@@ -45,7 +45,17 @@ Both go out **through the sub-agent (Agent) tool**, so neither pollutes the othe
 
 **The Standards sub-agent's prompt** carries the diff command, the repo's own standards files — `STANDARDS.md` first, then `AGENTS.md`, `CLAUDE.md`, `CONTRIBUTING.md` — and the path to [`references/standards-review.md`](references/standards-review.md). Those files stay on disk in Archie mode.
 
-## 4. Report
+## 4. Check every blocker
+
+Once both axes return, and only when at least one 🔴 came back, dispatch **one** verifier sub-agent through the sub-agent tool. With no 🔴, skip this step.
+
+**Its prompt** carries the diff command, the path to [`references/blocker-check.md`](references/blocker-check.md) with the same read-in-full opening as the axes, and every 🔴 from both axes as three parts: its **claim** with its `file:line`, its **quoted line**, and its **named failure**. Nothing else from the axes goes in — no Suggestions, and none of their reasoning — because a verifier handed the argument tends to agree with it. In Archie mode, the quoted line's source goes in as text, as it did for the Spec axis.
+
+Each 🔴 it **confirms** stays a Blocker. Each it **drops** leaves Blockers and the grade with it, and goes under **Unconfirmed** in the report with the verifier's one-line why — never into Suggestions.
+
+Done when every 🔴 has a verdict and the grade is derived from the confirmed ones alone.
+
+## 5. Report
 
 ```md
 _Reviewed:_ {the PR, branch, or Epic} — {diffed against}
@@ -57,19 +67,22 @@ _Reviewed:_ {the PR, branch, or Epic} — {diffed against}
 
 **Suggestions**
 - 🟠 [spec|standards] {file:line} — {the same}
+
+**Unconfirmed**
+- [spec|standards] {file:line} — {the 🔴 as its axis wrote it} — dropped: {the verifier's why}
 ```
 
-An empty list is left out, so a review with no findings is the header alone. A skipped Spec axis reads `Spec: skipped — no epic`.
+An empty list is left out, so a review with no findings is the header alone. Unconfirmed lines are not findings: nothing in steps 6 to 9 picks, fixes or triages them. A skipped Spec axis reads `Spec: skipped — no epic`.
 
-## 5. Halt and offer the fix round
+## 6. Halt and offer the fix round
 
-Unattended, step 8 replaces this step. Otherwise stop on the report whatever the grade, and ask which findings the user wants fixed — all, a sub-list, or none.
+Unattended, step 9 replaces this step. Otherwise stop on the report whatever the grade, and ask which findings the user wants fixed — all, a sub-list, or none.
 
-**None** ends the review here. With a PR in play, offer instead to post the grade header and the selected findings with `gh pr comment`, worded as the step 4 report.
+**None** ends the review here. With a PR in play, offer instead to post the grade header and the selected findings with `gh pr comment`, worded as the step 5 report.
 
 Done when the user has named the findings in their words, or declined the round.
 
-## 6. Fix, once
+## 7. Fix, once
 
 One engineer sub-agent, dispatched through the sub-agent tool, running `/archie-tdd`, so the fix is driven by a test and re-runs the gates. A finding with no behaviour to drive, like a rename or a missing type, is a fix it makes without a test.
 
@@ -77,27 +90,29 @@ Its brief is **exit criteria**: the complete list of what must be true once the 
 
 Done when every accepted finding has an entry the engineer can check itself against.
 
-## 7. Verify the fix and re-grade
+## 8. Verify the fix and re-grade
 
 Read the engineer's gate results, then judge its diff yourself, read-only. You hold the exit criteria, so this is a **verify** pass over them and not a second review:
 
 - **Every accepted finding**, called resolved or surviving, one by one.
 - **The fix diff at the blocker bar** — the secrets check and 🔴 standards breaches, nothing more. A 🟠 the fix introduced belongs to the next review; hunting it here is how one fix round becomes three.
 
-Re-issue the step 4 report with the new grade. If findings survived, name them and stop: there is no second round, because a round the fix could not settle means the contract is the problem and the user's read is the faster way out.
+Step 4 does not run here. A 🔴 that survives was confirmed there, and a 🔴 the fix introduced is judged on the line you read yourself.
 
-The tree is dirty and stays that way. Offer the commit and stop — unattended, step 8 says how the run ends instead.
+Re-issue the step 5 report with the new grade. If findings survived, name them and stop: there is no second round, because a round the fix could not settle means the contract is the problem and the user's read is the faster way out.
 
-## 8. Unattended, from `/archie-implement`
+The tree is dirty and stays that way. Offer the commit and stop — unattended, step 9 says how the run ends instead.
+
+## 9. Unattended, from `/archie-implement`
 
 An Epic run ends by invoking you inline on its Epic and its draft PR, with nobody there to pick the findings. Three things change:
 
-- **The report goes on the PR.** Post the step 4 report with `gh pr comment` as soon as it is issued. A report with no findings is the only comment, and the review ends there.
-- **You triage in place of step 5.** Drop a finding only when it is **wrong**, a fact you can check: its quoted contract line does not say what the finding claims, the failure it names cannot happen on the path it gives, or it asks for something no contract or standard asks for. Every other finding, 🔴 and 🟠 alike, goes into the step 6 brief, and each drop keeps its one-line reason. Disagreeing with a finding's wording or weight keeps it in. With every finding dropped, skip steps 6 and 7 and grade what is left.
-- **The run ends on a commit and a second comment.** After step 7, commit any fix as `<reference>: review fixes`, push it, and post the final comment:
+- **The report goes on the PR.** Post the step 5 report with `gh pr comment` as soon as it is issued. A report with no findings is the only comment, and the review ends there.
+- **You triage in place of step 6.** Drop a finding only when it is **wrong**, a fact you can check: its quoted contract line does not say what the finding claims, the failure it names cannot happen on the path it gives, or it asks for something no contract or standard asks for. Every other finding, 🔴 and 🟠 alike, goes into the step 7 brief, and each drop keeps its one-line reason. Disagreeing with a finding's wording or weight keeps it in. With every finding dropped, skip steps 7 and 8 and grade what is left.
+- **The run ends on a commit and a second comment.** After step 8, commit any fix as `<reference>: review fixes`, push it, and post the final comment:
 
 ```md
-{the step 4 report, re-graded}
+{the step 5 report, re-graded}
 
 **Fixed**
 - {finding}
