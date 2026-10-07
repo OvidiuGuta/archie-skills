@@ -6,7 +6,7 @@
 
 A four-phase way of working with AI agents: **Setup**, **Planning** (HITL), **Implementing** (AFK) and **Reviewing**. Implementing and Reviewing loop until the branch grades mergeable, and Planning restarts the cycle on the next Epic. This repo is Archie's engineering skill bundle — sixteen skills, installable whole or by phase. It replaces mattpocock/skills.
 
-Planning is a conversation rather than a document. It runs in four steps, each ending on a sign-off, in one or two sessions, with `/archie-architect` as the router that reads which step an Epic is at off its own files. Implementing builds one Task inline or a whole leaf Epic through engineer sub-agents, and Reviewing grades the branch, fixes the findings the user accepts, and re-grades in the same session.
+Planning is a conversation rather than a document. It runs in four steps, each ending on a sign-off, in one or two sessions, with `/archie-architect` as the router that reads which step an Epic is at off its own files. Implementing builds one Task inline or a whole leaf Epic through engineer sub-agents, proving every acceptance criterion; an Epic run ends on a draft PR it reviews unattended. Reviewing grades a branch, fixes the findings the user accepts, and re-grades in the same session.
 
 ## Flows
 
@@ -16,7 +16,7 @@ Archie runs at three depths, and the same install runs any of them. Pick one per
 | --- | --- | --- | --- |
 | Plan | `/archie-interview` | + `/archie-domain-modeling` | `/archie-architect` over its four steps |
 | Build | `/archie-tdd` | `/archie-tdd` | `/archie-implement` → `/archie-tdd`, then `/archie-verify` |
-| Review | — | `/archie-review`, Standards axis | `/archie-review`, both axes |
+| Review | — | `/archie-review`, Standards axis | `/archie-review`, both axes, run by `/archie-implement` on the PR |
 | Records | `/archie-standards` | + `/archie-setup` | everything |
 
 ### lite — one session, nothing on disk but the code
@@ -62,20 +62,21 @@ flowchart LR
   E --> T2[/"epic.md + spec.md<br/>tasks/NN-slug.md at todo<br/>CONTEXT.md, ADRs, .archie/research/"/]
 ```
 
-**Implementing** — AFK. One Task inline, or the whole leaf as an autonomous loop over its Tasks.
+**Implementing** — AFK. One Task inline, or the whole leaf as an autonomous loop over its Tasks. Every criterion gets a proof in its Task, driven in the running app where no test reaches it, and an Epic run ends on a draft PR reviewed unattended.
 
 ```mermaid
 flowchart LR
   IM["/archie-implement"] --> TD["/archie-tdd<br/>units only"]
-  TD --> CR["criteria checked<br/>against the diff"]
+  TD --> CR["criteria proven<br/>tests, diff, app"]
   CR -- "unmet, one fix round" --> TD
   CR -- "met" --> CM["commit"]
   CM -- "next Task" --> TD
   CM -- "closing Task" --> VF["/archie-verify<br/>the leaf at its seam"]
-  VF --> T3[/"a commit per Task<br/>leaf at ready-for-review<br/>walkthrough of what no test covers"/]
+  VF --> PR["draft PR"] --> RU["/archie-review<br/>unattended"]
+  RU --> T3[/"a commit per Task, proof in each<br/>PR comments: report, re-grade<br/>ready when 🟢<br/>walkthrough of what no test covers"/]
 ```
 
-**Reviewing** — grades the branch, fixes what the user accepts, and re-grades. One round: findings that survive the fix halt the run.
+**Reviewing** — grades the branch, fixes what the user accepts, and re-grades. One round: findings that survive the fix halt the run. An Epic run already ran it on its PR, so this door is for a PR, a branch, or a second look.
 
 ```mermaid
 flowchart LR
@@ -100,7 +101,7 @@ Archie also ships in **phases you can install separately**. Drop `--skill '*'` a
 | Phase | Skills | Requires |
 | --- | --- | --- |
 | **Archie Planning** | `archie-setup`, `archie-architect`, `archie-scope`, `archie-interview`, `archie-domain-modeling`, `archie-standards`, `archie-research`, `archie-to-spec`, `archie-design`, `archie-prototype`, `archie-to-tasks` | nothing |
-| **Archie Implementing** | `archie-implement`, `archie-assist`, `archie-tdd` | nothing for `archie-tdd` alone; Planning for the other two, which consume the Epic tree |
+| **Archie Implementing** | `archie-implement`, `archie-assist`, `archie-tdd`, `archie-verify` | nothing for `archie-tdd` alone; Planning for the others, which consume the Epic tree; Reviewing for the review an Epic run ends on |
 | **Archie Reviewing** | `archie-review` | Implementing, for the `/archie-tdd` engineer it dispatches to fix what it finds. Planning too, for the `STANDARDS.md` its `/archie-setup` seeds — without it the Standards axis grades against the secrets check and the test rules alone |
 
 The flows are not install groups, because no flow is a phase: lite reaches for `archie-interview` from Planning and `archie-tdd` from Implementing. Install everything and type the flow you want; the phase groups are for a partial install.

@@ -12,6 +12,8 @@ _Amended by [0021](0021-the-review-fixes-what-it-finds.md): the Spec axis judges
 
 _Amended by [0019](0019-integration-is-one-closing-task-per-leaf.md): the two layers below are still unit and integration, but integration leaves the per-Task build and pools into one closing Task per leaf, owned by `/archie-verify`._
 
+_Amended by [0023](0023-an-epic-run-ends-reviewed-and-every-criterion-is-proven.md): the orchestrator drives the running app for the criteria no test reaches, when the session can, and writes a proof per criterion into the Task._
+
 `/archie-implement` ran seven to nine sub-agents per Task across design, TDD, review, two fix rounds and QA. The design and QA phases cost more context than they returned: the design was a whole sub-agent run and a file on disk restating what the Spec and the ticket already fixed, and QA stood up a browser to re-derive what the acceptance criteria already said. What is left is deliberately small enough that each skill's whole contract fits on one page. Implementing is now **build → review → one fix round → report**, three sub-agent runs.
 
 ## The pipeline

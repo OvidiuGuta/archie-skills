@@ -1,5 +1,7 @@
 # The review fixes what it finds
 
+_Amended by [0023](0023-an-epic-run-ends-reviewed-and-every-criterion-is-proven.md): run unattended from an Epic run, the review triages the findings itself, dropping only wrong ones, and posts its reports on the PR._
+
 Supersedes the fix-routing half of [0016](0016-implementing-splits-into-build-and-review-phases.md): its "no fix round inside the review" is reversed and accepted findings no longer become a Task. Amends [0010](0010-implementing-is-one-build-one-review-one-fix.md), narrowing its two-contract rule on the Spec axis. The two-axis parallel shape, the read-only orchestrator and `/archie-tdd` as the one fix path all survive.
 
 Two complaints, one about each axis of the loop's behaviour.
