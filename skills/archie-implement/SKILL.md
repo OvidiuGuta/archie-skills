@@ -76,10 +76,12 @@ Set `Status:` to `ready-for-review` and **stop dirty** — the user tests from t
 
 Run the `ready-for-agent` Tasks in `Blocked by` order, skipping the `done` ones. The first unblocked `ready-for-human` Task halts the run and names `/archie-assist` — committed work stays committed. In Archie: Tasks assigned to an Agent, in `blocks` order, halting on the first assigned to the human.
 
+In Archie, brief every engineer you dispatch, here and in step 5's fix round, to act as the assignee of what it builds.
+
 Per Task:
 
 1. Set `Status: in-progress` and record the Task's baseline: `git rev-parse HEAD`.
-2. **Dispatch an engineer as a sub-agent, through the sub-agent (Agent) tool**, with one instruction: run the Task's engineer skill on this Task reference. In Archie, the brief also tells it to act as its Task's assignee.
+2. **Dispatch an engineer as a sub-agent, through the sub-agent (Agent) tool**, with one instruction: run the Task's engineer skill on this Task reference.
 3. Read the gate results from its report. **A red gate halts the whole run.**
 4. Prove every acceptance criterion yourself (step 2) against `git diff <task baseline>` plus the untracked files. You read and drive the app; the engineer writes.
 5. Criteria unmet: **one fix round**. Dispatch the engineer again with exact instructions — the criterion, the file and line, what to change. Unmet after that, halt the run with a short report — what went wrong and a suggested fix — because the user's read is the faster way out of a loop.
@@ -88,13 +90,13 @@ Per Task:
 
 ## 5. Epic mode: review on the PR
 
-After the last Task:
+Run these after the last Task. In Archie you act as Archie throughout, on the leaf you found unassigned: the handoffs below move the Epic, not you.
 
 1. Write `Status: ready-for-review` into the leaf's `epic.md`. It stays there through both passes and the fix round.
 2. Invoke `/archie-pr` on the Epic for a **draft** PR. It pushes the branch and writes the title and body.
-3. **First pass.** In Archie, acting as Archie on the unassigned leaf, assign the Epic to the Agent whose description fits reviewing it. Invoke `/archie-review` **inline, in this conversation**, on the Epic and the PR, briefed **unattended** — inline because it dispatches sub-agents of its own. It runs one pass: it posts its report and triage on the PR and hands back the findings it kept as exit criteria. A pass with no findings is the final report: go to step 6.
-4. **Fix, once.** With every finding dropped, go to step 5. Otherwise, in Archie, assign the Epic to the Agent whose description fits building the fixes, and keep acting as Archie: that Agent is the engineer's to act as. Dispatch an engineer sub-agent through the sub-agent tool running `/archie-tdd` on those exit criteria, briefed in Archie to act as the Epic's assignee. **A red gate halts the run.** Commit the fix as `<reference>: review fixes` and invoke `/archie-pr` on the Epic to push it and refresh the PR's body.
-5. **Second pass.** In Archie, still acting as Archie, assign the Epic to the reviewing Agent again. Invoke `/archie-review` as in step 3. It finds the first pass's comment, so it runs as a re-review, and its report is the final one. There is no second fix round: a PR still 🔴 goes to the user, which is faster than a loop nobody watches.
+3. **First pass.** In Archie, assign the Epic to the Agent whose description fits reviewing it. Invoke `/archie-review` **inline, in this conversation**, on the Epic and the PR, briefed **unattended** — inline because it dispatches sub-agents of its own. It runs one pass: it posts its report and triage on the PR and hands back the findings it kept as exit criteria. A pass with no findings is the final report: go to step 6.
+4. **Fix, once.** With every finding dropped, go to step 5. Otherwise, in Archie, assign the Epic to the Agent whose description fits building the fixes. Dispatch an engineer sub-agent through the sub-agent tool running `/archie-tdd` on those exit criteria. **A red gate halts the run.** Commit the fix as `<reference>: review fixes` and invoke `/archie-pr` on the Epic to push it and refresh the PR's body.
+5. **Second pass.** In Archie, assign the Epic to the reviewing Agent again. Invoke `/archie-review` as in step 3. It finds the first pass's comment, so it runs as a re-review, and its report is the final one. There is no second fix round: a PR still 🔴 goes to the user, which is faster than a loop nobody watches.
 6. Read the grade and the Confidence score off the final report. Grade 🟢: mark the PR ready, `gh pr ready`. Anything else leaves it a draft for the user. The score gates nothing.
 
 Done when the final report is on the PR and the PR's state matches its grade.

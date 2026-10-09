@@ -58,7 +58,7 @@ Done when every user story is covered by a Task, every Task names one outcome, a
 
 ## 3. Quiz the user on the breakdown
 
-Present the whole breakdown as a numbered list, each line the Task's title, its outcome, its blocking edges and its label, so the shape, the sequence and who builds each are visible at once. In Archie the label is the assignee's name, so a wrong assignment is caught here rather than on the board:
+Present the whole breakdown as a numbered list, each line the Task's title, its outcome, its blocking edges and its label, so the shape, the sequence and who builds each are visible at once. In Archie the label is the assignee's name:
 
 ```md
 1. **Store a reset token** — a token row survives a request and expires on schedule. Blocked by: none. Label: ready-for-agent.
@@ -114,4 +114,4 @@ Done when every approved Task has a file, each with a `Status`, a `Label`, its `
 
 ## 5. Hand off
 
-In Archie, move the Epic to the Status whose description fits an Epic ready to build, and leave it **unassigned**, clearing any assignee it holds, so `/archie-implement` on it runs as Archie, the Agent that may hand its work to any other. Report the leaf's path, the Task count, and the first Task by reference (`3.2#1`, or its key in Archie). Name `/archie-implement` as the next move and stop. The Epic is now sliced, and everything after this runs AFK.
+In Archie, move the Epic to the Status whose description fits an Epic ready to build, and clear any assignee it holds, so `/archie-implement` on it runs as Archie. Report the leaf's path, the Task count, and the first Task by reference (`3.2#1`, or its key in Archie). Name `/archie-implement` as the next move and stop. The Epic is now sliced, and everything after this runs AFK.
