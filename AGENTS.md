@@ -4,6 +4,8 @@ Skill framework for the way I like to work.
 
 ## Working on this bundle
 
+**Every skill, reference and manual change is written by the `archie-writing-for-agents` project skill**, its `SKILL.md` and `SKILL-MECHANICS.md` read in full before the first edit.
+
 **Every skill directory is authored self-contained.** Nothing is generated and there is no shared folder: a skill that consults a reference on demand owns that file under its own `references/`. Two skills needing the same reference each carry a copy, and both are edited by hand in the same commit. See [`docs/adr/0011-each-skill-is-authored-self-contained.md`](docs/adr/0011-each-skill-is-authored-self-contained.md).
 
 **No link in a `SKILL.md` may leave its own directory.** Sibling skills are dispatched by name, not by path.

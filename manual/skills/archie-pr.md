@@ -6,4 +6,4 @@ The body has three sections and no preamble, in the repo's own language from `CO
 
 ## Archie mode
 
-In a bound folder screenshots are uploaded as Assets on the Task they prove, or on the Epic for a leaf-wide outcome, and the glossary is the Project's term Notes. It acts as the Agent whose description in the `guide` Index fits building, or as the Task's assignee when that is an Agent.
+In a bound folder screenshots are uploaded as Assets on the Task they prove, or on the Epic for a leaf-wide outcome, and the glossary is the Project's term Notes. It acts and hands work on as [connecting](../connecting.md#signing-in) describes.

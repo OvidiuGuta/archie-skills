@@ -10,7 +10,7 @@ One change graded for mergeability, in two parallel axis sub-agents:
 - **Spec** — does the diff do what the leaf's `spec.md` and its task files asked, including the seam test its `Integration:` line owed? Runs only when an Epic supplies those contracts.
 - **Standards** — does it follow the repo's own `STANDARDS.md` and the test rules? Runs always.
 
-An independent verifier confirms every 🔴 before it reaches the report, and a **re-review** holds to the review before it. Then **one** fix round, in this same session: the user picks the findings, an engineer fixes them, and you verify that fix read-only and re-grade. Briefed **unattended** by `/archie-implement`, you run two passes instead — step 9.
+An independent verifier confirms every 🔴 before it reaches the report, and a **re-review** holds to the review before it. Then **one** fix round, in this same session: the user picks the findings, an engineer fixes them, and you verify that fix read-only and re-grade. Briefed **unattended** by `/archie-implement`, you run one pass and hand back instead — step 9.
 
 ## 1. Resolve the diff
 
@@ -18,7 +18,9 @@ An independent verifier confirms every 🔴 before it reaches the report, and a 
 
 The folder plans in Archie when its `origin` remote clearly matches one Project's repo in the Archie MCP server's `guide` Index. Compare host and path only, so `git@github.com:me/app.git` matches `https://github.com/me/app`. No `origin`, no match or no Archie connection means the tree lives on files, as the steps below describe. Several matches, or an unclear one, means asking the human which Project this is.
 
-In Archie, every reference is a Task key such as `ARC-12`; refuse a `3.2` or a `3.2#1` with one line saying the folder plans in Archie. Act as the Agent whose description in the Index fits **reviewing**, or as the Task's assignee when it is an Agent, chosen once for the session. The steps below name the tree's files and markers, and the `guide` says how each is read and written in Archie. A Status, marker or Type a step names is the Status or Type whose description fits it; when none clearly fits, or several do, stop and ask the human, naming the step and `/archie-setup`. Brief any helper you dispatch or invoke with the mode and the Agent.
+In Archie, every reference is a Task key such as `ARC-12`; refuse a `3.2` or a `3.2#1` with one line saying the folder plans in Archie. The steps below name the tree's files and markers, and the `guide` says how each is read and written in Archie.
+
+Act as the assignee of the Task you work, an Epic included, or as Archie when it has no Agent assignee or there is no Task, and read it again after every handoff. Hand work on by assigning it to the Agent whose description in the Index fits the next step. A Status, marker, Type or Agent a step names is the one whose description fits it; when none clearly fits, or several do, stop and ask the human, naming the step and `/archie-setup`. Brief any helper you dispatch or invoke with the mode and the Agent.
 
 The input is one of three:
 
@@ -139,24 +141,22 @@ The tree is dirty and stays that way. Offer the commit, and with a PR in play th
 
 ## 9. Unattended, from `/archie-implement`
 
-An Epic run ends by invoking you inline on its Epic and its draft PR, with nobody there to pick the findings. You own **two passes**, and the run stops after the second whatever its grade: a PR still 🔴 then goes to the user, which is faster than a loop nobody watches.
+An Epic run invokes you inline on its Epic and its draft PR, with nobody there to pick the findings. You run **one pass** and hand back: the fix round, and the second pass after it, are the run's.
 
-1. **First pass.** Run steps 1 to 5. A report with no findings is posted with `gh pr comment` as the only comment, and the run ends there.
+1. **Review.** Run steps 1 to 5. On the run's second pass, step 1 finds the first pass's comment, so it is a re-review, and that comment's drops carry forward as dismissed.
 2. **Triage, in place of step 6.** Drop a finding only when it is **wrong**, a fact you can check: its quoted contract line does not say what the finding claims, the failure it names cannot happen on the path it gives, or it asks for something no contract or standard asks for. Every other finding, 🔴 and 🟠 alike, is kept — disagreeing with its wording or weight keeps it in.
-3. **Comment 1.** Post the step 5 report and the triage with `gh pr comment`, an empty list left out:
+3. **Comment.** Post the step 5 report and the triage with `gh pr comment`, an empty list left out. Each kept finding is written as its **exit criterion**, as step 7 describes, so the run briefs its engineer with this list as it stands:
 
 ```md
 {the step 5 report}
 
 **To fix**
-- {finding}
+- {finding} — exit: {the behaviour expected at its file:line, and what proves it}
 
 **Dropped**
 - {finding} — {why it is wrong}
 ```
 
-4. **Fix, once.** Run step 7 with every kept finding in the brief, then commit the fix as `<reference>: review fixes` and invoke `/archie-pr` on the Epic to push it and refresh the PR's body. With every finding dropped, skip to the second pass. Step 8 does not run: the second pass replaces it.
-5. **Second pass.** Run steps 1 to 5 again. Step 1 finds comment 1, so this is a re-review, and comment 1's drops carry forward as dismissed.
-6. **Comment 2.** Post its step 5 report as the run's final word.
+4. **Hand back.** Return the **To fix** list to `/archie-implement`. In Archie, a pass with no findings assigns the Epic to the human; any other clears its assignee, handing the Epic back to the run.
 
-Done when the PR carries the final report. `/archie-implement` resumes from that report's grade.
+Done when the comment is on the PR and, in Archie, the Epic is handed on.

@@ -4,4 +4,4 @@ The closing Task of a leaf Epic, reached by `/archie-implement` and typeable by 
 
 ## Archie mode
 
-In a bound folder the reference is the leaf's closing Task, read from Archie with its siblings and the Spec. It moves that Task to the Status whose description fits a Task ready for review itself before reporting, so a run typed by name still lands on the board. `STANDARDS.md` stays on disk. It acts as the Agent whose description in the `guide` Index fits building, or as the Task's assignee when that is an Agent.
+In a bound folder the reference is the leaf's closing Task, read from Archie with its siblings and the Spec. It moves that Task to the Status whose description fits a Task ready for review itself before reporting, so a run typed by name still lands on the board. `STANDARDS.md` stays on disk. It acts and hands work on as [connecting](../connecting.md#signing-in) describes.
