@@ -90,10 +90,12 @@ Per Task:
 
 After the last Task:
 
-1. Write `Status: ready-for-review` into the leaf's `epic.md`.
+1. Write `Status: ready-for-review` into the leaf's `epic.md`. It stays there through both passes and the fix round.
 2. Invoke `/archie-pr` on the Epic for a **draft** PR. It pushes the branch and writes the title and body.
-3. Invoke `/archie-review` **inline, in this conversation**, on the Epic and the PR, briefed **unattended** — inline because it dispatches sub-agents of its own. Its unattended step owns both of its passes: the first report and its triage, one fix round, and a second review posted as the final PR comment.
-4. Read the grade and the Confidence score off that final report — the second review's, or the first's when it found nothing. Grade 🟢: mark the PR ready, `gh pr ready`. Anything else leaves it a draft for the user. The score gates nothing.
+3. **First pass.** In Archie, assign the Epic to the Agent whose description fits reviewing it. Invoke `/archie-review` **inline, in this conversation**, on the Epic and the PR, briefed **unattended** — inline because it dispatches sub-agents of its own. It runs one pass: it posts its report and triage on the PR and hands back the findings it kept as exit criteria. A pass with no findings is the final report: go to step 6.
+4. **Fix, once.** With every finding dropped, go to step 5. Otherwise, in Archie, assign the Epic to the Agent whose description fits building the fixes, then dispatch an engineer sub-agent through the sub-agent tool running `/archie-tdd` on those exit criteria. **A red gate halts the run.** Commit the fix as `<reference>: review fixes` and invoke `/archie-pr` on the Epic to push it and refresh the PR's body.
+5. **Second pass.** In Archie, assign the Epic to the reviewing Agent again. Invoke `/archie-review` as in step 3. It finds the first pass's comment, so it runs as a re-review, and its report is the final one. There is no second fix round: a PR still 🔴 goes to the user, which is faster than a loop nobody watches.
+6. Read the grade and the Confidence score off the final report. Grade 🟢: mark the PR ready, `gh pr ready`. Anything else leaves it a draft for the user. The score gates nothing.
 
 Done when the final report is on the PR and the PR's state matches its grade.
 

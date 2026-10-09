@@ -10,7 +10,7 @@ One change graded for mergeability, in two parallel axis sub-agents:
 - **Spec** — does the diff do what the leaf's `spec.md` and its task files asked, including the seam test its `Integration:` line owed? Runs only when an Epic supplies those contracts.
 - **Standards** — does it follow the repo's own `STANDARDS.md` and the test rules? Runs always.
 
-An independent verifier confirms every 🔴 before it reaches the report, and a **re-review** holds to the review before it. Then **one** fix round, in this same session: the user picks the findings, an engineer fixes them, and you verify that fix read-only and re-grade. Briefed **unattended** by `/archie-implement`, you run two passes instead — step 9.
+An independent verifier confirms every 🔴 before it reaches the report, and a **re-review** holds to the review before it. Then **one** fix round, in this same session: the user picks the findings, an engineer fixes them, and you verify that fix read-only and re-grade. Briefed **unattended** by `/archie-implement`, you run one pass and hand back instead — step 9.
 
 ## 1. Resolve the diff
 
@@ -141,24 +141,22 @@ The tree is dirty and stays that way. Offer the commit, and with a PR in play th
 
 ## 9. Unattended, from `/archie-implement`
 
-An Epic run ends by invoking you inline on its Epic and its draft PR, with nobody there to pick the findings. You own **two passes**, and the run stops after the second whatever its grade: a PR still 🔴 then goes to the user, which is faster than a loop nobody watches.
+An Epic run invokes you inline on its Epic and its draft PR, with nobody there to pick the findings. You run **one pass** and hand back: the fix round, and the second pass after it, are the run's.
 
-1. **First pass.** Run steps 1 to 5. A report with no findings is posted with `gh pr comment` as the only comment, and the run ends there.
+1. **Review.** Run steps 1 to 5. On the run's second pass, step 1 finds the first pass's comment, so it is a re-review, and that comment's drops carry forward as dismissed.
 2. **Triage, in place of step 6.** Drop a finding only when it is **wrong**, a fact you can check: its quoted contract line does not say what the finding claims, the failure it names cannot happen on the path it gives, or it asks for something no contract or standard asks for. Every other finding, 🔴 and 🟠 alike, is kept — disagreeing with its wording or weight keeps it in.
-3. **Comment 1.** Post the step 5 report and the triage with `gh pr comment`, an empty list left out:
+3. **Comment.** Post the step 5 report and the triage with `gh pr comment`, an empty list left out. Each kept finding is written as its **exit criterion**, as step 7 describes, so the run briefs its engineer with this list as it stands:
 
 ```md
 {the step 5 report}
 
 **To fix**
-- {finding}
+- {finding} — exit: {the behaviour expected at its file:line, and what proves it}
 
 **Dropped**
 - {finding} — {why it is wrong}
 ```
 
-4. **Fix, once.** Run step 7 with every kept finding in the brief, then commit the fix as `<reference>: review fixes` and invoke `/archie-pr` on the Epic to push it and refresh the PR's body. With every finding dropped, skip to the second pass. Step 8 does not run: the second pass replaces it.
-5. **Second pass.** Run steps 1 to 5 again. Step 1 finds comment 1, so this is a re-review, and comment 1's drops carry forward as dismissed.
-6. **Comment 2.** Post its step 5 report as the run's final word.
+4. **Hand back.** Return the **To fix** list to `/archie-implement`. In Archie, a pass with no findings assigns the Epic to the human; any other clears its assignee, handing the Epic back to the run.
 
-Done when the PR carries the final report. `/archie-implement` resumes from that report's grade.
+Done when the comment is on the PR and, in Archie, the Epic is handed on.
