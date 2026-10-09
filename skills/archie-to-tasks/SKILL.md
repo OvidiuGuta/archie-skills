@@ -48,22 +48,22 @@ The leaf therefore ends on one **closing Task**, blocked by every other Task, wh
 
 A leaf whose Spec marked the seam not-applicable gets no closing Task, and its Tasks carry no `Integration:` line — there is no seam to test, at either end.
 
-Give each Task its label — `ready-for-agent` when an agent builds it end to end, `ready-for-human` when it needs a third-party UI, a secret or an account that only the user can supply.
+Give each Task its label — `ready-for-agent` when an agent builds it end to end, `ready-for-human` when it needs a third-party UI, a secret or an account that only the user can supply. In Archie the label is the Task's **assignee**: the Agent whose description fits building it, or the human.
 
 Then write the acceptance criteria: **observable outcomes, not instructions**, no file paths, no code, so they still read true weeks later. Each one is walked against the running app at the end of its Task's build, so a criterion nobody can watch happen is not one. The criteria are the **demoable outcome decomposed**, which is why step 3 asks about the outcome and not about them: the user judges the outcome here, and every criterion under it gets walked at the end of that Task's own run.
 
 Then route each Task to the design: its `Builds:` line names the `Implementation Decisions` it builds — the contract, the model, the module — in the Spec's own words. That line is the slice of the Spec its engineer reads first; the decisions themselves stay in the Spec, where every Task touching one reads the same text.
 
-Done when every user story is covered by a Task, every Task names one outcome, and every Task carries its edges, its label, its `Builds` line and its criteria.
+Done when every user story is covered by a Task, every Task names one outcome, and every Task carries its edges, its label, its `Builds` line and its criteria — in Archie its label resolved to one assignee.
 
 ## 3. Quiz the user on the breakdown
 
-Present the whole breakdown as a numbered list, each line the Task's title, its outcome and its blocking edges, so the shape and the sequence are visible at once:
+Present the whole breakdown as a numbered list, each line the Task's title, its outcome, its blocking edges and its label, so the shape, the sequence and who builds each are visible at once. In Archie the label is the assignee's name, so a wrong assignment is caught here rather than on the board:
 
 ```md
-1. **Store a reset token** — a token row survives a request and expires on schedule. Blocked by: none.
-2. **Request a reset** — a user submits their email and receives a reset link. Blocked by: #1.
-3. **Verify the leaf at the seam** — the Spec's stories hold end to end. Blocked by: #1, #2.
+1. **Store a reset token** — a token row survives a request and expires on schedule. Blocked by: none. Label: ready-for-agent.
+2. **Request a reset** — a user submits their email and receives a reset link. Blocked by: #1. Label: ready-for-agent.
+3. **Verify the leaf at the seam** — the Spec's stories hold end to end. Blocked by: #1, #2. Label: ready-for-agent.
 ```
 
 Then ask, through `/archie-interview`, about the three things the user can judge better than you:
@@ -98,7 +98,7 @@ One file per Task at `tasks/NN-<slug>.md` inside the leaf, the `Epic:` reference
 
 The closing Task uses that same file: `Integration: this Task`, `Blocked by` every other Task, `ready-for-agent`, its demoable outcome the leaf's Spec holding at the seam, its `Builds:` line the seam, and one criterion saying so. It is a Task like any other: same statuses, same review path.
 
-In Archie the header lines are the Task's own fields: `Blocked by` is its `blocks` edges, the `Integration:` line is its Type, and the label is its `assignee`, an Agent or the human. The `Builds:` line stays in the body.
+In Archie the header lines are the Task's own fields: `Blocked by` is its `blocks` edges, the `Integration:` line is its Type, and the label is its `assignee`, the one the approved list shows. The `Builds:` line stays in the body.
 
 Every Task starts at `Status: todo`. The implementing skills write `in-progress` and `ready-for-review` from there. In task mode `done` is the user's word; in epic mode `/archie-implement` writes it itself after its criteria check, and stamps the leaf's `epic.md` with `Status: ready-for-review` when the last Task lands — the one status an Epic ever carries.
 
@@ -114,4 +114,4 @@ Done when every approved Task has a file, each with a `Status`, a `Label`, its `
 
 ## 5. Hand off
 
-In Archie, move the Epic to the Status whose description fits an Epic ready to build. Report the leaf's path, the Task count, and the first Task by reference (`3.2#1`, or its key in Archie). Name `/archie-implement` as the next move and stop. The Epic is now sliced, and everything after this runs AFK.
+In Archie, move the Epic to the Status whose description fits an Epic ready to build, and leave it **unassigned**, clearing any assignee it holds, so `/archie-implement` on it runs as Archie, the Agent that may hand its work to any other. Report the leaf's path, the Task count, and the first Task by reference (`3.2#1`, or its key in Archie). Name `/archie-implement` as the next move and stop. The Epic is now sliced, and everything after this runs AFK.

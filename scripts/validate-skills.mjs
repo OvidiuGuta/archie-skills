@@ -83,6 +83,11 @@ const ARCHIE_MODE_AGENT =
 // The Agent rule it replaced picked an Agent by a kind of work, once per
 // session. Any copy of it left behind is a second rule beside the pinned one.
 const KIND_OF_WORK_AGENT = /fits \*\*(planning|building|reviewing)\*\*|chosen once for the session/
+// No skill names an Agent (ADR-0075 in the archie repo): it reaches one by
+// description, so a human who renames or replaces the seeded Agents changes no
+// skill. Archie, the root every session falls back to, is the one exception.
+// A skill's own `# Title` line is its name, not an Agent, and is skipped.
+const SEEDED_AGENT = /\b(Architect|Engineer|Reviewer|Worker)\b/
 // The block runs from its heading to the end of the Agent paragraph. Every
 // copy must read the same, so the sentences between the pinned ones cannot
 // drift either.
@@ -234,6 +239,13 @@ for (const dir of skillDirs) {
   } else if (hasHeading) {
     fail(skillFile, 'carries a `Where the tree lives` block, but is a helper that learns the mode from its brief')
   }
+
+  const namedAgent = body
+    .split('\n')
+    .filter((line) => !/^# /.test(line))
+    .map((line) => SEEDED_AGENT.exec(line)?.[0])
+    .find(Boolean)
+  if (namedAgent) fail(skillFile, `names the Agent \`${namedAgent}\`; a skill reaches an Agent by its description in the Index`)
 
   // The link check below fails a link to a missing file, so pinning the link
   // pins the file too.
