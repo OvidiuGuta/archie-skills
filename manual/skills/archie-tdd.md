@@ -4,4 +4,4 @@ The build half of every flow, running the [double loop](../../docs/adr/0010-impl
 
 ## Archie mode
 
-In a bound folder the Task and its leaf's Spec are read from Archie, the `Integration:` line is the Task's Type, and a prototype is an html Asset on the Epic. `STANDARDS.md` stays on disk. It acts as the Agent whose description in the `guide` Index fits building, or as the Task's assignee when that is an Agent.
+In a bound folder the Task and its leaf's Spec are read from Archie, the `Integration:` line is the Task's Type, and a prototype is an html Asset on the Epic. `STANDARDS.md` stays on disk. It acts as the assignee of the Task it works, an Epic included, or as Archie when that is no Agent or there is no Task, and hands work on to the Agent whose description in the `guide` Index fits the next step.

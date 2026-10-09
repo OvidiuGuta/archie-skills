@@ -10,4 +10,4 @@ User-callable, and the review phase, also run unattended by [`/archie-implement`
 
 ## Archie mode
 
-In a bound folder the Epic reference is the leaf's key, and a `3.2` is refused. The Spec sub-agent is handed the Spec and the Task bodies as text, with the leaf's closing Task named as such since the briefing reads `Integration:` lines. The Standards axis is unchanged: `STANDARDS.md` and the other standards files stay on disk. It acts as the Agent whose description in the `guide` Index fits reviewing, or as the Task's assignee when that is an Agent.
+In a bound folder the Epic reference is the leaf's key, and a `3.2` is refused. The Spec sub-agent is handed the Spec and the Task bodies as text, with the leaf's closing Task named as such since the briefing reads `Integration:` lines. The Standards axis is unchanged: `STANDARDS.md` and the other standards files stay on disk. It acts as the assignee of the Task it works, an Epic included, or as Archie when that is no Agent or there is no Task, and hands work on to the Agent whose description in the `guide` Index fits the next step.

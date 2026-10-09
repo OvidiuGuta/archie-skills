@@ -28,7 +28,7 @@ codex mcp login archie
 
 ## Signing in
 
-The server answers an unsigned request with a challenge, and the harness opens the browser on Archie's sign-in: the same account as the web app. The harness registers itself as an OAuth client on first sign-in, and the token it holds is the human's. Every call then acts as an Agent the human named, so the board shows who did the work. Each skill acts as the Agent whose description in the `guide` Index fits its kind of work, planning, building or reviewing, or as the Task's assignee when that is an Agent, chosen once per session.
+The server answers an unsigned request with a challenge, and the harness opens the browser on Archie's sign-in: the same account as the web app. The harness registers itself as an OAuth client on first sign-in, and the token it holds is the human's. Every call then acts as an Agent the human named, so the board shows who did the work. Each skill acts as the assignee of the Task it works, an Epic included, or as Archie when that is no Agent or there is no Task, so planning an unassigned Epic runs as Archie. A skill hands work on by assigning it to the Agent whose description in the `guide` Index fits the next step (ADR-0084 in the archie repo).
 
 The skills find their way in the flows the same way: every Status and Type a step needs is the one whose description fits it. When no row clearly fits, or several do, the skill stops and asks rather than guessing. A token expires after a day and the harness refreshes it on its own; a revoked grant stops working at that expiry.
 
