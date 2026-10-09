@@ -45,11 +45,12 @@ The planning steps share one Status, because the step is read off what the Epic 
 
 ### Agents, from the Index
 
-| Need | A fitting description leads with | Used by | Proposed name |
+A session acts as the assignee of what it works, or as Archie, so the Agents checked are the ones work is **handed to**.
+
+| Need: an Agent to hand | A fitting description says it takes | Handed to by | Proposed name |
 | --- | --- | --- | --- |
-| Planning | planning: scoping, specifying, designing and slicing Epics | `/archie-setup`, `/archie-architect`, `/archie-scope`, `/archie-to-spec`, `/archie-design`, `/archie-to-tasks` | Architect |
-| Building | building: implementing Tasks test-first | `/archie-implement`, `/archie-tdd`, `/archie-verify`, `/archie-assist` | Engineer |
-| Reviewing | reviewing: grading finished work and fixing the findings the human accepts | `/archie-review` | Reviewer |
+| Building | building: the Tasks assigned to it, test-first | `/archie-to-tasks`, assigning each Task it cuts; `/archie-implement`, handing it a review's fixes | Engineer |
+| Reviewing | reviewing: a leaf Epic assigned to it, graded against its Spec and the standards | `/archie-implement`, before each review pass | Reviewer |
 
 ## Proposing a row
 
@@ -65,14 +66,16 @@ Each proposal carries:
 
 ## The report
 
-One row per need, then one proposal per gap or several:
+One row per need, the line on planning, then one proposal per gap or several:
 
 ```md
 | Need | Binds to | |
 | --- | --- | --- |
 | Type for an Epic | **Epic** | binds |
 | Status naming `/archie-review` | — | gap |
-| Agent for reviewing | **Reviewer**, **Engineer** | several |
+| Agent to hand reviewing to | **Reviewer**, **Engineer** | several |
+
+Planning acts as Archie on an unassigned Epic, so it needs no Agent.
 
 **Status naming `/archie-review`**: `In review`, group `in-progress`, in the Task Workflow.
 
