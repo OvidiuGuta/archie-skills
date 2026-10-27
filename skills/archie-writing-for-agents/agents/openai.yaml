@@ -1,0 +1,3 @@
+interface:
+  display_name: "Archie: Writing for Agents"
+  short_description: "Writes skills, AGENTS.md and any document an agent reads"

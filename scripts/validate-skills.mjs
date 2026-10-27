@@ -24,7 +24,7 @@ const SKILL_DOCS_DIR = join(MANUAL_DIR, 'skills')
 const DOCS_DIR = join(ROOT, 'docs')
 const MARKETPLACE = join(ROOT, '.claude-plugin', 'marketplace.json')
 
-// The seventeen skills of the spec, split by who may invoke them. No skill
+// The eighteen skills of the spec, split by who may invoke them. No skill
 // carries `disable-model-invocation: true` — the harness refuses a flagged
 // skill even when the user themself named it in the prompt (ADR 0017). The
 // five user-only doors are reserved by a sentence in their description
@@ -50,6 +50,7 @@ const MODEL_INVOKED_SKILLS = [
   'archie-tdd',
   'archie-verify',
   'archie-pr',
+  'archie-writing-for-agents',
 ]
 const ROSTER = new Set([...USER_ONLY_SKILLS, ...MODEL_INVOKED_SKILLS])
 
@@ -211,7 +212,7 @@ for (const dir of skillDirs) {
   // reserved by the guard sentence in their description. The flag is banned
   // everywhere — it errors out even the user's own autocompleted invocation.
   if (!ROSTER.has(dirName)) {
-    fail(skillFile, `\`${dirName}\` is not one of the seventeen skills in the spec`)
+    fail(skillFile, `\`${dirName}\` is not one of the eighteen skills in the spec`)
   } else if ('disable-model-invocation' in frontmatter) {
     fail(skillFile, '`disable-model-invocation` is banned — reserve user-only skills with the guard sentence instead (ADR 0017)')
   } else if (USER_ONLY_SKILLS.includes(dirName) && !description.includes(USER_ONLY_GUARD)) {

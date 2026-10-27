@@ -1,0 +1,3 @@
+# `/archie-writing-for-agents`
+
+The reference for writing any document an agent reads: a skill, an `AGENTS.md` or `CLAUDE.md`, a doc reached by a pointer. It fires on its own whenever one of those is created or edited. Its subject is predictability, so the agent takes the same process every run: how a context pointer's wording decides when material is reached, the two loads every line spends, where each piece sits on the information hierarchy, completion criteria that resist premature completion, when to split, leading words, and pruning. `SKILL-MECHANICS.md` carries what changes when the document is a skill: frontmatter, the invocation choice, and router skills. It is not part of any phase, and installs alone as **Archie Authoring**.

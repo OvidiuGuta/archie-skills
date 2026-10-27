@@ -46,6 +46,15 @@
       "skills": [
         "./skills/archie-review"
       ]
+    },
+    {
+      "name": "archie-authoring",
+      "source": "./",
+      "description": "Authoring: the reference for writing skills, AGENTS.md and any document an agent reads. Not a phase, and needs nothing else.",
+      "category": "engineering",
+      "skills": [
+        "./skills/archie-writing-for-agents"
+      ]
     }
   ]
 }
