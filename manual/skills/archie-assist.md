@@ -4,4 +4,4 @@ User-callable, and the counterpart for the work an agent cannot do: a `ready-for
 
 ## Archie mode
 
-In a bound folder the Task is one assigned to the human, its gates its `blocks` edges and its `assignee`, one assigned to an Agent halting and naming `/archie-implement`. It ends on the Status whose description fits a Task ready for review. It acts and hands work on as [connecting](../connecting.md#signing-in) describes.
+In a bound folder the reference is a Task key and its blocking edges are its `blocks` edges. It ends on the Status whose description fits a Task ready for review.

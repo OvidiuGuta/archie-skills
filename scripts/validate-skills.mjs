@@ -4,8 +4,7 @@
 //   node scripts/validate-skills.mjs
 //
 // Exits non-zero on any failure, printing one line per failure naming the file
-// and the problem. See README.md for what it checks and why some checks are
-// warnings while the bundle is still being built.
+// and the problem. See manual/structure.md for what it checks.
 //
 // Each skill directory is authored self-contained: it owns whatever reference
 // files it needs, and nothing is generated or shared. The check that keeps that
@@ -17,8 +16,9 @@ import { join, dirname, relative, resolve } from 'node:path'
 const ROOT = process.cwd()
 const SKILLS_DIR = join(ROOT, 'skills')
 const README = join(ROOT, 'README.md')
-// The README-facing pages: one per skill, plus the structure page. `docs/` is
-// the repo's own records — ADRs and agent notes — and is not indexed here.
+// The README-facing pages: one per skill, plus connecting and structure.
+// `docs/` is the repo's own records — ADRs and agent notes — and is not
+// indexed here.
 const MANUAL_DIR = join(ROOT, 'manual')
 const SKILL_DOCS_DIR = join(MANUAL_DIR, 'skills')
 const DOCS_DIR = join(ROOT, 'docs')
@@ -61,9 +61,10 @@ const ROSTER = new Set([...USER_ONLY_SKILLS, ...MODEL_INVOKED_SKILLS])
 // copies (ADR 0011). The first sentence binds the folder through the Archie
 // MCP's `get_index`; the binding paragraph fits every Status, marker, Type and
 // Label a step names by its description, and leaves how each is read and
-// written to the MCP's own tools. The helpers — interview, research,
-// prototype, domain-modeling, standards — carry no block: the dispatching
-// skill's brief names the mode.
+// written to the MCP's own tools. Every other skill carries no block: the
+// helpers — interview, research, prototype, domain-modeling, standards — learn
+// the mode from the dispatching skill's brief, and `archie-agent` is a persona
+// that carries no workflow (ADR-0117 in the archie repo).
 const ARCHIE_MODE_SKILLS = new Set([
   'archie-setup',
   'archie-architect',
@@ -221,7 +222,7 @@ for (const dir of skillDirs) {
   }
 
   // The Archie-mode block: pinned in the skills that touch the tree, and
-  // absent from the helpers, which learn the mode from their brief.
+  // absent from every other skill.
   const hasHeading = ARCHIE_MODE_HEADING.test(body)
   if (ARCHIE_MODE_SKILLS.has(dirName)) {
     if (!hasHeading) fail(skillFile, 'missing the `Where the tree lives` heading')
@@ -239,7 +240,7 @@ for (const dir of skillDirs) {
       }
     }
   } else if (hasHeading) {
-    fail(skillFile, 'carries a `Where the tree lives` block, but is a helper that learns the mode from its brief')
+    fail(skillFile, 'carries a `Where the tree lives` block, but is not a skill that works the tree (`ARCHIE_MODE_SKILLS` in this script)')
   }
 
   // The link check below fails a link to a missing file, so pinning the link
@@ -268,8 +269,8 @@ for (const dir of skillDirs) {
   }
 
   // Skill references in the body resolve to a skill in the bundle. A reference
-  // to a rostered skill that is not built yet is a warning, so the gate stays
-  // usable while the bundle is being assembled ticket by ticket.
+  // to a rostered skill with no directory only warns, since the missing
+  // directory already fails at the end of the run.
   for (const ref of new Set(skillRefsIn(body))) {
     if (presentSkills.has(ref)) continue
     if (ROSTER.has(ref)) warn(skillFile, `references \`/${ref}\`, which is not built yet`)
@@ -323,8 +324,9 @@ for (const file of linkedFiles) {
 }
 
 // --- the phase manifest -----------------------------------------------------
-// `.claude-plugin/marketplace.json` groups the skills into Archie's two phases
-// in the skills.sh picker. Two lists of skills drift, so they are compared.
+// `.claude-plugin/marketplace.json` groups the skills in the skills.sh picker:
+// the three phases, Persona and Authoring. Two lists of skills drift, so they
+// are compared.
 
 if (!existsSync(MARKETPLACE)) {
   fail(MARKETPLACE, 'missing — the phase groups in the installer come from here')
