@@ -48,6 +48,15 @@
       ]
     },
     {
+      "name": "archie-persona",
+      "source": "./",
+      "description": "Persona: become one of your Archie Agents, running whichever skills its instructions name. Not a phase, and needs a connected Archie MCP server.",
+      "category": "engineering",
+      "skills": [
+        "./skills/archie-agent"
+      ]
+    },
+    {
       "name": "archie-authoring",
       "source": "./",
       "description": "Authoring: the reference for writing skills, AGENTS.md and any document an agent reads. Not a phase, and needs nothing else.",

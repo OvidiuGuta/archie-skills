@@ -4,4 +4,4 @@ Reached by `/archie-architect`, and typeable by name. The **how**-step: the last
 
 ## Archie mode
 
-In a bound folder the leaf's stop states are read off its Status, by the description that fits each. A logic prototype is an html Asset on the Epic rather than a file under `prototypes/`, and a coding standard still goes to `STANDARDS.md` in the repo (ADR-0064 in the archie repo). It acts and hands work on as [connecting](../connecting.md#signing-in) describes.
+In a bound folder the leaf's stop states are read off its Status, by the description that fits each. A logic prototype is an html Asset on the Epic rather than a file under `prototypes/`, and a coding standard still goes to `STANDARDS.md` in the repo (ADR-0066 and ADR-0113 in the archie repo).

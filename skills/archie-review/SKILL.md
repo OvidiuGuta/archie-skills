@@ -16,11 +16,11 @@ An independent verifier confirms every 🔴 before it reaches the report, and a 
 
 ### Where the tree lives
 
-The folder plans in Archie when its `origin` remote clearly matches one Project's repo in the Archie MCP server's `guide` Index. Compare host and path only, so `git@github.com:me/app.git` matches `https://github.com/me/app`. No `origin`, no match or no Archie connection means the tree lives on files, as the steps below describe. Several matches, or an unclear one, means asking the human which Project this is.
+The folder plans in Archie when its `origin` remote clearly matches a repo of one Project in the Archie MCP server's `get_index`. Compare host and path only, so `git@github.com:me/app.git` matches `https://github.com/me/app`. No `origin`, no match or no Archie connection means the tree lives on files, as the steps below describe. Several matches, or an unclear one, means asking the human which Project this is.
 
-In Archie, every reference is a Task key such as `ARC-12`; refuse a `3.2` or a `3.2#1` with one line saying the folder plans in Archie. The steps below name the tree's files and markers, and the `guide` says how each is read and written in Archie.
+In Archie, every reference is a Task key such as `ARC-12`; refuse a `3.2` or a `3.2#1` with one line saying the folder plans in Archie. The steps below name the tree's files and markers.
 
-Act as the assignee of the Task you work, an Epic included, or as Archie when it has no Agent assignee or there is no Task, and read it again after every handoff. Hand work on by assigning it to the Agent whose description in the Index fits the next step. A Status, marker, Type or Agent a step names is the one whose description fits it; when none clearly fits, or several do, stop and ask the human, naming the step and `/archie-setup`. Brief any helper you dispatch or invoke with the mode and the Agent.
+A Status, marker, Type or Label a step names is the one whose description fits it; when none clearly fits, or several do, stop and ask the human, naming the step and `/archie-setup`. The Archie MCP server's tools say how each is read and written. Brief any helper you dispatch or invoke with the mode.
 
 The input is one of three:
 
@@ -50,7 +50,7 @@ The **grade** has two tiers, per axis and overall: 🟢 **mergeable** when no �
 
 ## 3. Dispatch the axes as sub-agents, in parallel
 
-Both go out **through the sub-agent (Agent) tool**, so neither pollutes the other's context. Without an Epic, only Standards goes out, and the header says the Spec axis was skipped and why. Each briefing file below is the whole of its axis's discipline, so each prompt opens with: **read your briefing file in full before reviewing — it carries your rules, your severities and your report format.**
+Both go out **through the sub-agent tool**, so neither pollutes the other's context. Without an Epic, only Standards goes out, and the header says the Spec axis was skipped and why. Each briefing file below is the whole of its axis's discipline, so each prompt opens with: **read your briefing file in full before reviewing — it carries your rules, your severities and your report format.**
 
 **The Spec sub-agent's prompt** carries the diff command, the paths to `spec.md` and the task files, and the path to [`references/spec-review.md`](references/spec-review.md). In Archie it carries the Spec and the Task bodies as text, with the leaf's closing Task named as such, since the briefing reads `Integration:` lines.
 
@@ -157,6 +157,6 @@ An Epic run invokes you inline on its Epic and its draft PR, with nobody there t
 - {finding} — {why it is wrong}
 ```
 
-4. **Hand back.** Return the **To fix** list to `/archie-implement`. In Archie, a pass with no findings assigns the Epic to the human; any other clears its assignee, handing the Epic back to the run.
+4. **Hand back.** Return the **To fix** list to `/archie-implement`.
 
-Done when the comment is on the PR and, in Archie, the Epic is handed on.
+Done when the comment is on the PR and the **To fix** list is back with `/archie-implement`.

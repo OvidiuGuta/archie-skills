@@ -9,6 +9,7 @@ skills/
 └── archie-<name>/        SKILL.md, agents/openai.yaml, and its own references/ if it needs one
 manual/
 ├── skills/<name>.md      one page per skill, indexed by the README
+├── connecting.md         connecting a harness to Archie, and who a session acts as
 └── structure.md          this file
 docs/
 ├── adr/                  the decisions behind the framework
@@ -55,18 +56,19 @@ The design decisions behind the framework are in [`CONTEXT.md`](../CONTEXT.md) a
 node scripts/validate-skills.mjs
 ```
 
-Run from the repo root. It exits non-zero on any failure and prints one line per failure naming the file and the problem. Eighteen self-contained skills and a manifest listing every one of them is exactly the structure where things rot silently, and the failure only shows up later as a skill quietly skipping a step. This is the bundle's only automated gate.
+Run from the repo root. It exits non-zero on any failure and prints one line per failure naming the file and the problem. Nineteen self-contained skills and a manifest listing every one of them is exactly the structure where things rot silently, and the failure only shows up later as a skill quietly skipping a step. This is the bundle's only automated gate.
 
 It asserts that:
 
 - every `SKILL.md` has frontmatter with a `name` and a `description`, and the name matches its directory
-- no skill carries `disable-model-invocation` — the flag errors out even the user's own autocompleted invocation — and each of the five user-only skills ends its description with the verbatim guard sentence reserving it for explicit user invocation ([ADR 0017](../docs/adr/0017-user-only-skills-gate-by-description-not-flag.md))
-- every skill directory is one of the eighteen the spec names
+- no skill carries `disable-model-invocation` — the flag errors out even the user's own autocompleted invocation — and each of the six user-only skills ends its description with the verbatim guard sentence reserving it for explicit user invocation ([ADR 0017](../docs/adr/0017-user-only-skills-gate-by-description-not-flag.md))
+- every skill directory is one of the nineteen on the roster, and every rostered skill has its directory
 - every skill reference in a skill body resolves to a skill in the bundle
 - **no link in a `SKILL.md` leaves the skill's own directory**, since that is what makes each one installable alone
 - every relative link resolves to a file that exists, across the skills, the README and these docs
 - `marketplace.json` lists every skill exactly once, in a phase, with a path the installer will not silently drop
 - every skill ships an `agents/openai.yaml` carrying a `display_name` and a `short_description`
 - every skill has a page under [`manual/skills/`](skills/), linked from the README's index
-- every skill that touches the tree carries the `Where the tree lives` block — heading, first sentence binding the folder by its `origin` remote, and the Agent paragraph acting as the Task's assignee or as Archie, all pinned verbatim — every copy reads the same, no skill file picks its Agent by a kind of work, no `SKILL.md` names a seeded Agent beside Archie, and no helper skill carries the block
+- every skill that works the tree carries the `Where the tree lives` block — heading, the first sentence binding the folder by matching its `origin` remote against the Projects' repos in the Archie MCP server's `get_index`, and the binding paragraph fitting each Status, marker, Type and Label by its description, all pinned verbatim — and every copy reads the same. No other skill carries it: the helpers learn the mode from their brief, and `/archie-agent` is a persona, not a workflow
+- no markdown file of a skill that works the tree, its references included, names an `Agent`, an assignee, `whoami` or `guide`: those skills carry only a workflow, and identity is `/archie-agent`'s (ADR-0117 in the archie repo)
 - `/archie-setup` links its `references/bindings.md`, the needs list the seeded `Next:` lines in Archie are written against

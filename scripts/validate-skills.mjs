@@ -4,8 +4,7 @@
 //   node scripts/validate-skills.mjs
 //
 // Exits non-zero on any failure, printing one line per failure naming the file
-// and the problem. See README.md for what it checks and why some checks are
-// warnings while the bundle is still being built.
+// and the problem. See manual/structure.md for what it checks.
 //
 // Each skill directory is authored self-contained: it owns whatever reference
 // files it needs, and nothing is generated or shared. The check that keeps that
@@ -17,17 +16,18 @@ import { join, dirname, relative, resolve } from 'node:path'
 const ROOT = process.cwd()
 const SKILLS_DIR = join(ROOT, 'skills')
 const README = join(ROOT, 'README.md')
-// The README-facing pages: one per skill, plus the structure page. `docs/` is
-// the repo's own records — ADRs and agent notes — and is not indexed here.
+// The README-facing pages: one per skill, plus connecting and structure.
+// `docs/` is the repo's own records — ADRs and agent notes — and is not
+// indexed here.
 const MANUAL_DIR = join(ROOT, 'manual')
 const SKILL_DOCS_DIR = join(MANUAL_DIR, 'skills')
 const DOCS_DIR = join(ROOT, 'docs')
 const MARKETPLACE = join(ROOT, '.claude-plugin', 'marketplace.json')
 
-// The eighteen skills of the spec, split by who may invoke them. No skill
+// The nineteen skills of the spec, split by who may invoke them. No skill
 // carries `disable-model-invocation: true` — the harness refuses a flagged
 // skill even when the user themself named it in the prompt (ADR 0017). The
-// five user-only doors are reserved by a sentence in their description
+// six user-only doors are reserved by a sentence in their description
 // instead, pinned verbatim so it cannot drift or be trimmed away.
 const USER_ONLY_GUARD = 'Only for explicit user invocation — never fire it on your own.'
 const USER_ONLY_SKILLS = [
@@ -36,6 +36,7 @@ const USER_ONLY_SKILLS = [
   'archie-implement',
   'archie-review',
   'archie-assist',
+  'archie-agent',
 ]
 const MODEL_INVOKED_SKILLS = [
   'archie-scope',
@@ -55,13 +56,15 @@ const MODEL_INVOKED_SKILLS = [
 const ROSTER = new Set([...USER_ONLY_SKILLS, ...MODEL_INVOKED_SKILLS])
 
 // Archie mode. A skill that touches the tree carries a `Where the tree lives`
-// block whose heading, first sentence and Agent paragraph are pinned verbatim,
-// the way the guard sentence is, so the switch cannot drift between copies
-// (ADR 0011). The Agent paragraph is one rule for every skill: act as the
-// assignee of the Task worked, or as Archie, and hand work on by description
-// (ADR-0084 in the archie repo). The helpers — interview, research,
-// prototype, domain-modeling, standards — carry no block: the dispatching
-// skill's brief names the mode.
+// block whose heading, first sentence and binding paragraph are pinned
+// verbatim, the way the guard sentence is, so the switch cannot drift between
+// copies (ADR 0011). The first sentence binds the folder through the Archie
+// MCP's `get_index`; the binding paragraph fits every Status, marker, Type and
+// Label a step names by its description, and leaves how each is read and
+// written to the MCP's own tools. Every other skill carries no block: the
+// helpers — interview, research, prototype, domain-modeling, standards — learn
+// the mode from the dispatching skill's brief, and `archie-agent` is a persona
+// that carries no workflow (ADR-0117 in the archie repo).
 const ARCHIE_MODE_SKILLS = new Set([
   'archie-setup',
   'archie-architect',
@@ -78,21 +81,20 @@ const ARCHIE_MODE_SKILLS = new Set([
 ])
 const ARCHIE_MODE_HEADING = /^#{2,3} Where the tree lives$/m
 const ARCHIE_MODE_SWITCH =
-  "The folder plans in Archie when its `origin` remote clearly matches one Project's repo in the Archie MCP server's `guide` Index."
-const ARCHIE_MODE_AGENT =
-  'Act as the assignee of the Task you work, an Epic included, or as Archie when it has no Agent assignee or there is no Task, and read it again after every handoff. Hand work on by assigning it to the Agent whose description in the Index fits the next step. A Status, marker, Type or Agent a step names is the one whose description fits it; when none clearly fits, or several do, stop and ask the human, naming the step and `/archie-setup`. Brief any helper you dispatch or invoke with the mode and the Agent.'
-// The Agent rule it replaced picked an Agent by a kind of work, once per
-// session. Any copy of it left behind is a second rule beside the pinned one.
-const KIND_OF_WORK_AGENT = /fits \*\*(planning|building|reviewing)\*\*|chosen once for the session/
-// No skill names an Agent (ADR-0075 in the archie repo): it reaches one by
-// description, so a human who renames or replaces the seeded Agents changes no
-// skill. Archie, the root every session falls back to, is the one exception.
-// A skill's own `# Title` line is its name, not an Agent, and is skipped.
-const SEEDED_AGENT = /\b(Architect|Engineer|Reviewer|Worker)\b/
-// The block runs from its heading to the end of the Agent paragraph. Every
+  "The folder plans in Archie when its `origin` remote clearly matches a repo of one Project in the Archie MCP server's `get_index`."
+const ARCHIE_MODE_BINDING =
+  "A Status, marker, Type or Label a step names is the one whose description fits it; when none clearly fits, or several do, stop and ask the human, naming the step and `/archie-setup`. The Archie MCP server's tools say how each is read and written. Brief any helper you dispatch or invoke with the mode."
+// The block runs from its heading to the end of the binding paragraph. Every
 // copy must read the same, so the sentences between the pinned ones cannot
 // drift either.
-const ARCHIE_MODE_BLOCK = /^#{2,3} Where the tree lives$[\s\S]*?Brief any helper you dispatch or invoke with the mode and the Agent\./m
+const ARCHIE_MODE_BLOCK = /^#{2,3} Where the tree lives$[\s\S]*?Brief any helper you dispatch or invoke with the mode\./m
+// A tree skill carries workflow only (ADR-0117 in the archie repo): no Agent,
+// no assignee, no identity check and no `guide`, which the MCP no longer has.
+// Persona and handoff belong to `/archie-agent`. The patterns hit the entity
+// names and nothing else: lowercase "agent" is the harness's own (sub-agent,
+// `ready-for-agent`, AGENTS.md), and the retired tool is named only as
+// `guide` in backticks or as the "guide Index", so the English word passes.
+const AGENT_BAN = /\bAgents?\b|\b[Aa]ssignees?\b|\bwhoami\b|`guide`|\bguide Index\b/
 // `/archie-setup` walks the skills' needs list in its own reference, which is
 // the archie-skills side of the contract the seeded `Next:` lines keep.
 const SETUP_BINDINGS = 'references/bindings.md'
@@ -208,11 +210,11 @@ for (const dir of skillDirs) {
     fail(skillFile, `frontmatter name \`${name}\` does not match its directory \`${dirName}\``)
   }
 
-  // Invocability: the five user-only skills are the doors a human opens,
+  // Invocability: the six user-only skills are the doors a human opens,
   // reserved by the guard sentence in their description. The flag is banned
   // everywhere — it errors out even the user's own autocompleted invocation.
   if (!ROSTER.has(dirName)) {
-    fail(skillFile, `\`${dirName}\` is not one of the eighteen skills in the spec`)
+    fail(skillFile, `\`${dirName}\` is not one of the nineteen skills in the spec`)
   } else if ('disable-model-invocation' in frontmatter) {
     fail(skillFile, '`disable-model-invocation` is banned — reserve user-only skills with the guard sentence instead (ADR 0017)')
   } else if (USER_ONLY_SKILLS.includes(dirName) && !description.includes(USER_ONLY_GUARD)) {
@@ -220,15 +222,15 @@ for (const dir of skillDirs) {
   }
 
   // The Archie-mode block: pinned in the skills that touch the tree, and
-  // absent from the helpers, which learn the mode from their brief.
+  // absent from every other skill.
   const hasHeading = ARCHIE_MODE_HEADING.test(body)
   if (ARCHIE_MODE_SKILLS.has(dirName)) {
     if (!hasHeading) fail(skillFile, 'missing the `Where the tree lives` heading')
     if (!body.includes(ARCHIE_MODE_SWITCH)) {
       fail(skillFile, `Archie-mode block is missing its first sentence \`${ARCHIE_MODE_SWITCH}\``)
     }
-    if (!body.split(/\n\n/).some((paragraph) => paragraph.trim() === ARCHIE_MODE_AGENT)) {
-      fail(skillFile, 'Archie-mode block is missing its Agent paragraph, verbatim and on its own (`ARCHIE_MODE_AGENT` in this script)')
+    if (!body.split(/\n\n/).some((paragraph) => paragraph.trim() === ARCHIE_MODE_BINDING)) {
+      fail(skillFile, 'Archie-mode block is missing its binding paragraph, verbatim and on its own (`ARCHIE_MODE_BINDING` in this script)')
     }
     const block = ARCHIE_MODE_BLOCK.exec(body)?.[0]
     if (block) {
@@ -238,15 +240,8 @@ for (const dir of skillDirs) {
       }
     }
   } else if (hasHeading) {
-    fail(skillFile, 'carries a `Where the tree lives` block, but is a helper that learns the mode from its brief')
+    fail(skillFile, 'carries a `Where the tree lives` block, but is not a skill that works the tree (`ARCHIE_MODE_SKILLS` in this script)')
   }
-
-  const namedAgent = body
-    .split('\n')
-    .filter((line) => !/^# /.test(line))
-    .map((line) => SEEDED_AGENT.exec(line)?.[0])
-    .find(Boolean)
-  if (namedAgent) fail(skillFile, `names the Agent \`${namedAgent}\`; a skill reaches an Agent by its description in the Index`)
 
   // The link check below fails a link to a missing file, so pinning the link
   // pins the file too.
@@ -274,8 +269,8 @@ for (const dir of skillDirs) {
   }
 
   // Skill references in the body resolve to a skill in the bundle. A reference
-  // to a rostered skill that is not built yet is a warning, so the gate stays
-  // usable while the bundle is being assembled ticket by ticket.
+  // to a rostered skill with no directory only warns, since the missing
+  // directory already fails at the end of the run.
   for (const ref of new Set(skillRefsIn(body))) {
     if (presentSkills.has(ref)) continue
     if (ROSTER.has(ref)) warn(skillFile, `references \`/${ref}\`, which is not built yet`)
@@ -307,9 +302,15 @@ for (const file of linkedFiles) {
     if (!existsSync(resolved)) fail(file, `link \`${target}\` points at a file that does not exist`)
   }
 
-  if (file.startsWith(SKILLS_DIR)) {
-    const leftover = KIND_OF_WORK_AGENT.exec(body)?.[0]
-    if (leftover) fail(file, `picks its Agent by a kind of work (\`${leftover}\`); a skill acts as its Task's assignee, or as Archie`)
+  // Every markdown file of a tree skill, its SKILL.md and its references,
+  // frontmatter and fences included: a banned name anywhere in it is read by
+  // the model.
+  const owner = relative(SKILLS_DIR, file).split('/')[0]
+  if (file.startsWith(SKILLS_DIR) && ARCHIE_MODE_SKILLS.has(owner)) {
+    readFileSync(file, 'utf8').split('\n').forEach((line, index) => {
+      const banned = AGENT_BAN.exec(line)?.[0]
+      if (banned) fail(file, `line ${index + 1} names \`${banned.replaceAll('`', '')}\`; a workflow skill carries no Agent, assignee, \`whoami\` or \`guide\` (ADR-0117 in the archie repo)`)
+    })
   }
 
   // Outside a SKILL.md there is no bundle position to resolve against, so a
@@ -324,8 +325,9 @@ for (const file of linkedFiles) {
 }
 
 // --- the phase manifest -----------------------------------------------------
-// `.claude-plugin/marketplace.json` groups the skills into Archie's two phases
-// in the skills.sh picker. Two lists of skills drift, so they are compared.
+// `.claude-plugin/marketplace.json` groups the skills in the skills.sh picker:
+// the three phases, Persona and Authoring. Two lists of skills drift, so they
+// are compared.
 
 if (!existsSync(MARKETPLACE)) {
   fail(MARKETPLACE, 'missing — the phase groups in the installer come from here')
@@ -361,10 +363,12 @@ if (!existsSync(MARKETPLACE)) {
 
 // --- report -----------------------------------------------------------------
 
-const missing = [...ROSTER].filter((name) => !presentSkills.has(name))
+// The roster is the bundle, so a rostered skill with no directory fails too.
+for (const name of ROSTER) {
+  if (!presentSkills.has(name)) fail(join(SKILLS_DIR, name), 'missing — it is one of the nineteen skills in the spec')
+}
 const ownReferenceFiles = walkFiles(SKILLS_DIR, (p) => p.endsWith('.md') && !p.endsWith('SKILL.md'))
 console.log(`skills: ${presentSkills.size}/${ROSTER.size} present, ${ownReferenceFiles.length} skill-owned reference files`)
-if (missing.length) console.log(`not built yet: ${missing.map((n) => `/${n}`).join(', ')}`)
 
 for (const warning of warnings) console.log(`warn  ${warning}`)
 for (const failure of failures) console.error(`FAIL  ${failure}`)

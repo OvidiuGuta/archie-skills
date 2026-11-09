@@ -4,7 +4,7 @@
 
 # Archie
 
-A four-phase way of working with AI agents: **Setup**, **Planning** (HITL), **Implementing** (AFK) and **Reviewing**. Implementing and Reviewing loop until the branch grades mergeable, and Planning restarts the cycle on the next Epic. This repo is Archie's engineering skill bundle — eighteen skills, installable whole or by phase. It replaces mattpocock/skills.
+A four-phase way of working with AI agents: **Setup**, **Planning** (HITL), **Implementing** (AFK) and **Reviewing**. Implementing and Reviewing loop until the branch grades mergeable, and Planning restarts the cycle on the next Epic. This repo is Archie's engineering skill bundle — nineteen skills, installable whole or by phase. It replaces mattpocock/skills.
 
 Planning is a conversation rather than a document. It runs in four steps, each ending on a sign-off, in one or two sessions, with `/archie-architect` as the router that reads which step an Epic is at off its own files. Implementing builds one Task inline or a whole leaf Epic through engineer sub-agents, proving every acceptance criterion; an Epic run ends on a draft PR it reviews unattended. Reviewing grades a branch, fixes the findings the user accepts, and re-grades in the same session.
 
@@ -95,7 +95,7 @@ Nothing on disk records which flow a repo is using, and no rule keeps them apart
 npx skills@latest add OvidiuGuta/archie-skills --skill '*'
 ```
 
-Installs all eighteen skills into whichever agents the installer detects. Upgrade with `npx skills@latest update`.
+Installs all nineteen skills into whichever agents the installer detects. Upgrade with `npx skills@latest update`.
 
 Archie also ships in **phases you can install separately**. Drop `--skill '*'` and the installer shows them as groups you can tick whole:
 
@@ -104,6 +104,7 @@ Archie also ships in **phases you can install separately**. Drop `--skill '*'` a
 | **Archie Planning** | `archie-setup`, `archie-architect`, `archie-scope`, `archie-interview`, `archie-domain-modeling`, `archie-standards`, `archie-research`, `archie-to-spec`, `archie-design`, `archie-prototype`, `archie-to-tasks` | nothing |
 | **Archie Implementing** | `archie-implement`, `archie-assist`, `archie-tdd`, `archie-verify`, `archie-pr` | nothing for `archie-tdd` alone; Planning for the others, which consume the Epic tree; Reviewing for the review an Epic run ends on |
 | **Archie Reviewing** | `archie-review` | Implementing, for the `/archie-tdd` engineer it dispatches to fix what it finds. Planning too, for the `STANDARDS.md` its `/archie-setup` seeds — without it the Standards axis grades against the secrets check and the test rules alone |
+| **Archie Persona** | `archie-agent` | a connected Archie MCP server. Not a phase: it makes a session one of your Agents, and runs whichever skills the Agent's instructions name |
 | **Archie Authoring** | `archie-writing-for-agents` | nothing. Not a phase: the reference for writing skills and `AGENTS.md`, useful with or without Archie |
 
 The flows are not install groups, because no flow is a phase: lite reaches for `archie-interview` from Planning and `archie-tdd` from Implementing. Install everything and type the flow you want; the phase groups are for a partial install.
@@ -148,12 +149,16 @@ One page each, written by the ticket that built the skill.
 
 - [`/archie-review`](manual/skills/archie-review.md) — grade a branch on the Spec and Standards axes, then fix what you accept
 
+**Persona**
+
+- [`/archie-agent`](manual/skills/archie-agent.md) — be one of your Archie Agents: its instructions, and its name on every call
+
 **Authoring**
 
 - [`/archie-writing-for-agents`](manual/skills/archie-writing-for-agents.md) — how to write skills, `AGENTS.md` and any document an agent reads
 
 ## Working on the bundle
 
-- [Connecting a harness to Archie](manual/connecting.md) — the Claude Code and Codex lines, and the OAuth sign-in
+- [Connecting a harness to Archie](manual/connecting.md) — the Claude Code and Codex lines, the OAuth sign-in, and who a session acts as
 - [Structure and conventions](manual/structure.md) — the layout, the skill-owned references, what varies per repo, and the validation gate
 - [`CONTEXT.md`](CONTEXT.md) and [`docs/adr/`](docs/adr/) — the design decisions behind the framework. A skill contradicting one of those ADRs is wrong

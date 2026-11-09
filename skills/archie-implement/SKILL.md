@@ -15,11 +15,11 @@ A Task reference selects **task mode**: you build it inline and stop dirty for t
 
 ### Where the tree lives
 
-The folder plans in Archie when its `origin` remote clearly matches one Project's repo in the Archie MCP server's `guide` Index. Compare host and path only, so `git@github.com:me/app.git` matches `https://github.com/me/app`. No `origin`, no match or no Archie connection means the tree lives on files, as the steps below describe. Several matches, or an unclear one, means asking the human which Project this is.
+The folder plans in Archie when its `origin` remote clearly matches a repo of one Project in the Archie MCP server's `get_index`. Compare host and path only, so `git@github.com:me/app.git` matches `https://github.com/me/app`. No `origin`, no match or no Archie connection means the tree lives on files, as the steps below describe. Several matches, or an unclear one, means asking the human which Project this is.
 
-In Archie, every reference is a Task key such as `ARC-12`; refuse a `3.2` or a `3.2#1` with one line saying the folder plans in Archie. The steps below name the tree's files and markers, and the `guide` says how each is read and written in Archie.
+In Archie, every reference is a Task key such as `ARC-12`; refuse a `3.2` or a `3.2#1` with one line saying the folder plans in Archie. The steps below name the tree's files and markers.
 
-Act as the assignee of the Task you work, an Epic included, or as Archie when it has no Agent assignee or there is no Task, and read it again after every handoff. Hand work on by assigning it to the Agent whose description in the Index fits the next step. A Status, marker, Type or Agent a step names is the one whose description fits it; when none clearly fits, or several do, stop and ask the human, naming the step and `/archie-setup`. Brief any helper you dispatch or invoke with the mode and the Agent.
+A Status, marker, Type or Label a step names is the one whose description fits it; when none clearly fits, or several do, stop and ask the human, naming the step and `/archie-setup`. The Archie MCP server's tools say how each is read and written. Brief any helper you dispatch or invoke with the mode.
 
 Everything resolves from the reference: Epics are numbered directories nested under `.archie/`, so `3.2` is child `02` of child `03` of the root, and `#1` is `tasks/01-<slug>.md` inside it. The leaf's `spec.md` sits beside the `tasks/` folder.
 
@@ -28,7 +28,7 @@ No `.archie/` at all is a repo that has never been planned. Say so and name `/ar
 Gates before anything runs:
 
 - **The tree is clean enough to read a diff off.** Uncommitted work lands inside every diff this run verifies. Say what is dirty and let the user clear it.
-- **Task mode: the Task is runnable.** Every Task on `Blocked by` is `done`, and the label is `ready-for-agent` — a `ready-for-human` Task halts and names `/archie-assist`; any other value, or no `Label` line, halts and names what it found. In Archie the edges are its `blocks` edges and the label its `assignee`, the human halting the same way.
+- **Task mode: the Task is runnable.** Every Task on `Blocked by` is `done`, and the label is `ready-for-agent` — a `ready-for-human` Task halts and names `/archie-assist`; any other value, or no `Label` line, halts and names what it found. In Archie the edges are its `blocks` edges.
 - **Epic mode: the branch is the user's move.** On `main` or `master`, halt and say so. Branching is the user's job, and the run commits, so it starts only where commits belong.
 - **Epic mode: the PR can be opened.** An `origin` remote and an authenticated `gh` (`gh auth status`). The run ends on a PR, so a missing one halts here rather than after every Task is built.
 
@@ -74,14 +74,12 @@ Set `Status:` to `ready-for-review` and **stop dirty** — the user tests from t
 
 ## 4. Epic mode: orchestrate
 
-Run the `ready-for-agent` Tasks in `Blocked by` order, skipping the `done` ones. The first unblocked `ready-for-human` Task halts the run and names `/archie-assist` — committed work stays committed. In Archie: Tasks assigned to an Agent, in `blocks` order, halting on the first assigned to the human.
-
-In Archie, brief every engineer you dispatch, here and in step 5's fix round, to act as the assignee of what it builds.
+Run the `ready-for-agent` Tasks in `Blocked by` order, skipping the `done` ones. The first unblocked `ready-for-human` Task halts the run and names `/archie-assist` — committed work stays committed. In Archie the `blocks` edges set the order.
 
 Per Task:
 
 1. Set `Status: in-progress` and record the Task's baseline: `git rev-parse HEAD`.
-2. **Dispatch an engineer as a sub-agent, through the sub-agent (Agent) tool**, with one instruction: run the Task's engineer skill on this Task reference.
+2. **Dispatch an engineer as a sub-agent, through the sub-agent tool**, with one instruction: run the Task's engineer skill on this Task reference.
 3. Read the gate results from its report. **A red gate halts the whole run.**
 4. Prove every acceptance criterion yourself (step 2) against `git diff <task baseline>` plus the untracked files. You read and drive the app; the engineer writes.
 5. Criteria unmet: **one fix round**. Dispatch the engineer again with exact instructions — the criterion, the file and line, what to change. Unmet after that, halt the run with a short report — what went wrong and a suggested fix — because the user's read is the faster way out of a loop.
@@ -90,13 +88,13 @@ Per Task:
 
 ## 5. Epic mode: review on the PR
 
-Run these after the last Task. In Archie you act as Archie throughout, on the leaf you found unassigned: the handoffs below move the Epic, not you.
+Run these after the last Task.
 
 1. Write `Status: ready-for-review` into the leaf's `epic.md`. It stays there through both passes and the fix round.
 2. Invoke `/archie-pr` on the Epic for a **draft** PR. It pushes the branch and writes the title and body.
-3. **First pass.** In Archie, assign the Epic to the Agent whose description fits reviewing it. Invoke `/archie-review` **inline, in this conversation**, on the Epic and the PR, briefed **unattended** — inline because it dispatches sub-agents of its own. It runs one pass: it posts its report and triage on the PR and hands back the findings it kept as exit criteria. A pass with no findings is the final report: go to step 6.
-4. **Fix, once.** With every finding dropped, go to step 5. Otherwise, in Archie, assign the Epic to the Agent whose description fits building the fixes. Dispatch an engineer sub-agent through the sub-agent tool running `/archie-tdd` on those exit criteria. **A red gate halts the run.** Commit the fix as `<reference>: review fixes` and invoke `/archie-pr` on the Epic to push it and refresh the PR's body.
-5. **Second pass.** In Archie, assign the Epic to the reviewing Agent again. Invoke `/archie-review` as in step 3. It finds the first pass's comment, so it runs as a re-review, and its report is the final one. There is no second fix round: a PR still 🔴 goes to the user, which is faster than a loop nobody watches.
+3. **First pass.** Invoke `/archie-review` **inline, in this conversation**, on the Epic and the PR, briefed **unattended** — inline because it dispatches sub-agents of its own. It runs one pass: it posts its report and triage on the PR and hands back the findings it kept as exit criteria. A pass with no findings is the final report: go to step 6.
+4. **Fix, once.** With every finding dropped, go to step 5. Otherwise dispatch an engineer sub-agent through the sub-agent tool running `/archie-tdd` on those exit criteria. **A red gate halts the run.** Commit the fix as `<reference>: review fixes` and invoke `/archie-pr` on the Epic to push it and refresh the PR's body.
+5. **Second pass.** Invoke `/archie-review` as in step 3. It finds the first pass's comment, so it runs as a re-review, and its report is the final one. There is no second fix round: a PR still 🔴 goes to the user, which is faster than a loop nobody watches.
 6. Read the grade and the Confidence score off the final report. Grade 🟢: mark the PR ready, `gh pr ready`. Anything else leaves it a draft for the user. The score gates nothing.
 
 Done when the final report is on the PR and the PR's state matches its grade.
