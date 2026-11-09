@@ -9,7 +9,7 @@ description: Becoming one of your Archie Agents — its instructions taken on as
 
 ## 1. Read the Agent
 
-Call the Archie MCP server's `get_agent` with `<name>` as both `name` and `agent`; it matches the name ignoring case. Stop with one line saying which, when:
+Call the Archie MCP server's `get_agent` with `<name>` as both `name` and `agent`. Stop with one line saying which, when:
 
 - no Archie MCP server is connected;
 - no active Agent goes by `<name>`.

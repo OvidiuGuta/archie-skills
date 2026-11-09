@@ -98,7 +98,7 @@ One file per Task at `tasks/NN-<slug>.md` inside the leaf, the `Epic:` reference
 
 The closing Task uses that same file: `Integration: this Task`, `Blocked by` every other Task, `ready-for-agent`, its demoable outcome the leaf's Spec holding at the seam, its `Builds:` line the seam, and one criterion saying so. It is a Task like any other: same statuses, same review path.
 
-In Archie the header lines are the Task's own fields: `Blocked by` is its `blocks` edges and the `Integration:` line is its Type. The `Builds:` line stays in the body.
+In Archie `Blocked by` is the Task's `blocks` edges and the `Integration:` line is its Type. The `Label:` and `Builds:` lines stay in the body, as on files.
 
 Every Task starts at `Status: todo`. The implementing skills write `in-progress` and `ready-for-review` from there. In task mode `done` is the user's word; in epic mode `/archie-implement` writes it itself after its criteria check, and stamps the leaf's `epic.md` with `Status: ready-for-review` when the last Task lands — the one status an Epic ever carries.
 

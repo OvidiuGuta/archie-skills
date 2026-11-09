@@ -4,4 +4,4 @@ Reached by `/archie-architect`, and typeable by name. Cuts a Specified Epic's Sp
 
 ## Archie mode
 
-In a bound folder the task file's header lines are the Task's own fields: `Blocked by` is its `blocks` edges and the `Integration:` line is its Type, while the `Builds:` line stays in the body. Every Status and Type is the one whose description fits the step, an undesigned leaf halts the run, and the Epic moves to the Status whose description fits an Epic ready to build once the Tasks are written.
+In a bound folder `Blocked by` is the Task's `blocks` edges and the `Integration:` line is its Type, while the `Label:` and `Builds:` lines stay in the body, as on files. Every Status and Type is the one whose description fits the step, an undesigned leaf halts the run, and the Epic moves to the Status whose description fits an Epic ready to build once the Tasks are written.
