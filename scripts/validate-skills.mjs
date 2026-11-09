@@ -55,11 +55,12 @@ const MODEL_INVOKED_SKILLS = [
 const ROSTER = new Set([...USER_ONLY_SKILLS, ...MODEL_INVOKED_SKILLS])
 
 // Archie mode. A skill that touches the tree carries a `Where the tree lives`
-// block whose heading, first sentence and Agent paragraph are pinned verbatim,
-// the way the guard sentence is, so the switch cannot drift between copies
-// (ADR 0011). The Agent paragraph is one rule for every skill: act as the
-// assignee of the Task worked, or as Archie, and hand work on by description
-// (ADR-0084 in the archie repo). The helpers — interview, research,
+// block whose heading, first sentence and binding paragraph are pinned
+// verbatim, the way the guard sentence is, so the switch cannot drift between
+// copies (ADR 0011). The first sentence binds the folder through the Archie
+// MCP's `get_index`; the binding paragraph fits every Status, marker, Type and
+// Label a step names by its description, and leaves how each is read and
+// written to the MCP's own tools. The helpers — interview, research,
 // prototype, domain-modeling, standards — carry no block: the dispatching
 // skill's brief names the mode.
 const ARCHIE_MODE_SKILLS = new Set([
@@ -78,21 +79,20 @@ const ARCHIE_MODE_SKILLS = new Set([
 ])
 const ARCHIE_MODE_HEADING = /^#{2,3} Where the tree lives$/m
 const ARCHIE_MODE_SWITCH =
-  "The folder plans in Archie when its `origin` remote clearly matches one Project's repo in the Archie MCP server's `guide` Index."
-const ARCHIE_MODE_AGENT =
-  'Act as the assignee of the Task you work, an Epic included, or as Archie when it has no Agent assignee or there is no Task, and read it again after every handoff. Hand work on by assigning it to the Agent whose description in the Index fits the next step. A Status, marker, Type or Agent a step names is the one whose description fits it; when none clearly fits, or several do, stop and ask the human, naming the step and `/archie-setup`. Brief any helper you dispatch or invoke with the mode and the Agent.'
-// The Agent rule it replaced picked an Agent by a kind of work, once per
-// session. Any copy of it left behind is a second rule beside the pinned one.
-const KIND_OF_WORK_AGENT = /fits \*\*(planning|building|reviewing)\*\*|chosen once for the session/
-// No skill names an Agent (ADR-0075 in the archie repo): it reaches one by
-// description, so a human who renames or replaces the seeded Agents changes no
-// skill. Archie, the root every session falls back to, is the one exception.
-// A skill's own `# Title` line is its name, not an Agent, and is skipped.
-const SEEDED_AGENT = /\b(Architect|Engineer|Reviewer|Worker)\b/
-// The block runs from its heading to the end of the Agent paragraph. Every
+  "The folder plans in Archie when its `origin` remote clearly matches a repo of one Project in the Archie MCP server's `get_index`."
+const ARCHIE_MODE_BINDING =
+  "A Status, marker, Type or Label a step names is the one whose description fits it; when none clearly fits, or several do, stop and ask the human, naming the step and `/archie-setup`. The Archie MCP server's tools say how each is read and written. Brief any helper you dispatch or invoke with the mode."
+// The block runs from its heading to the end of the binding paragraph. Every
 // copy must read the same, so the sentences between the pinned ones cannot
 // drift either.
-const ARCHIE_MODE_BLOCK = /^#{2,3} Where the tree lives$[\s\S]*?Brief any helper you dispatch or invoke with the mode and the Agent\./m
+const ARCHIE_MODE_BLOCK = /^#{2,3} Where the tree lives$[\s\S]*?Brief any helper you dispatch or invoke with the mode\./m
+// A tree skill carries workflow only (ADR-0117 in the archie repo): no Agent,
+// no assignee, no identity check and no `guide`, which the MCP no longer has.
+// Persona and handoff belong to `/archie-agent`. The patterns hit the entity
+// names and nothing else: lowercase "agent" is the harness's own (sub-agent,
+// `ready-for-agent`, AGENTS.md), and "guide time" is `/archie-assist`'s word
+// for deriving a route with the user, not the retired tool.
+const AGENT_BAN = /\bAgents?\b|\b[Aa]ssignees?\b|\bwhoami\b|\bguide\b(?! time\b)/
 // `/archie-setup` walks the skills' needs list in its own reference, which is
 // the archie-skills side of the contract the seeded `Next:` lines keep.
 const SETUP_BINDINGS = 'references/bindings.md'
@@ -227,8 +227,8 @@ for (const dir of skillDirs) {
     if (!body.includes(ARCHIE_MODE_SWITCH)) {
       fail(skillFile, `Archie-mode block is missing its first sentence \`${ARCHIE_MODE_SWITCH}\``)
     }
-    if (!body.split(/\n\n/).some((paragraph) => paragraph.trim() === ARCHIE_MODE_AGENT)) {
-      fail(skillFile, 'Archie-mode block is missing its Agent paragraph, verbatim and on its own (`ARCHIE_MODE_AGENT` in this script)')
+    if (!body.split(/\n\n/).some((paragraph) => paragraph.trim() === ARCHIE_MODE_BINDING)) {
+      fail(skillFile, 'Archie-mode block is missing its binding paragraph, verbatim and on its own (`ARCHIE_MODE_BINDING` in this script)')
     }
     const block = ARCHIE_MODE_BLOCK.exec(body)?.[0]
     if (block) {
@@ -240,13 +240,6 @@ for (const dir of skillDirs) {
   } else if (hasHeading) {
     fail(skillFile, 'carries a `Where the tree lives` block, but is a helper that learns the mode from its brief')
   }
-
-  const namedAgent = body
-    .split('\n')
-    .filter((line) => !/^# /.test(line))
-    .map((line) => SEEDED_AGENT.exec(line)?.[0])
-    .find(Boolean)
-  if (namedAgent) fail(skillFile, `names the Agent \`${namedAgent}\`; a skill reaches an Agent by its description in the Index`)
 
   // The link check below fails a link to a missing file, so pinning the link
   // pins the file too.
@@ -307,9 +300,14 @@ for (const file of linkedFiles) {
     if (!existsSync(resolved)) fail(file, `link \`${target}\` points at a file that does not exist`)
   }
 
-  if (file.startsWith(SKILLS_DIR)) {
-    const leftover = KIND_OF_WORK_AGENT.exec(body)?.[0]
-    if (leftover) fail(file, `picks its Agent by a kind of work (\`${leftover}\`); a skill acts as its Task's assignee, or as Archie`)
+  // Every file of a tree skill, its SKILL.md and its references, frontmatter
+  // and fences included: a banned name anywhere in it is read by the model.
+  const owner = relative(SKILLS_DIR, file).split('/')[0]
+  if (file.startsWith(SKILLS_DIR) && ARCHIE_MODE_SKILLS.has(owner)) {
+    readFileSync(file, 'utf8').split('\n').forEach((line, index) => {
+      const banned = AGENT_BAN.exec(line)?.[0]
+      if (banned) fail(file, `line ${index + 1} names \`${banned}\`; a workflow skill carries no Agent, assignee, \`whoami\` or \`guide\` (ADR-0117 in the archie repo)`)
+    })
   }
 
   // Outside a SKILL.md there is no bundle position to resolve against, so a

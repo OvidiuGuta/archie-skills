@@ -5,7 +5,7 @@ description: Guiding the user through one ready-for-human Task — a signup, a s
 
 # Assist
 
-One `ready-for-human` Task — in Archie, a Task assigned to the human — from `todo` to `ready-for-review`, **with the user in the room**.
+One `ready-for-human` Task from `todo` to `ready-for-review`, **with the user in the room**.
 
 This is the work no agent can do: signing up for a service, provisioning access, obtaining a key, granting a permission. It produces no diff, which is why it is not `/archie-implement`'s job — the build, the review and the fix round all presuppose code. There are no sub-agents either: the user is present, so guiding them is the work.
 
@@ -13,22 +13,22 @@ This is the work no agent can do: signing up for a service, provisioning access,
 
 ### Where the tree lives
 
-The folder plans in Archie when its `origin` remote clearly matches one Project's repo in the Archie MCP server's `guide` Index. Compare host and path only, so `git@github.com:me/app.git` matches `https://github.com/me/app`. No `origin`, no match or no Archie connection means the tree lives on files, as the steps below describe. Several matches, or an unclear one, means asking the human which Project this is.
+The folder plans in Archie when its `origin` remote clearly matches a repo of one Project in the Archie MCP server's `get_index`. Compare host and path only, so `git@github.com:me/app.git` matches `https://github.com/me/app`. No `origin`, no match or no Archie connection means the tree lives on files, as the steps below describe. Several matches, or an unclear one, means asking the human which Project this is.
 
-In Archie, every reference is a Task key such as `ARC-12`; refuse a `3.2` or a `3.2#1` with one line saying the folder plans in Archie. The steps below name the tree's files and markers, and the `guide` says how each is read and written in Archie.
+In Archie, every reference is a Task key such as `ARC-12`; refuse a `3.2` or a `3.2#1` with one line saying the folder plans in Archie. The steps below name the tree's files and markers.
 
-Act as the assignee of the Task you work, an Epic included, or as Archie when it has no Agent assignee or there is no Task, and read it again after every handoff. Hand work on by assigning it to the Agent whose description in the Index fits the next step. A Status, marker, Type or Agent a step names is the one whose description fits it; when none clearly fits, or several do, stop and ask the human, naming the step and `/archie-setup`. Brief any helper you dispatch or invoke with the mode and the Agent.
+A Status, marker, Type or Label a step names is the one whose description fits it; when none clearly fits, or several do, stop and ask the human, naming the step and `/archie-setup`. The Archie MCP server's tools say how each is read and written. Brief any helper you dispatch or invoke with the mode.
 
 You are handed **one** reference — `3.2#1` or a path. Everything resolves from it: Epics are numbered directories nested under `.archie/`, so `3.2` is child `02` of child `03` of the root, `#1` is `tasks/01-<slug>.md` inside it, and the leaf's `spec.md` sits beside the `tasks/` folder.
 
 No `.archie/` at all is a repo that has never been planned. Say so and name `/archie-architect`, which walks the planning steps from scoping through to Tasks.
 
-Read the task file — its demoable outcome, its acceptance criteria, its `Blocked by` line and its `Label` — and the leaf's `spec.md`. In Archie the edges are its `blocks` edges and the label its `assignee`.
+Read the task file — its demoable outcome, its acceptance criteria, its `Blocked by` line and its `Label` — and the leaf's `spec.md`. In Archie the edges are its `blocks` edges.
 
 Two gates:
 
 - **The blocking edges are met.** Every Task on `Blocked by` is `done`.
-- **The label is `ready-for-human`.** A `ready-for-agent` Task halts here and names `/archie-implement`. Any other value, and a task file with no `Label` line, halts and names what it found. In Archie, one assigned to an Agent halts the same way.
+- **The label is `ready-for-human`.** A `ready-for-agent` Task halts here and names `/archie-implement`. Any other value, and a task file with no `Label` line, halts and names what it found.
 
 Then set `Status:` to `in-progress`.
 
