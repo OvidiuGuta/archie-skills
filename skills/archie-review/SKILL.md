@@ -106,7 +106,7 @@ Every report's header ends on a **Confidence score**: how safe the change is to 
 - **2** — a 🔴 stands and its fix is local.
 - **1** — a 🔴 stands that questions the change itself: a failing test, a missing user story, an approach that will not hold.
 
-A 🟢 review scores 3 to 5 and a 🔴 review 1 or 2. Within that range, weigh the Spec axis's **Untested** list, a skipped Spec axis, and risky code no test reaches, which you read off the diff yourself. The bands frame a judgement; they are not deductions to count. The reason names what placed the score in its band.
+A 🟢 review scores 3 to 5 and a 🔴 review 1 or 2. Within that range, weigh the Spec axis's **Untested** list, a skipped Spec axis, and risky code no test reaches, which you read off the diff yourself. The bands guide a judgement; they are not deductions to count. The reason names what placed the score in its band.
 
 The score gates nothing: the grade alone decides mergeable.
 

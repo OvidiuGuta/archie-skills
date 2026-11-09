@@ -70,5 +70,5 @@ It asserts that:
 - every skill ships an `agents/openai.yaml` carrying a `display_name` and a `short_description`
 - every skill has a page under [`manual/skills/`](skills/), linked from the README's index
 - every skill that works the tree carries the `Where the tree lives` block — heading, the first sentence binding the folder by matching its `origin` remote against the Projects' repos in the Archie MCP server's `get_index`, and the binding paragraph fitting each Status, marker, Type and Label by its description, all pinned verbatim — and every copy reads the same. No other skill carries it: the helpers learn the mode from their brief, and `/archie-agent` is a persona, not a workflow
-- no file of a skill that works the tree, its references included, names an `Agent`, an assignee, `whoami` or `guide`: those skills carry only a workflow, and identity is `/archie-agent`'s (ADR-0117 in the archie repo)
+- no markdown file of a skill that works the tree, its references included, names an `Agent`, an assignee, `whoami` or `guide`: those skills carry only a workflow, and identity is `/archie-agent`'s (ADR-0117 in the archie repo)
 - `/archie-setup` links its `references/bindings.md`, the needs list the seeded `Next:` lines in Archie are written against

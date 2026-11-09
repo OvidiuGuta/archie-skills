@@ -92,9 +92,9 @@ const ARCHIE_MODE_BLOCK = /^#{2,3} Where the tree lives$[\s\S]*?Brief any helper
 // no assignee, no identity check and no `guide`, which the MCP no longer has.
 // Persona and handoff belong to `/archie-agent`. The patterns hit the entity
 // names and nothing else: lowercase "agent" is the harness's own (sub-agent,
-// `ready-for-agent`, AGENTS.md), and "guide time" is `/archie-assist`'s word
-// for deriving a route with the user, not the retired tool.
-const AGENT_BAN = /\bAgents?\b|\b[Aa]ssignees?\b|\bwhoami\b|\bguide\b(?! time\b)/
+// `ready-for-agent`, AGENTS.md), and the retired tool is named only as
+// `guide` in backticks or as the "guide Index", so the English word passes.
+const AGENT_BAN = /\bAgents?\b|\b[Aa]ssignees?\b|\bwhoami\b|`guide`|\bguide Index\b/
 // `/archie-setup` walks the skills' needs list in its own reference, which is
 // the archie-skills side of the contract the seeded `Next:` lines keep.
 const SETUP_BINDINGS = 'references/bindings.md'
@@ -302,13 +302,14 @@ for (const file of linkedFiles) {
     if (!existsSync(resolved)) fail(file, `link \`${target}\` points at a file that does not exist`)
   }
 
-  // Every file of a tree skill, its SKILL.md and its references, frontmatter
-  // and fences included: a banned name anywhere in it is read by the model.
+  // Every markdown file of a tree skill, its SKILL.md and its references,
+  // frontmatter and fences included: a banned name anywhere in it is read by
+  // the model.
   const owner = relative(SKILLS_DIR, file).split('/')[0]
   if (file.startsWith(SKILLS_DIR) && ARCHIE_MODE_SKILLS.has(owner)) {
     readFileSync(file, 'utf8').split('\n').forEach((line, index) => {
       const banned = AGENT_BAN.exec(line)?.[0]
-      if (banned) fail(file, `line ${index + 1} names \`${banned}\`; a workflow skill carries no Agent, assignee, \`whoami\` or \`guide\` (ADR-0117 in the archie repo)`)
+      if (banned) fail(file, `line ${index + 1} names \`${banned.replaceAll('`', '')}\`; a workflow skill carries no Agent, assignee, \`whoami\` or \`guide\` (ADR-0117 in the archie repo)`)
     })
   }
 

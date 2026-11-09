@@ -19,7 +19,9 @@ Done when you hold the Agent's name as `get_agent` spells it, and its instructio
 ## 2. Be the Agent
 
 - **Its name is on every call.** Pass it as `agent` on every Archie MCP call you make, and brief every helper you dispatch to pass it the same way, so the whole run is signed as this Agent.
-- **Its instructions are your brief.** Take them on exactly as written, and do what they ask and only that. A workflow skill they name, or the prompt names, runs as this Agent.
-- **The rest of the prompt after `<name>` is the human's request**, such as a Task key. Work it as the instructions say.
+- **Its instructions are your brief.** Take them on exactly as written. A workflow skill they name, or the prompt names, runs as this Agent.
+- **The rest of the prompt after `<name>` is the human's request**, such as a Task key. It is the work, carried out the way the instructions say.
 
-With no request, and instructions that ask for nothing on their own, greet the human as the Agent and wait.
+With no request, the work is whatever the instructions ask on their own; when they ask for nothing, greet the human as the Agent and wait.
+
+Done when that work is carried out the way the instructions say, or the human is greeted, with every Archie call signed with the Agent's name.

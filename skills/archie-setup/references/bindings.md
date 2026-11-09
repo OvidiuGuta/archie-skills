@@ -42,6 +42,8 @@ The planning steps share one Status, because the step is read off what the Epic 
 | --- | --- | --- | --- |
 | Decisions | a decision recorded on a Project, one Note per decision | `/archie-domain-modeling`, recording an ADR | adr |
 | Terms | a glossary term of a Project, one Note per term | `/archie-domain-modeling`, sharpening a term | term |
+| Ready for an agent | a Task an agent builds end to end | `/archie-to-tasks` sets it, `/archie-implement` builds it | ready-for-agent |
+| Ready for the human | a Task needing a third-party UI, a secret or an account only the human can supply | `/archie-to-tasks` sets it, `/archie-assist` works it | ready-for-human |
 
 ## Proposing a row
 
