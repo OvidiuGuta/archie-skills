@@ -58,10 +58,11 @@ const ROSTER = new Set([...USER_ONLY_SKILLS, ...MODEL_INVOKED_SKILLS])
 // Archie mode. A skill that touches the tree carries a `Where the tree lives`
 // block whose heading, first sentence and binding paragraph are pinned
 // verbatim, the way the guard sentence is, so the switch cannot drift between
-// copies (ADR 0011). The first sentence binds the folder through the Archie
-// MCP's `get_index`; the binding paragraph fits every Status, marker, Type and
-// Label a step names by its description, and leaves how each is read and
-// written to the MCP's own tools. Every other skill carries no block: the
+// copies (ADR 0011). The first sentence binds the folder through the
+// `get_index` operation, run with the Archie MCP's `execute_read`; the binding
+// paragraph fits every Status, marker, Type and Label a step names by its
+// description, and leaves how each is read and written to the operations
+// `discover` serves. Every other skill carries no block: the
 // helpers — interview, research, prototype, domain-modeling, standards — learn
 // the mode from the dispatching skill's brief, and `archie-agent` is a persona
 // that carries no workflow (ADR-0117 in the archie repo).
@@ -81,9 +82,9 @@ const ARCHIE_MODE_SKILLS = new Set([
 ])
 const ARCHIE_MODE_HEADING = /^#{2,3} Where the tree lives$/m
 const ARCHIE_MODE_SWITCH =
-  "The folder plans in Archie when its `origin` remote clearly matches a repo of one Project in the Archie MCP server's `get_index`."
+  "The folder plans in Archie when its `origin` remote clearly matches a repo of one Project in the Index, which the `get_index` operation returns through the Archie MCP server's `execute_read`."
 const ARCHIE_MODE_BINDING =
-  "A Status, marker, Type or Label a step names is the one whose description fits it; when none clearly fits, or several do, stop and ask the human, naming the step and `/archie-setup`. The Archie MCP server's tools say how each is read and written. Brief any helper you dispatch or invoke with the mode."
+  "A Status, marker, Type or Label a step names is the one whose description fits it; when none clearly fits, or several do, stop and ask the human, naming the step and `/archie-setup`. The operations the Archie MCP server's `discover` serves say how each is read and written. Brief any helper you dispatch or invoke with the mode."
 // The block runs from its heading to the end of the binding paragraph. Every
 // copy must read the same, so the sentences between the pinned ones cannot
 // drift either.
@@ -95,6 +96,12 @@ const ARCHIE_MODE_BLOCK = /^#{2,3} Where the tree lives$[\s\S]*?Brief any helper
 // `ready-for-agent`, AGENTS.md), and the retired tool is named only as
 // `guide` in backticks or as the "guide Index", so the English word passes.
 const AGENT_BAN = /\bAgents?\b|\b[Aa]ssignees?\b|\bwhoami\b|`guide`|\bguide Index\b/
+// The Archie MCP has three tools, `discover`, `execute_read` and
+// `execute_write`, and every other name is an operation one of them runs
+// (ADR-0123 in the archie repo). A skill or manual page that speaks of the
+// server's tools, or of a server tool by an operation's name, was written to
+// the retired surface.
+const STALE_MCP_TOOL = /MCP server's `(?!(?:discover|execute_read|execute_write)`)[a-z_]+`|\bserver's (?:own )?tools\b/
 // `/archie-setup` walks the skills' needs list in its own reference, which is
 // the archie-skills side of the contract the seeded `Next:` lines keep.
 const SETUP_BINDINGS = 'references/bindings.md'
@@ -310,6 +317,13 @@ for (const file of linkedFiles) {
     readFileSync(file, 'utf8').split('\n').forEach((line, index) => {
       const banned = AGENT_BAN.exec(line)?.[0]
       if (banned) fail(file, `line ${index + 1} names \`${banned.replaceAll('`', '')}\`; a workflow skill carries no Agent, assignee, \`whoami\` or \`guide\` (ADR-0117 in the archie repo)`)
+    })
+  }
+
+  if (file.startsWith(SKILLS_DIR) || file.startsWith(MANUAL_DIR) || file === README) {
+    readFileSync(file, 'utf8').split('\n').forEach((line, index) => {
+      const stale = STALE_MCP_TOOL.exec(line)?.[0]
+      if (stale) fail(file, `line ${index + 1} speaks of \`${stale}\`; name the operation and the execute tool that runs it, or \`discover\` (ADR-0123 in the archie repo)`)
     })
   }
 

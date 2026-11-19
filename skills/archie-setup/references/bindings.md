@@ -22,9 +22,9 @@ A Status need binds to every Status whose `**Next:**` line names its skill, so i
 | A Task | one demoable slice of a leaf Epic, built and reviewed on its own | `/archie-to-tasks` creates it, `/archie-implement` and `/archie-tdd` build it | Task |
 | A leaf's closing Task | the closing Task of a leaf Epic, proving the leaf holds at its seam | `/archie-to-tasks` creates it, `/archie-verify` works it | Verification |
 
-### Statuses, from `get_workflow`
+### Statuses, from the `get_workflow` operation
 
-Read `get_workflow {name}` for the Workflow the Index names beside the Epic Type and the Task Type bound above, so a flow with no Tasks yet is checked too. When either Type is a gap, its Workflow's needs are reported unchecked, since there is no Workflow to read.
+Run the `get_workflow` operation with `execute_read` for the Workflow the Index names beside the Epic Type and the Task Type bound above, passing the Workflow's name as the `name` in its `inputs`, so a flow with no Tasks yet is checked too. When either Type is a gap, its Workflow's needs are reported unchecked, since there is no Workflow to read.
 
 | Need: a Status whose `Next:` line names | Read in the Workflow of | Proposed name, Workflow and group |
 | --- | --- | --- |
