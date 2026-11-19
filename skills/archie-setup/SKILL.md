@@ -13,11 +13,11 @@ Explore, present, confirm, then write. Nothing reaches disk before the user has 
 
 ### Where the tree lives
 
-The folder plans in Archie when its `origin` remote clearly matches a repo of one Project in the Archie MCP server's `get_index`. Compare host and path only, so `git@github.com:me/app.git` matches `https://github.com/me/app`. No `origin`, no match or no Archie connection means the tree lives on files, as the steps below describe. Several matches, or an unclear one, means asking the human which Project this is.
+The folder plans in Archie when its `origin` remote clearly matches a repo of one Project in the Index, which the `get_index` operation returns through the Archie MCP server's `execute_read`. Compare host and path only, so `git@github.com:me/app.git` matches `https://github.com/me/app`. No `origin`, no match or no Archie connection means the tree lives on files, as the steps below describe. Several matches, or an unclear one, means asking the human which Project this is.
 
 In Archie, every reference is a Task key such as `ARC-12`; refuse a `3.2` or a `3.2#1` with one line saying the folder plans in Archie. The steps below name the tree's files and markers.
 
-A Status, marker, Type or Label a step names is the one whose description fits it; when none clearly fits, or several do, stop and ask the human, naming the step and `/archie-setup`. The Archie MCP server's tools say how each is read and written. Brief any helper you dispatch or invoke with the mode.
+A Status, marker, Type or Label a step names is the one whose description fits it; when none clearly fits, or several do, stop and ask the human, naming the step and `/archie-setup`. The operations the Archie MCP server's `discover` serves say how each is read and written. Brief any helper you dispatch or invoke with the mode.
 
 Keep what decided the mode for step 3: the Project the remote matched, an `origin` no Project names, no `origin`, or no Archie server connected.
 
@@ -39,7 +39,7 @@ Done when the mode and its reason are known, and every fact holds either a value
 
 Files mode skips this step.
 
-Walk every need in [`references/bindings.md`](./references/bindings.md) against `get_index`, as it describes.
+Walk every need in [`references/bindings.md`](./references/bindings.md) against the Index the `get_index` operation returns, as it describes.
 
 Done when every need in `bindings.md` names its row or carries a proposal.
 
