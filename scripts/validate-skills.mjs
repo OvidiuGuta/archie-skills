@@ -90,12 +90,13 @@ const ARCHIE_MODE_BINDING =
 // drift either.
 const ARCHIE_MODE_BLOCK = /^#{2,3} Where the tree lives$[\s\S]*?Brief any helper you dispatch or invoke with the mode\./m
 // A tree skill carries workflow only (ADR-0117 in the archie repo): no Agent,
-// no assignee, no identity check and no `guide`, which the MCP no longer has.
+// no assignee, no identity check through `get_agent`, and no `guide`, which
+// the MCP no longer has.
 // Persona and handoff belong to `/archie-agent`. The patterns hit the entity
 // names and nothing else: lowercase "agent" is the harness's own (sub-agent,
 // `ready-for-agent`, AGENTS.md), and the retired tool is named only as
 // `guide` in backticks or as the "guide Index", so the English word passes.
-const AGENT_BAN = /\bAgents?\b|\b[Aa]ssignees?\b|\bwhoami\b|`guide`|\bguide Index\b/
+const AGENT_BAN = /\bAgents?\b|\b[Aa]ssignees?\b|\bget_agent\b|`guide`|\bguide Index\b/
 // The Archie MCP has three tools, `discover`, `execute_read` and
 // `execute_write`, and every other name is an operation one of them runs
 // (ADR-0123 in the archie repo). A skill or manual page that speaks of the
@@ -316,7 +317,7 @@ for (const file of linkedFiles) {
   if (file.startsWith(SKILLS_DIR) && ARCHIE_MODE_SKILLS.has(owner)) {
     readFileSync(file, 'utf8').split('\n').forEach((line, index) => {
       const banned = AGENT_BAN.exec(line)?.[0]
-      if (banned) fail(file, `line ${index + 1} names \`${banned.replaceAll('`', '')}\`; a workflow skill carries no Agent, assignee, \`whoami\` or \`guide\` (ADR-0117 in the archie repo)`)
+      if (banned) fail(file, `line ${index + 1} names \`${banned.replaceAll('`', '')}\`; a workflow skill carries no Agent, assignee, \`get_agent\` or \`guide\` (ADR-0117 in the archie repo)`)
     })
   }
 
