@@ -34,7 +34,7 @@ The server answers an unsigned request with a challenge, and the harness opens t
 
 A session acts as the Agent [`/archie-agent`](skills/archie-agent.md) named, its helpers included, or as Archie when none is loaded, so the board shows who did the work. Which Task a session works never changes who it is: the workflow skills carry only a workflow, and an Agent's instructions say what it does (ADR-0117 in the archie repo).
 
-The skills find their way in the flows through the Index: every Status, Type and Label a step needs is the one whose description fits it. When no row clearly fits, or several do, the skill stops and asks rather than guessing. How each row is read and written is in the descriptions of the operations the server's `discover` serves, so the skills carry no Archie how-to beyond the operations they name (ADR-0119 and ADR-0123 in the archie repo).
+The skills find their way in the flows by description: every Type and Label a step needs is the one in the Index whose description fits it, and every Status the one in its Workflow whose description fits it. The Index names each Type's Workflow and carries no Status, so a Status is found through the `get_workflow` operation, which reads a Workflow's Statuses by its name or by a Task's key. When no row clearly fits, or several do, the skill stops and asks rather than guessing. How each row is read and written is in the descriptions of the operations the server's `discover` serves, so the skills carry no Archie how-to beyond the operations they name (ADR-0119 and ADR-0123 in the archie repo).
 
 ## Checking it
 

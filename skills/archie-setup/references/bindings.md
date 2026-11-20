@@ -49,7 +49,7 @@ Each proposal carries:
 
 - **Name**: the proposed name above, or the existing row's name for a several.
 - **Group**, for a Status only: `to-do`, `in-progress` or `complete`, with the Workflow it joins.
-- **Description**: a one-line summary first, since the Index shows only that line, then what the row is for in the words of its need above. A Status's description ends on its `Next:` line, on a line of its own:
+- **Description**: a one-line summary first, since the Index shows only that line of a Type or Label, then what the row is for in the words of its need above. A Status's description ends on its `Next:` line, on a line of its own:
 
 ```md
 **Next:** `/archie-scope` when the Epic has no recorded decisions · `/archie-to-spec` when it has decisions and no Spec · `/archie-design` when its Spec is undesigned · `/archie-to-tasks` when it has no Tasks.
